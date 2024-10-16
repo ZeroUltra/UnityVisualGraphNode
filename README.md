@@ -43,8 +43,9 @@ public class NodeSample : NodeBase
 
 * 使用IMGUI,和普通继承Editor重写相同,缺点是如果太多会导致界面卡顿(原因是需要太多draw)
 * 使用UIElements,需要继承VisualGraphNodeView,使用UIElements的UI绘制,这个不会导致卡顿
+* 可使用类似Odin插件等自行绘制
 
-具体代码可查看Demo文件夹`NodeSampleEditor`示例
+具体代码可查看示例文件夹`NodeSampleEditor.cs`
 
 ### 其他
 

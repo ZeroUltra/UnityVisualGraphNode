@@ -4,7 +4,7 @@
 // Copyright (c) Bus Stop Studios.
 ///-------------------------------------------------------------------------------------------------
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
+
 using VisualGraphRuntime;
 
 namespace VisualGraphInEditor
@@ -15,7 +15,7 @@ namespace VisualGraphInEditor
 		public override void CreateField(BlackboardField field)
 		{
 			IntBlackboardProperty localProperty = (IntBlackboardProperty)property;
-			CreatePropertyField<int, IntegerField>(field, localProperty);
+			CreatePropertyField<int, UnityEngine.UIElements.IntegerField>(field, localProperty);
 		}
 	}
 }

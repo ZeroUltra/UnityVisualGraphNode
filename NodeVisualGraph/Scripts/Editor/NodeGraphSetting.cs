@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NaughtyAttributes;
 using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UIElements;
 namespace NodeGraphView
@@ -17,7 +16,6 @@ namespace NodeGraphView
             }
         }
 
-        [InfoBox("NodeGraph 设置")]
         [Header("标签宽度")]
         public int LabelWidth = 120;
         [Header("默认node大小")]

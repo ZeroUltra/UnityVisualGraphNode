@@ -3,7 +3,7 @@
 // date: 2020
 // Copyright (c) Bus Stop Studios.
 ///-------------------------------------------------------------------------------------------------
-using UnityEditor.UIElements;
+
 using UnityEditor.Experimental.GraphView;
 using VisualGraphRuntime;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace VisualGraphInEditor
         public override void CreateField(BlackboardField field)
         {
             Vector4BlackboardProperty localProperty = (Vector4BlackboardProperty)property;
-            CreatePropertyField<Vector4, Vector4Field>(field, localProperty);
+            CreatePropertyField<Vector4, UnityEngine.UIElements.Vector4Field>(field, localProperty);
         }
     }
 }
