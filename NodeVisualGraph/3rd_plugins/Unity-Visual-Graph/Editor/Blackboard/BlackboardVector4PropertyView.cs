@@ -16,7 +16,7 @@ namespace VisualGraphInEditor
         public override void CreateField(BlackboardField field)
         {
             Vector4BlackboardProperty localProperty = (Vector4BlackboardProperty)property;
-            CreatePropertyField<Vector4, UnityEngine.UIElements.Vector4Field>(field, localProperty);
+            CreatePropertyField<Vector4, UnityEditor.UIElements.Vector4Field>(field, localProperty);
         }
     }
 }

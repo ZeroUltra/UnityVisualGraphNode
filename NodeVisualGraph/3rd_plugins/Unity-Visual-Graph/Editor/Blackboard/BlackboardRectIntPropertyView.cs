@@ -7,6 +7,7 @@ using UnityEditor.Experimental.GraphView;
 
 using VisualGraphRuntime;
 using UnityEngine;
+using UnityEditor.UIElements;
 
 namespace VisualGraphInEditor
 {
@@ -16,7 +17,7 @@ namespace VisualGraphInEditor
         public override void CreateField(BlackboardField field)
 		{
             RectIntBlackboardProperty localProperty = (RectIntBlackboardProperty)property;
-            CreatePropertyField<RectInt, UnityEngine.UIElements.RectIntField>(field, localProperty);
+            CreatePropertyField<RectInt, RectIntField>(field, localProperty);
 		}
     }
 }

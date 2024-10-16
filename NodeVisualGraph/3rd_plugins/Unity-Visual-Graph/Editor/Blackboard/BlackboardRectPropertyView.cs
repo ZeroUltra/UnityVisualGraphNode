@@ -16,7 +16,7 @@ namespace VisualGraphInEditor
         public override void CreateField(BlackboardField field)
 		{
             RectBlackboardProperty localProperty = (RectBlackboardProperty)property;
-            CreatePropertyField<Rect, UnityEngine.UIElements.RectField>(field, localProperty);
+            CreatePropertyField<Rect, UnityEditor.UIElements.RectField>(field, localProperty);
 		}
     }
 }

@@ -15,7 +15,7 @@ namespace VisualGraphInEditor
 		public override void CreateField(BlackboardField field)
 		{
 			FloatBlackboardProperty localProperty = (FloatBlackboardProperty)property;
-			CreatePropertyField<float, UnityEngine.UIElements.FloatField>(field, localProperty);
+			CreatePropertyField<float, UnityEditor.UIElements.FloatField>(field, localProperty);
 		}
 	}
 }

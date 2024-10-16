@@ -33,7 +33,7 @@ public class NodeSample : NodeBase
 ![image-20241016134552468](https://raw.githubusercontent.com/ZeroUltra/MediaLibrary/main/Imgs/202410161435752.png)
 
 3. 根据节点内部逻辑,自行编辑代码
-4. 具体可查看Demo文件夹示例
+4. 具体可导入Sample文件夹查看示例
 
 
 
@@ -46,6 +46,24 @@ public class NodeSample : NodeBase
 * 可使用类似Odin插件等自行绘制
 
 具体代码可查看示例文件夹`NodeSampleEditor.cs`
+
+由于UIElements修改,请注意版本问题,
+
+测试使用的是Unity2021.3.x版本,当使用Unity2022.3时,提示升级是点yes
+
+![image-20241016152350435](https://raw.githubusercontent.com/ZeroUltra/MediaLibrary/main/Imgs/202410161523092.png)
+
+具体修改的代码如下内容:
+
+```c#
+ Vector4BlackboardProperty localProperty = (Vector4BlackboardProperty)property;
+ CreatePropertyField<Vector4, UnityEditor.UIElements.Vector4Field>(field, localProperty);
+//修改后
+ Vector4BlackboardProperty localProperty = (Vector4BlackboardProperty)property;
+ CreatePropertyField<Vector4, UnityEngine.UIElements.Vector4Field>(field, localProperty); //命名空间变化
+```
+
+如果又其他本吧问题,请提交issue
 
 ### 其他
 
