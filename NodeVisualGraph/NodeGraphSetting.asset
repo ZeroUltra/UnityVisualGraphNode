@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44d6f2bf2567df040a4c8ec999eb525a, type: 3}
+  m_Name: NodeGraphSetting
+  m_EditorClassIdentifier: 
+  LabelWidth: 100
+  StyleSheets:
+  - {fileID: 7433441132597879392, guid: 395504a73e226784db46343d63158860, type: 3}
