@@ -30,7 +30,7 @@ public class NodeSample : NodeBase
 
 2. 新建一个NodeGrpah,进行节点编辑
 
-![image-20241016134552468](C:\Users\y\AppData\Roaming\Typora\typora-user-images\image-20241016134552468.png)
+![image-20241016134552468](https://raw.githubusercontent.com/ZeroUltra/MediaLibrary/main/Imgs/202410161435752.png)
 
 3. 根据节点内部逻辑,自行编辑代码
 4. 具体可查看Demo文件夹示例
