@@ -1,12 +1,11 @@
 {
     "name": "com.zeroultra.visualgraphnode",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "displayName": "Visual Graph Node",
     "description": "Unity可视化节点编辑器",
     "documentationUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
     "changelogUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
     "licensesUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
-    "hideInEditor": true,
     "keywords": ["visual","node"],
     "samples": [
       {

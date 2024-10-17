@@ -29,8 +29,8 @@ namespace VisualGraphInEditor
         public VisualGraph VisualGraph { get { return visualGraph; } private set { } }
         public MiniMap Minimap { get; private set; }
         public GridBackground Grid { get; private set; }
-        public BlackboardView BlackboardView { get; private set; }
-        public Blackboard Blackboard { get { return BlackboardView.blackboard; } private set { } }
+        //public BlackboardView BlackboardView { get; private set; }
+        //public Blackboard Blackboard { get { return BlackboardView.blackboard; } private set { } }
 
 
         private VisualGraph visualGraph;
@@ -155,13 +155,13 @@ namespace VisualGraphInEditor
             Add(Minimap);
         }
 
-        public void CreateBlackboard()
-        {
-            BlackboardView = new BlackboardView();
-            BlackboardView.visualGraphView = this;
-            Blackboard.SetPosition(new Rect(10, 30, 250, 300));
-            Add(BlackboardView.blackboard);
-        }
+        //public void CreateBlackboard()
+        //{
+        //    BlackboardView = new BlackboardView();
+        //    BlackboardView.visualGraphView = this;
+        //    Blackboard.SetPosition(new Rect(10, 30, 250, 300));
+        //    Add(BlackboardView.blackboard);
+        //}
 
         public void CreateGrid()
         {
@@ -232,7 +232,7 @@ namespace VisualGraphInEditor
             DeleteElements(nodes.ToList());
             DeleteElements(edges.ToList());
             activeVisualGraph = false;
-            BlackboardView?.ClearBlackboard();
+           // BlackboardView?.ClearBlackboard();
 
             visualGraph = _visualGraph;
             if (visualGraph != null)
@@ -246,7 +246,7 @@ namespace VisualGraphInEditor
                 Debug.Assert(orientationAttrib != null, $"Graph node requires a GraphOrientationAttribute {visualGraph.GetType().Name}");
                 orientation = (orientationAttrib.GrapOrientation == GraphOrientationAttribute.Orientation.Horizontal) ? Orientation.Horizontal : Orientation.Vertical;
 
-                BlackboardView?.SetVisualGraph(visualGraph);
+                //BlackboardView?.SetVisualGraph(visualGraph);
 
                 searchWindow = ScriptableObject.CreateInstance<VisualGraphSearchWindow>();
                 searchWindow.Configure(editorWindow, this);
