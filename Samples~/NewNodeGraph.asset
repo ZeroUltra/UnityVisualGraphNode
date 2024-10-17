@@ -403,7 +403,7 @@ MonoBehaviour:
   - rid: 7444217456618373121
   internal_guid: 05478f7f-bf4f-4482-89da-d6d197b4ebf7
   editor_ActiveNode: 0
-  position: {x: 29.775087, y: 150.40002}
+  position: {x: -28, y: 150.4}
   references:
     version: 2
     RefIds:

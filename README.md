@@ -75,21 +75,7 @@ public class NodeWait : NodeBase
 
 
 
-**由于UIElements修改,请注意版本问题**
-
-测试使用的是Unity2021.3.x版本,当使用Unity2022.3时,如遇到提示升级是点yes
-
- ![image-20241016152350435](https://raw.githubusercontent.com/ZeroUltra/MediaLibrary/main/Imgs/202410161523092.png)
-
-具体修改的代码如下内容:
-
-```c#
- Vector4BlackboardProperty localProperty = (Vector4BlackboardProperty)property;
- CreatePropertyField<Vector4, UnityEditor.UIElements.Vector4Field>(field, localProperty);
-//修改后
- Vector4BlackboardProperty localProperty = (Vector4BlackboardProperty)property;
- CreatePropertyField<Vector4, UnityEngine.UIElements.Vector4Field>(field, localProperty); //命名空间变化
-```
+测试使用的是Unity2021.3.x 2022.3.x版本
 
 如果有其他版本问题,请提交issue
 
