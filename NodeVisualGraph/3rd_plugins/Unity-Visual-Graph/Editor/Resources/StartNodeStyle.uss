@@ -1,12 +1,56 @@
-/* Add a round border to all nodes */
-/*开始节点Style*/
 .VisualGraphNode {
-    border-radius: 10;
-    background-color: rgba(255, 0, 0, 1);
+    border-radius: 8;
+   /* width:250;  /*可以调节Node宽度*/
+   background-color: #FF0000;
 }
 
 
-/* Change the background color of the title section */
+:selected > #selection-border
+{
+       border-bottom-color: rgba(243, 161, 22, 1);
+       border-left-color: rgba(243, 161, 22, 1);
+       border-right-color: rgba(243, 161, 22, 1);
+       border-top-color: rgba(243, 161, 22, 1);
+
+        border-bottom-width: 3;
+        border-left-width: 3;
+        border-right-width: 3;
+        border-top-width: 3;
+}
+
+:selected:hover > #selection-border
+{
+       border-bottom-color: rgba(243, 161, 22, 1);
+       border-left-color: rgba(243, 161, 22, 1);
+       border-right-color: rgba(243, 161, 22, 1);
+       border-top-color: rgba(243, 161, 22, 1);
+
+        border-bottom-width: 3;
+        border-left-width: 3;
+        border-right-width: 3;
+        border-top-width: 3;
+}
+
+:hover > #selection-border
+{
+       border-bottom-color: rgba(243, 161, 22, 1);
+       border-left-color: rgba(243, 161, 22, 1);
+       border-right-color: rgba(243, 161, 22, 1);
+       border-top-color: rgba(243, 161, 22, 1);
+
+        border-bottom-width: 3;
+        border-left-width: 3;
+        border-right-width: 3;
+        border-top-width: 3;
+}
+
 #title {
-    background-color: rgba(1, 0, 0, 1);
+    background-color: #000000;
 }
+#title-label
+{
+    color:#FFFFFF
+    font-size:18;
+    -unity-font-style: bold-and-italic;
+}
+

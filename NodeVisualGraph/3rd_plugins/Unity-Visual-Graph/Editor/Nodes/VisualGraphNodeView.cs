@@ -31,13 +31,16 @@ namespace VisualGraphInEditor
         public override void OnSelected()
         {
             base.OnSelected();
-            if (Application.isPlaying)
+            if (!(this is VisualGraphStartNodeView))
             {
-                titleContainer.style.backgroundColor = new UnityEngine.UIElements.StyleColor(new Color32(0, 120, 0, 255));
-            }
-            else
-            {
-                titleContainer.style.backgroundColor = Color.black;
+                if (Application.isPlaying)
+                {
+                    titleContainer.style.backgroundColor = new UnityEngine.UIElements.StyleColor(new Color32(0, 120, 0, 255));
+                }
+                else
+                {
+                    titleContainer.style.backgroundColor = Color.black;
+                }
             }
         }
     }

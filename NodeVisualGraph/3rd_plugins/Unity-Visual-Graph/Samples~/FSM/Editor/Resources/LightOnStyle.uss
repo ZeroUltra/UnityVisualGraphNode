@@ -1,8 +1,0 @@
-﻿#title {
-    color: rgba(0, 0, 0, 1);
-    background-color: rgba(196, 196, 196, 1);
-}
-
-#title-label {
-    color: rgba(0, 0, 0, 1);
-}
