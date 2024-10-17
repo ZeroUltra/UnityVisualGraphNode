@@ -10,5 +10,13 @@ namespace NodeGraphView
     [CustomNodeStyle("NodeStyle")]
     public abstract class NodeBase : VisualGraphNode
     {
+        public virtual string ToSerialize()
+        {
+            return null;
+        }
+        public virtual void FromSerialize(string str)
+        { 
+            
+        }
     }
 }

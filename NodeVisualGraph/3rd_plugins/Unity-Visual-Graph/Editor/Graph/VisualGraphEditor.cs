@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using VisualGraphRuntime;
 using NodeGraphView;
-
+using System.Text;
 namespace VisualGraphInEditor
 {
     public sealed class VisualGraphEditor : EditorWindow
@@ -22,10 +22,9 @@ namespace VisualGraphInEditor
         private VisualGraph visualGraph;
         public UnityEngine.Object objectSelection; // Used for enter/exit playmode
 
-        private float scale;
-        private Vector3 pos;
+        private float scale=1;
+        private Vector3 pos = Vector3.zero;
 
-        public static VisualGraphView visualGraphView;
 
 
         /// <summary>
@@ -54,25 +53,19 @@ namespace VisualGraphInEditor
             };
             graphView.StretchToParentSize();
             graphView.SetGraph(visualGraph);
-            //graphView.UpdateViewTransform(pos, Vector3.one * scale);
+            graphView.UpdateViewTransform(pos, Vector3.one * scale);
             rootVisualElement.Add(graphView);
 
             // Add Toolbar to Window
             graphView.CreateMinimap(this.position.width);
-            WaitUpdateView();
+            GenerateToolbar();
+            //WaitUpdateView();
             //黑板
             //graphView.CreateBlackboard();
 
             EditorApplication.playModeStateChanged += OnPlayModeState;
             NodeProcesser.OnChangeNodeEvent += OnChangeNodeEvent;
-            visualGraphView = graphView;
-            visualGraphView.OnEnable();
-        }
-        //生成Toolbar
-        async void WaitUpdateView()
-        {
-            await System.Threading.Tasks.Task.Delay(50);
-            GenerateToolbar();
+            graphView.OnEnable();
         }
 
         //运行时显示
@@ -91,8 +84,7 @@ namespace VisualGraphInEditor
             pos = graphView.contentViewContainer.transform.position;
             EditorApplication.playModeStateChanged -= OnPlayModeState;
             NodeProcesser.OnChangeNodeEvent -= OnChangeNodeEvent;
-            visualGraphView.OnDisable();
-            visualGraphView = null;
+            graphView.OnDisable();
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
         }
@@ -140,7 +132,6 @@ namespace VisualGraphInEditor
                 titleContent = new GUIContent(visualGraph.name);
             }
             graphView.SetGraph(visualGraph);
-            //GenerateToolbar();
         }
 
         /// <summary>
@@ -169,7 +160,32 @@ namespace VisualGraphInEditor
                 {
                     graphView.Grid.visible = evt.newValue;
                 });
+            //序列化保存
             toolbar.Add(tog);
+
+            Button btnSave = new Button();
+            btnSave.text = "Serialize And Save";
+            btnSave.RegisterCallback<ClickEvent>((evt) =>
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var node in visualGraph.Nodes)
+                {
+                    if (node is NodeBase nodeBase)
+                    {
+                        string code = nodeBase.ToSerialize();
+                        if (!string.IsNullOrEmpty(code))
+                        {
+                            sb.AppendLine(code);
+                        }
+                    }
+                }
+                string selePath = EditorUtility.SaveFilePanel(btnSave.text, Application.dataPath, visualGraph.name, null);
+                if (string.IsNullOrEmpty(selePath) == false)
+                {
+                    System.IO.File.WriteAllText(selePath, sb.ToString());
+                }
+            });
+            toolbar.Add(btnSave);
 
             #region MyRegion
             //黑板
@@ -226,7 +242,6 @@ namespace VisualGraphInEditor
 
             rootVisualElement.Add(toolbar);
         }
-        private float posX = 0;
         /// <summary>
         /// When the GUI changes update the view (this positions the blackboard and minimap)
         /// </summary>

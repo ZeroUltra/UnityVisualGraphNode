@@ -17,7 +17,7 @@ MonoBehaviour:
   - rid: 7444217456618373137
   internal_guid: be6593b2-652e-46bd-acba-f1d62cbcadd1
   editor_ActiveNode: 0
-  position: {x: 1477.6001, y: 264.80002}
+  position: {x: 1456.4109, y: 167.2}
   AudioClip: {fileID: 8300000, guid: 8accadd69dd5fd641a66ceef7bc97a5f, type: 3}
   references:
     version: 2
@@ -63,7 +63,7 @@ MonoBehaviour:
   - rid: 7444217456618373135
   internal_guid: 902d4331-deb2-46e3-a69f-9092e0617c5f
   editor_ActiveNode: 0
-  position: {x: 1135.2001, y: 486.4}
+  position: {x: 1116.6345, y: 320.8}
   Text: "\u9009\u4E2DC"
   references:
     version: 2
@@ -88,6 +88,48 @@ MonoBehaviour:
         Connections:
         - node_guid: be6593b2-652e-46bd-acba-f1d62cbcadd1
           port_guid: bc4cc09c-201e-4a45-823b-f0550f5120d2
+--- !u!114 &-6921577148022277561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28456a7ef5e4ae34c90475fbf5f81a5f, type: 3}
+  m_Name: Node Text
+  m_EditorClassIdentifier: 
+  Ports:
+  - rid: 7444217477117771776
+  - rid: 7444217477117771777
+  internal_guid: fb6f12f4-0295-4340-898b-1b48d7d80499
+  editor_ActiveNode: 0
+  position: {x: 2042.74, y: 169.6}
+  Text: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 7444217477117771776
+      type: {class: VisualGraphPort, ns: VisualGraphRuntime, asm: VisualGraphNode}
+      data:
+        Name: Input
+        Direction: 0
+        CanBeRemoved: 0
+        guid: b0809060-2ac7-4591-8717-7be854bc5101
+        Connections:
+        - node_guid: 3f5f9404-c734-4060-ac92-902e41c699ca
+          port_guid: 799f7429-ff75-46e3-9da9-3b64a7402cad
+    - rid: 7444217477117771777
+      type: {class: VisualGraphPort, ns: VisualGraphRuntime, asm: VisualGraphNode}
+      data:
+        Name: Exit
+        Direction: 1
+        CanBeRemoved: 0
+        guid: 9d4dcd3a-06f2-4b75-b0a3-926279291ee9
+        Connections:
+        - node_guid: df783bac-38dc-4bc9-b491-b079f5f38b5f
+          port_guid: 1eea904a-964c-4819-8717-7249f9871f50
 --- !u!114 &-4603205672510157629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +172,7 @@ MonoBehaviour:
         Connections:
         - node_guid: de81e221-b8fa-4abb-a589-60a7c9dfdf0c
           port_guid: 27660639-7df8-4a0b-b9e5-ac6805c95052
---- !u!114 &-4341858296429995080
+--- !u!114 &-4367185788414214114
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,27 +181,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab1a97d5202a444e8453e19685c2fda, type: 3}
-  m_Name: Node End
+  m_Script: {fileID: 11500000, guid: 0957b3f692bdb7d46b3a6d94571a738c, type: 3}
+  m_Name: Node Menu
   m_EditorClassIdentifier: 
   Ports:
-  - rid: 7444217456618373140
-  internal_guid: c1b584b3-98a6-44eb-a5ee-a56de6abb4e4
+  - rid: 7444217477117771779
+  - rid: 7444217477117771780
+  internal_guid: df783bac-38dc-4bc9-b491-b079f5f38b5f
   editor_ActiveNode: 0
-  position: {x: 2087.2, y: 377.59998}
+  position: {x: 2352.804, y: 169.59999}
   references:
     version: 2
     RefIds:
-    - rid: 7444217456618373140
+    - rid: 7444217477117771779
       type: {class: VisualGraphPort, ns: VisualGraphRuntime, asm: VisualGraphNode}
       data:
         Name: Input
         Direction: 0
         CanBeRemoved: 0
-        guid: 06018266-44b4-46f4-b5d8-476a29a4c58d
+        guid: 1eea904a-964c-4819-8717-7249f9871f50
         Connections:
-        - node_guid: 3f5f9404-c734-4060-ac92-902e41c699ca
-          port_guid: 799f7429-ff75-46e3-9da9-3b64a7402cad
+        - node_guid: fb6f12f4-0295-4340-898b-1b48d7d80499
+          port_guid: 9d4dcd3a-06f2-4b75-b0a3-926279291ee9
+    - rid: 7444217477117771780
+      type: {class: VisualGraphPort, ns: VisualGraphRuntime, asm: VisualGraphNode}
+      data:
+        Name: Exit
+        Direction: 1
+        CanBeRemoved: 1
+        guid: 1c54562a-1680-4c9f-b8fc-4270c0cfb7bd
+        Connections:
+        - node_guid: ec33b36a-e257-4276-bdf4-25d34485b8d7
+          port_guid: a6eaa62b-f44f-48ea-9526-bdcd40f48913
 --- !u!114 &-389907559322533037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,7 +232,7 @@ MonoBehaviour:
   - rid: 7444217456618373129
   internal_guid: ce16f4fc-766c-430e-87b2-55f497648c05
   editor_ActiveNode: 0
-  position: {x: 832.80005, y: 229.59999}
+  position: {x: 748.6119, y: 150.39998}
   references:
     version: 2
     RefIds:
@@ -246,7 +299,9 @@ MonoBehaviour:
   - {fileID: -8772123858757409442}
   - {fileID: -8896761871691977526}
   - {fileID: 5271946113799178876}
-  - {fileID: -4341858296429995080}
+  - {fileID: -6921577148022277561}
+  - {fileID: -4367185788414214114}
+  - {fileID: 4922555793749318071}
   BlackboardProperties: []
 --- !u!114 &2808071929947371704
 MonoBehaviour:
@@ -265,7 +320,7 @@ MonoBehaviour:
   - rid: 7444217456618373131
   internal_guid: b7e6b4f7-c0f7-4a94-bfa8-79e41edc8672
   editor_ActiveNode: 0
-  position: {x: 1124, y: 168.00005}
+  position: {x: 1116.6345, y: 31.999996}
   Text: "\u9009\u4E2DA"
   references:
     version: 2
@@ -307,7 +362,7 @@ MonoBehaviour:
   - rid: 7444217456618373125
   internal_guid: de81e221-b8fa-4abb-a589-60a7c9dfdf0c
   editor_ActiveNode: 0
-  position: {x: 492.80002, y: 168}
+  position: {x: 464.28006, y: 150.4}
   waitDuration: 1
   references:
     version: 2
@@ -348,7 +403,7 @@ MonoBehaviour:
   - rid: 7444217456618373121
   internal_guid: 05478f7f-bf4f-4482-89da-d6d197b4ebf7
   editor_ActiveNode: 0
-  position: {x: 30, y: 150}
+  position: {x: 29.775087, y: 150.40002}
   references:
     version: 2
     RefIds:
@@ -362,6 +417,46 @@ MonoBehaviour:
         Connections:
         - node_guid: 91507c46-acc2-4485-a9ca-77bfdb3f30bf
           port_guid: dec12786-ccd3-454e-b778-18d1d656338d
+--- !u!114 &4922555793749318071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad384a5afaa3c3d498745891a476f466, type: 3}
+  m_Name: Node Wait
+  m_EditorClassIdentifier: 
+  Ports:
+  - rid: 7444217477117771781
+  - rid: 7444217477117771782
+  internal_guid: ec33b36a-e257-4276-bdf4-25d34485b8d7
+  editor_ActiveNode: 0
+  position: {x: 2643.204, y: 167.2}
+  waitDuration: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 7444217477117771781
+      type: {class: VisualGraphPort, ns: VisualGraphRuntime, asm: VisualGraphNode}
+      data:
+        Name: Input
+        Direction: 0
+        CanBeRemoved: 0
+        guid: a6eaa62b-f44f-48ea-9526-bdcd40f48913
+        Connections:
+        - node_guid: df783bac-38dc-4bc9-b491-b079f5f38b5f
+          port_guid: 1c54562a-1680-4c9f-b8fc-4270c0cfb7bd
+    - rid: 7444217477117771782
+      type: {class: VisualGraphPort, ns: VisualGraphRuntime, asm: VisualGraphNode}
+      data:
+        Name: Exit
+        Direction: 1
+        CanBeRemoved: 0
+        guid: 69fd6e77-5bd5-4b10-b090-37cebec6d0fc
+        Connections: []
 --- !u!114 &5271946113799178876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +474,7 @@ MonoBehaviour:
   - rid: 7444217456618373139
   internal_guid: 3f5f9404-c734-4060-ac92-902e41c699ca
   editor_ActiveNode: 0
-  position: {x: 1804.8, y: 300}
+  position: {x: 1736.207, y: 167.2}
   waitDuration: 10
   references:
     version: 2
@@ -402,8 +497,8 @@ MonoBehaviour:
         CanBeRemoved: 0
         guid: 799f7429-ff75-46e3-9da9-3b64a7402cad
         Connections:
-        - node_guid: c1b584b3-98a6-44eb-a5ee-a56de6abb4e4
-          port_guid: 06018266-44b4-46f4-b5d8-476a29a4c58d
+        - node_guid: fb6f12f4-0295-4340-898b-1b48d7d80499
+          port_guid: b0809060-2ac7-4591-8717-7be854bc5101
 --- !u!114 &5771658120017345223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,7 +516,7 @@ MonoBehaviour:
   - rid: 7444217456618373133
   internal_guid: 079350fe-6c12-4447-aac2-0b621cf9c8f4
   editor_ActiveNode: 0
-  position: {x: 1148, y: 303.19998}
+  position: {x: 1115.8345, y: 167.19998}
   Text: "\u9009\u4E2DB"
   references:
     version: 2

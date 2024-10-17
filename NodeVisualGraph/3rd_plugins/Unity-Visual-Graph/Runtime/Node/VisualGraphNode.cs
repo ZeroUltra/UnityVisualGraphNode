@@ -158,12 +158,7 @@ namespace VisualGraphRuntime
         /// <returns></returns>
         public VisualGraphPort GetOutpotPortWithIndex(int index)
         {
-            if (Outputs.Count() > 0)
-            {
-                var ports = Outputs.ToList();
-                return ports[index];
-            }
-            return null;
+            return Outputs.ElementAtOrDefault(index);
         }
 
       
