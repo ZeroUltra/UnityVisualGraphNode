@@ -75,7 +75,7 @@ public class NodeWait : NodeBase
 
 
 
-测试使用的是Unity2021.3.x 2022.3.x版本
+测试使用的是**Unity2021.3.x 2022.3.x**版本
 
 如果有其他版本问题,请提交issue
 
