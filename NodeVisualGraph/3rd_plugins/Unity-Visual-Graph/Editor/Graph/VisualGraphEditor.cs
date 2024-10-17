@@ -142,7 +142,9 @@ namespace VisualGraphInEditor
             var toolbar = new Toolbar();
 
             //显示minimap
-            Toggle minimap_toggle = new Toggle();
+            ToolbarToggle minimap_toggle = new ToolbarToggle();
+
+            //Toggle minimap_toggle = new Toggle();
             minimap_toggle.text = "Show MiniMap";
             minimap_toggle.SetValueWithoutNotify(false);
             minimap_toggle.RegisterCallback<ChangeEvent<bool>>(
@@ -154,7 +156,8 @@ namespace VisualGraphInEditor
             toolbar.Add(minimap_toggle);
 
             //显示网格
-            Toggle tog = new Toggle();
+            ToolbarToggle tog = new ToolbarToggle();
+           // Toggle tog = new Toggle();
             tog.text = "Show Grid";
             tog.SetValueWithoutNotify(false);
             tog.RegisterCallback<ChangeEvent<bool>>(
@@ -165,15 +168,16 @@ namespace VisualGraphInEditor
             toolbar.Add(tog);
 
             //序列化保存
-            Button btnSave = new Button();
+            ToolbarButton btnSave = new ToolbarButton();
+           // Button btnSave = new Button();
             btnSave.text = "Serialize And Save";
             btnSave.style.width = 135;
             btnSave.style.unityTextAlign = TextAnchor.MiddleRight;
             Image icon=new Image();
             icon.image = EditorGUIUtility.IconContent("d_SaveAs").image;
             icon.style.paddingRight = 105;
+            icon.style.paddingTop = 1;
             btnSave.Add(icon);
-
             btnSave.RegisterCallback<ClickEvent>((evt) =>
             {
                 StringBuilder sb = new StringBuilder();
