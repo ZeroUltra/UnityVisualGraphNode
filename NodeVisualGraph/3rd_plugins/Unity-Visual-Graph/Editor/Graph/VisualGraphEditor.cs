@@ -22,7 +22,7 @@ namespace VisualGraphInEditor
         private VisualGraph visualGraph;
         public UnityEngine.Object objectSelection; // Used for enter/exit playmode
 
-        private float scale=1;
+        private float scale = 1;
         private Vector3 pos = Vector3.zero;
 
 
@@ -129,7 +129,7 @@ namespace VisualGraphInEditor
             }
             else
             {
-                titleContent = new GUIContent(visualGraph.name);
+                titleContent = new GUIContent(visualGraph.name,EditorGUIUtility.IconContent("ScriptableObject Icon").image);
             }
             graphView.SetGraph(visualGraph);
         }
@@ -141,6 +141,7 @@ namespace VisualGraphInEditor
         {
             var toolbar = new Toolbar();
 
+            //显示minimap
             Toggle minimap_toggle = new Toggle();
             minimap_toggle.text = "Show MiniMap";
             minimap_toggle.SetValueWithoutNotify(false);
@@ -152,6 +153,7 @@ namespace VisualGraphInEditor
             );
             toolbar.Add(minimap_toggle);
 
+            //显示网格
             Toggle tog = new Toggle();
             tog.text = "Show Grid";
             tog.SetValueWithoutNotify(false);
@@ -160,11 +162,18 @@ namespace VisualGraphInEditor
                 {
                     graphView.Grid.visible = evt.newValue;
                 });
-            //序列化保存
             toolbar.Add(tog);
 
+            //序列化保存
             Button btnSave = new Button();
             btnSave.text = "Serialize And Save";
+            btnSave.style.width = 135;
+            btnSave.style.unityTextAlign = TextAnchor.MiddleRight;
+            Image icon=new Image();
+            icon.image = EditorGUIUtility.IconContent("d_SaveAs").image;
+            icon.style.paddingRight = 105;
+            btnSave.Add(icon);
+
             btnSave.RegisterCallback<ClickEvent>((evt) =>
             {
                 StringBuilder sb = new StringBuilder();
