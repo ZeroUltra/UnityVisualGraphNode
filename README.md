@@ -13,8 +13,8 @@
 1. 新建脚本继承`NodeBase`即可(可直接使用 Project试图中鼠标右键点击->Create->Visual Node C# Script)
 
     ```c#
+    using VisualGraphNodeSystem;
     using VisualGraphRuntime;
-    using NodeGraphView;
     
     //节点名字 排序(超过10中间会有横线) 图标名字(unity中内置图标名字))
     [NodeName("node示例", 1, iconName = "d_ContentSizeFitter Icon")]
@@ -34,7 +34,7 @@
 ```c#
 using VisualGraphRuntime;
 using UnityEngine;
-using NodeGraphView;
+using VisualGraphNodeSystem;
 [NodeName("NodeWait")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
 public class NodeWait : NodeBase

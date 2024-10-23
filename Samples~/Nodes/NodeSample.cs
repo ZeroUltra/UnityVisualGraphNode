@@ -1,5 +1,5 @@
 using VisualGraphRuntime;
-using NodeGraphView;
+using VisualGraphNodeSystem;
 
 //节点名字 排序(超过10中间会有横线 图标名字(unity中内置图标名字))
 [NodeName("node示例", 1, iconName = "d_ContentSizeFitter Icon")]

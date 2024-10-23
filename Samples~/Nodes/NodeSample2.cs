@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VisualGraphRuntime;
-using NodeGraphView;
+using VisualGraphNodeSystem;
 
 [NodeName("node示例2", 11, iconName = "UnityLogo")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.None)]

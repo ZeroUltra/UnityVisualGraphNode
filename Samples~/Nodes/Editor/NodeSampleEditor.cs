@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using VisualGraphInEditor;
 using VisualGraphRuntime;
 
+
 //使用UIElements自行绘制
 [CustomNodeView((typeof(NodeSample)))]
 public class NodeSampleEditor : VisualGraphNodeView
@@ -18,7 +19,7 @@ public class NodeSampleEditor : VisualGraphNodeView
 
     private NodeSample nodeSample;
 
-    public override void InitNode(VisualGraphNode graphNode)
+    public override void InitNode(VisualGraphRuntime.VisualGraphNode graphNode)
     {
         base.InitNode(graphNode);
         nodeSample = this.node as NodeSample;

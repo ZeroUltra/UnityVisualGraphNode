@@ -1,6 +1,6 @@
 using VisualGraphRuntime;
 using UnityEngine;
-using NodeGraphView;
+using VisualGraphNodeSystem;
 [NodeName("NodeWait")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
 public class NodeWait : NodeBase
