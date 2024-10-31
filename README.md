@@ -79,16 +79,6 @@ public class NodeWait : NodeBase
 
 如果有其他版本问题,请提交issue
 
-## 其他
-
-[Unity-Visual-Graph-Editor](https://github.com/BusStopStudios/Unity-Visual-Graph-Editor)
-
-基于上面这个repo进行了修改
-
-使用的第三方插件:
-
-[dbrizov/NaughtyAttributes: Attribute Extensions for Unity (github.com)](https://github.com/dbrizov/NaughtyAttributes)
-
 ## ChangeLog
 
 #### v1.0.2
@@ -104,3 +94,13 @@ public class NodeWait : NodeBase
 #### v1.0.0
 
 提交1.0包
+
+## 其他
+
+[Unity-Visual-Graph-Editor](https://github.com/BusStopStudios/Unity-Visual-Graph-Editor)
+
+基于上面这个repo进行了修改
+
+使用的第三方插件:
+
+[dbrizov/NaughtyAttributes: Attribute Extensions for Unity (github.com)](https://github.com/dbrizov/NaughtyAttributes)
