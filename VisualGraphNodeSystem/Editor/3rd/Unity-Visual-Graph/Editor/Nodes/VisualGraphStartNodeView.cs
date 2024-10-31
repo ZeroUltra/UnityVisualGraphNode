@@ -17,5 +17,9 @@ namespace VisualGraphInEditor
             capabilities &= ~UnityEditor.Experimental.GraphView.Capabilities.Deletable;
             return capabilities;
         }
+        public override void DrawNode()
+        {
+            //base.DrawNode();
+        }
     }
 }

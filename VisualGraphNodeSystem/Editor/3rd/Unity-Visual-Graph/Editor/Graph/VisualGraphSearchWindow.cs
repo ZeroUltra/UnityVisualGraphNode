@@ -22,7 +22,7 @@ namespace VisualGraphInEditor
         //private Texture2D indentationIcon;
         private Texture2D lineTexture2d;
 
-       // private Dictionary<Type, Texture2D> dictTexture2D;
+        // private Dictionary<Type, Texture2D> dictTexture2D;
 
         public void Configure(EditorWindow window, VisualGraphView graphView)
         {
@@ -113,22 +113,24 @@ namespace VisualGraphInEditor
                 return o;
             });
 
-            int lastOrderIndex = -10000;
+            int lastOrderIndex = int.MinValue;
             int index = 0;
             foreach (var item in listMenu)
             {
-                if (lastOrderIndex != -10000 && item.orderID - lastOrderIndex >= 10)//超过10 加一个横线
+                if (lastOrderIndex != int.MinValue && item.orderID - lastOrderIndex >= 10)//超过10 加一个横线
                     tree.Add(new SearchTreeEntry(new GUIContent("——————————————————————————————————————————", lineTexture2d))
                     {
                         level = 1
                     });
                 index++;
-                //var treeEntry = new SearchTreeEntry(new GUIContent(item.disName,EditorGUIUtility.IconContent("console.infoicon").image as Texture2D));
                 var treeEntry = new SearchTreeEntry(GUIContent.none);
                 treeEntry.level = 1;
                 treeEntry.userData = item.Node;
-                string texName= string.IsNullOrEmpty(item.iconName) ? "ArrowNavigationRight" : item.iconName;
-                treeEntry.content = new GUIContent(item.disName, EditorGUIUtility.IconContent(texName).image);
+                var tex = EditorGUIUtility.IconContent(string.IsNullOrEmpty(item.iconName) ? "ArrowNavigationRight" : item.iconName).image;
+                if (tex != null)
+                    treeEntry.content = new GUIContent(item.disName, tex);
+                else 
+                    treeEntry.content = new GUIContent(item.disName);
                 tree.Add(treeEntry);
                 lastOrderIndex = item.orderID;
             }

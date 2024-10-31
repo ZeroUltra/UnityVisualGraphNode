@@ -10,6 +10,6 @@ namespace VisualGraphNodeSystem
     [DefaultNodeType(typeof(NodeBase))]
     public class NodeGraphBase : VisualGraph
     {
-       
+ 
     }
 }

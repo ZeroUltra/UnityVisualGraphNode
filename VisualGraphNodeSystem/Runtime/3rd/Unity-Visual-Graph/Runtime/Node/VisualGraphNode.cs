@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Reflection;
+using VisualGraphNodeSystem;
 
 namespace VisualGraphRuntime
 {
@@ -33,34 +34,45 @@ namespace VisualGraphRuntime
         public IEnumerable<VisualGraphPort> Outputs { get { foreach (VisualGraphPort port in Ports) { if (port.Direction == VisualGraphPort.PortDirection.Output) yield return port; } } }
 
 
-        [HideInInspector] [NonSerialized] public VisualGraph graph;
+        [HideInInspector][NonSerialized] public VisualGraph graph;
 
-
+        public int NodeIndex => graph.Nodes.IndexOf(this);
         /// <summary>
         /// Get the guid for the Node
         /// </summary>
-        public string guid { get { return internal_guid; } }
-
+        public string guid
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(internal_guid))
+                    internal_guid = Guid.NewGuid().ToString();
+                return internal_guid;
+            }
+        }
+        [HideInNormalInspector]
+        public int NodeID;
+        [HideInNormalInspector]
+        public string NodeDescription;
         /// <summary>
         /// List of all ports that belong to this node (ports can be either in or out
         /// </summary>
-        [HideInInspector] [SerializeReference] public List<VisualGraphPort> Ports = new List<VisualGraphPort>();
+        [HideInInspector][SerializeReference] public List<VisualGraphPort> Ports = new List<VisualGraphPort>();
 
         /// <summary>
         /// All Nodes have a guid for references
         /// </summary>
-        [HideInInspector] [SerializeField] private string internal_guid;
+        [HideInInspector][SerializeField] private string internal_guid;
 
-        /// <summary>
-        /// Node Setup
-        /// </summary>
-        private void OnEnable()
-        {
-            if (string.IsNullOrEmpty(internal_guid))
-            {
-                internal_guid = Guid.NewGuid().ToString();
-            }
-        }
+        ///// <summary>
+        ///// Node Setup
+        ///// </summary>
+        //private void OnEnable()
+        //{
+        //    if (string.IsNullOrEmpty(internal_guid))
+        //    {
+        //        internal_guid = Guid.NewGuid().ToString();
+        //    }
+        //}
 
         /// <summary>
         /// Called when created. Use this to add required ports and additional setup
@@ -140,7 +152,7 @@ namespace VisualGraphRuntime
 #if UNITY_EDITOR
         #region Graph View Editor Values
         [HideInInspector] public Vector2 position;
-        [HideInInspector] [NonSerialized] public object graphElement;
+        [HideInInspector][NonSerialized] public object graphElement;
         #endregion
 
         public virtual System.Type InputType => typeof(bool);
@@ -161,7 +173,7 @@ namespace VisualGraphRuntime
             return Outputs.ElementAtOrDefault(index);
         }
 
-      
+
 
         #endregion
     }

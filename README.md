@@ -16,8 +16,8 @@
     using VisualGraphNodeSystem;
     using VisualGraphRuntime;
     
-    //节点名字 排序(超过10中间会有横线) 图标名字(unity中内置图标名字))
-    [NodeName("node示例", 1, iconName = "d_ContentSizeFitter Icon")]
+    //节点名字 order:排序(超过10中间会有横线) iconName:图标名字(unity中内置图标名字)  titleBgColorString:标题背景颜色
+    [NodeName("node示例", order=1, iconName = "d_ContentSizeFitter Icon"),titleBgColorString="#ffffff"]
     //输入输出端口类型 (输入输出端口数量)
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
     public class NodeSample : NodeBase
@@ -90,6 +90,11 @@ public class NodeWait : NodeBase
 [dbrizov/NaughtyAttributes: Attribute Extensions for Unity (github.com)](https://github.com/dbrizov/NaughtyAttributes)
 
 ## ChangeLog
+
+#### v1.0.2
+
+* [NodeName] 属性增加 titleBgColorString选项,可自定义标题背景颜色
+* 在设置面板中增加默认标题背景色以及是否显示索引选项
 
 #### v1.0.1
 

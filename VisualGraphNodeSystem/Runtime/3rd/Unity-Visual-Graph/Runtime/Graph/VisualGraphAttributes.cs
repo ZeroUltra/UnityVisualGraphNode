@@ -4,7 +4,7 @@
 // Copyright (c) Bus Stop Studios.
 ///-------------------------------------------------------------------------------------------------
 using System;
-
+using UnityEngine;
 namespace VisualGraphRuntime
 {
     /// <summary>
@@ -16,25 +16,30 @@ namespace VisualGraphRuntime
         public string name;
         public int orderID;
         public string iconName;
-
-        public NodeNameAttribute(string _name)
-        {
-            name = _name;
-        }
+        public Color titleBgColor = default;
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="_name"></param>
-        public NodeNameAttribute(string _name, int _order = 0)
+        /// <param name="name">节点名</param>
+        /// <param name="order">节点排序</param>
+        /// <param name="iconName">节点图标名 必须是untiy内置图标</param>
+        /// <param name="titleBgColorString">标题背景颜色 格式为 #FFFFFFFF</param>
+        public NodeNameAttribute(string name, int order = 0, string iconName = null, string titleBgColorString = null)
         {
-            name = _name;
-            this.orderID = _order;
-        }
-        public NodeNameAttribute(string _name, int _order = 0, string iconname = null)
-        {
-            name = _name;
-            this.orderID = _order;
-            this.iconName = iconname;
+            this.name = name;
+            this.orderID = order;
+            this.iconName = iconName;
+            if (!string.IsNullOrEmpty(titleBgColorString))
+            {
+                if (!ColorUtility.TryParseHtmlString(titleBgColorString, out Color color))
+                {
+                    Debug.LogError($"Converted color error: [{titleBgColorString}]");
+                }
+                else
+                {
+                    titleBgColor = color;
+                }
+            }
         }
     }
 

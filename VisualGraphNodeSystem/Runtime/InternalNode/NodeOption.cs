@@ -6,10 +6,11 @@ using System.Linq;
 
 namespace VisualGraphNodeSystem
 {
-    [NodeName("选项面板", -11)]
+    [NodeName("选项面板", 1000,iconName= "listview on")]
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Multiple)]
-    public class NodeMenu : NodeBase
+    public class NodeOption: NodeBase
     {
+        
         public string[] Options()
         { 
             return Outputs.Select(x => x.Name).ToArray();

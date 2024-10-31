@@ -4,15 +4,18 @@ using UnityEngine;
 using VisualGraphRuntime;
 namespace VisualGraphNodeSystem
 {
-    public class NodeProcesser : MonoBehaviour
+    public class NodeProcesser
     {
-        public static event System.Action< NodeBase> OnChangeNodeEvent;
-        public NodeGraphBase targetNodeGraph;
-        public NodeBase InitProcesser()
+        public static event System.Action<NodeBase> OnChangeNodeEvent;
+        public NodeGraphBase TargetNodeGraph { get; private set; }
+        public NodeProcesser(NodeGraphBase targetNodeGraph)
         {
-           
+            this.TargetNodeGraph = targetNodeGraph;
             targetNodeGraph.InitializeGraph();
-            return targetNodeGraph.StartNode.GetOutpotPortWithIndex(0).GetConnectNode() as NodeBase;
+        }
+        public NodeBase GetFirstNode()
+        {
+            return TargetNodeGraph.StartNode.GetOutpotPortWithIndex(0).GetConnectNode() as NodeBase;
         }
 
         /// <summary>

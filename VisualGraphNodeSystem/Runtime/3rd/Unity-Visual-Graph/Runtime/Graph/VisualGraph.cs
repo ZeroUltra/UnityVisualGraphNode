@@ -168,7 +168,17 @@ namespace VisualGraphRuntime
 		/// <returns></returns>
 		public VisualGraphNode FindNodeByGuid(string guid)
 		{
-			return Nodes.Where(n => n.guid.Equals(guid) == true).FirstOrDefault();
+			//return Nodes.Where(n => n.guid.Equals(guid)).FirstOrDefault();
+			return Nodes.FirstOrDefault(n => n.guid == guid);
+		}
+
+		public VisualGraphNode FindNodeByID(int nodeID)
+		{
+			return Nodes.FirstOrDefault(n => n.NodeID == nodeID);
+		}
+		public VisualGraphNode FindNodeByIndex(int index)
+		{
+			return Nodes[index];
 		}
 
 		/// <summary>

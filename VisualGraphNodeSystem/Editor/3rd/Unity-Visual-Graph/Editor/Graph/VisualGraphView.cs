@@ -15,6 +15,10 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using Button = UnityEngine.UIElements.Button;
 using VisualGraphNodeSystem;
+using VisualGraphNodeSystem.Editor;
+using System.Reflection.Emit;
+using Label = UnityEngine.UIElements.Label;
+//using System.Reflection.Emit;
 namespace VisualGraphInEditor
 {
     /// <summary>
@@ -45,6 +49,7 @@ namespace VisualGraphInEditor
         public bool activeVisualGraph = false;
         private bool isMouseMove = false;
         private Vector2 mouseUpPos;
+        private Vector2 searchWindowSize = new Vector2(300, 500);
         public VisualGraphView(VisualGraphEditor editorWindow)
         {
             this.editorWindow = editorWindow;
@@ -232,7 +237,7 @@ namespace VisualGraphInEditor
             DeleteElements(nodes.ToList());
             DeleteElements(edges.ToList());
             activeVisualGraph = false;
-           // BlackboardView?.ClearBlackboard();
+            // BlackboardView?.ClearBlackboard();
 
             visualGraph = _visualGraph;
             if (visualGraph != null)
@@ -252,7 +257,10 @@ namespace VisualGraphInEditor
                 searchWindow.Configure(editorWindow, this);
                 nodeCreationRequest = context =>
                 {
-                    SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
+                    var windowContext = new SearchWindowContext(context.screenMousePosition, searchWindowSize.x, searchWindowSize.y);
+
+                    // 打开搜索窗口并设置自定义尺寸
+                    SearchWindow.Open(windowContext, searchWindow);
                 };
 
                 // If the graph doesn't have a start node it's probably the first time we opened it. This means
@@ -389,6 +397,70 @@ namespace VisualGraphInEditor
             VisualGraphNodeView node = Activator.CreateInstance(visualNodeType) as VisualGraphNodeView;
             node.AddToClassList("VisualGraphNode");
             node.title = GetGraphNodeName(graphNode.GetType());
+            //设置标题背景色
+            Color titleColor = GetGraphNodeTitleColor(graphNode.GetType());
+            if (titleColor != default)
+                node.titleContainer.style.backgroundColor = titleColor;
+            else
+                node.titleContainer.style.backgroundColor = NodeGraphSetting.Instance.DefaultNodeTitleBgColor;
+            //绘制id
+            if (!((graphNode is VisualGraphStartNode) || graphNode is NodeEnd))
+            {
+                IntegerField textField = new IntegerField();
+                textField.isDelayed = true;
+                textField.value = graphNode.NodeID;
+                textField.label = "ID=";
+                //修改文本样式
+                var labelText = textField.Q<Label>();
+                labelText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
+                labelText.style.fontSize = 11;
+                labelText.style.unityFontStyleAndWeight = FontStyle.Bold;
+                labelText.style.minWidth = 6;
+                labelText.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
+                labelText.style.justifyContent = Justify.Center;         // 居中显示
+                //修改输入框样式
+                var inputText = textField.Q("unity-text-input"); // 获取内部 input 部分
+                inputText.style.unityFontStyleAndWeight = FontStyle.Bold;
+                inputText.Q<TextElement>().style.fontSize = 14;
+                inputText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
+
+                textField.style.minWidth = 70;
+                textField.style.height = 20;
+                textField.style.marginTop = 4;
+                var temp = node.style.flexDirection;
+                textField.style.flexDirection = FlexDirection.Row;
+                textField.RegisterCallback<ChangeEvent<int>>(e =>
+                {
+                    //检测当前是否有重复的ID
+                    foreach (var otherNode in graphNode.graph.Nodes)
+                    {
+                        if (otherNode.NodeID == e.newValue && otherNode != graphNode)
+                        {
+                            Debug.LogError("重复 ID :" + e.newValue);
+                            e.StopImmediatePropagation();
+                            textField.SetValueWithoutNotify(graphNode.NodeID);
+                            return;
+                        }
+                    }
+                    graphNode.NodeID = e.newValue;
+                });
+                node.titleContainer.Add(textField);
+
+                if (NodeGraphSetting.Instance.ShowIndex)
+                {
+                    var labelindex = new Label("idx=" + graphNode.NodeIndex.ToString());
+                    labelindex.style.color = new StyleColor(new Color32(161, 211, 203, 255));
+                    labelindex.style.fontSize = 11;
+                    labelindex.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
+                    labelindex.style.justifyContent = Justify.Center;         // 居中显示
+                    labelindex.style.unityFontStyleAndWeight = FontStyle.Italic; // 加粗
+                    //labelindex.style.width = 30;
+                    node.style.flexDirection = FlexDirection.Row;
+                    node.titleContainer.Add(labelindex);
+                }
+                node.style.flexDirection = temp;
+            }
+
             node.userData = graphNode;
             node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -440,7 +512,7 @@ namespace VisualGraphInEditor
                 };
                 node.titleButtonContainer.Add(button);
             }
-
+            node.Q("collapse-button").style.display = DisplayStyle.None; //隐藏折叠按钮
             // Set the node capabilites. The default View node can be overriden
             node.capabilities = node.SetCapabilities(node.capabilities);
             node.style.width = node.default_size.x;
@@ -495,6 +567,15 @@ namespace VisualGraphInEditor
                 display_name = type.Name;
             }
             return display_name;
+        }
+        private Color GetGraphNodeTitleColor(Type type)
+        {
+            Color color = default;
+            if (type.GetCustomAttribute<NodeNameAttribute>() != null)
+            {
+                color = type.GetCustomAttribute<NodeNameAttribute>().titleBgColor;
+            }
+            return color;
         }
         #endregion
 
@@ -596,7 +677,18 @@ namespace VisualGraphInEditor
                 {
                     text = "X"
                 };
+                //deleteButton.style.marginRight = 50;
+                //deleteButton.style.marginRight = 30;
+
+                var textField = port.Q<TextField>();
+                //textField.style.width = 150;
+                textField.style.minWidth = 150;
+                textField.multiline = true;
+                textField.style.whiteSpace = WhiteSpace.Normal;
+                textField.style.alignContent = Align.Stretch;
+
                 port.Add(deleteButton);
+
             }
             port.AddManipulator(new EdgeConnector<Edge>(this));
 
@@ -853,7 +945,7 @@ namespace VisualGraphInEditor
                 //evt.menu.AppendAction("Create Node", OnContextMenuNodeCreate, DropdownMenuAction.AlwaysEnabled);
                 // evt.menu.AppendSeparator();
                 //OnContextMenuNodeCreate(evt.menu.);
-                SearchWindow.Open(new SearchWindowContext(mouseUpPos + editorWindow.position.position), searchWindow);
+                SearchWindow.Open(new SearchWindowContext(mouseUpPos + editorWindow.position.position, searchWindowSize.x, searchWindowSize.y), searchWindow);
             }
             // base.BuildContextualMenu(evt);
             //Debug.Log(evt.menu.MenuItems()[0].ToString());

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: NodeGraphSetting
   m_EditorClassIdentifier: 
   LabelWidth: 100
-  StyleSheets:
-  - {fileID: 7433441132597879392, guid: 395504a73e226784db46343d63158860, type: 3}
+  NodeDefaultSize: {x: 250, y: 120}
+  ShowIndex: 0
+  DefaultNodeTitleBgColor: {r: 0, g: 0, b: 0, a: 1}

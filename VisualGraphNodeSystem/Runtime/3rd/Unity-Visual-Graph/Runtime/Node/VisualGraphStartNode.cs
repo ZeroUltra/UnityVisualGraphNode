@@ -10,7 +10,7 @@ namespace VisualGraphRuntime
 	/// Possible future development will remove this and give the option to create one.
 	/// </summary>
 	[NodePortAggregate(NodePortAggregateAttribute.PortAggregate.None, NodePortAggregateAttribute.PortAggregate.Single)]
-	[NodeName(_name: "Start")]
+	[NodeName(name: "Start")]
 	[CustomNodeStyle("StartNodeStyle")]
 	public sealed class VisualGraphStartNode : VisualGraphNode
 	{
