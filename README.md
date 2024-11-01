@@ -16,6 +16,7 @@
     using VisualGraphNodeSystem;
     using VisualGraphRuntime;
     
+    //不添加NodeName特性则为脚本默认名
     //节点名字 order:排序(超过10中间会有横线) iconName:图标名字(unity中内置图标名字)  titleBgColorString:标题背景颜色
     [NodeName("node示例", order=1, iconName = "d_ContentSizeFitter Icon"),titleBgColorString="#ffffff"]
     //输入输出端口类型 (输入输出端口数量)

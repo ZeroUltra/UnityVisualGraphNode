@@ -16,9 +16,7 @@ using UnityEditor.UIElements;
 using Button = UnityEngine.UIElements.Button;
 using VisualGraphNodeSystem;
 using VisualGraphNodeSystem.Editor;
-using System.Reflection.Emit;
 using Label = UnityEngine.UIElements.Label;
-//using System.Reflection.Emit;
 namespace VisualGraphInEditor
 {
     /// <summary>
