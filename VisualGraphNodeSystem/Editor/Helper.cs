@@ -8,6 +8,7 @@ namespace VisualGraphNodeSystem.Editor
 {
     public class Helper
     {
+        const float fieldWidth = 80;
         /// <summary>
         /// 加载ScriptableObject,返回第一个找到的
         /// </summary>
@@ -47,38 +48,49 @@ namespace VisualGraphNodeSystem.Editor
 
         public static TextField DrawTextField(VisualElement mainContainer, string lableName, string baseInputValue, System.Action<string> onChangeMsg)
         {
-            TextField msg = new TextField(lableName);
-            msg.Q<Label>().style.minWidth = 65;
-            msg.multiline = true;
-            msg.value = baseInputValue;
-            msg.style.minHeight = 20f;
+            TextField field = new TextField(lableName);
+            field.Q<Label>().style.minWidth = fieldWidth;
+            field.multiline = true;
+            field.value = baseInputValue;
+            field.style.minHeight = 20f;
             //msg.style.whiteSpace = WhiteSpace.Normal;//换行
-            mainContainer.Add(msg);
-            msg.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
-            return msg;
+            mainContainer.Add(field);
+            field.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
+            return field;
         }
 
         public static IntegerField DrawIntField(VisualElement mainContainer, string lableName, int baseInputValue, System.Action<int> onChangeMsg)
         {
-            IntegerField msg = new IntegerField(lableName);
-            msg.Q<Label>().style.minWidth = 65;
-            msg.value = baseInputValue;
-            msg.style.minHeight = 20f;
+            IntegerField field = new IntegerField(lableName);
+            field.Q<Label>().style.minWidth = fieldWidth;
+            field.value = baseInputValue;
+            field.style.minHeight = 20f;
             //msg.style.whiteSpace = WhiteSpace.Normal;//换行
-            mainContainer.Add(msg);
-            msg.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
-            return msg;
+            mainContainer.Add(field);
+            field.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
+            return field;
         }
         public static FloatField DrawFloatField(VisualElement mainContainer, string lableName, float baseInputValue, System.Action<float> onChangeMsg)
         {
-            FloatField msg = new FloatField(lableName);
-            msg.value = baseInputValue;
-            msg.style.minHeight = 20f;
-            msg.Q<Label>().style.minWidth = 65;
+            FloatField field = new FloatField(lableName);
+            field.value = baseInputValue;
+            field.style.minHeight = 20f;
+            field.Q<Label>().style.minWidth = fieldWidth;
             //msg.style.whiteSpace = WhiteSpace.Normal;//换行
-            mainContainer.Add(msg);
-            msg.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
-            return msg;
+            mainContainer.Add(field);
+            field.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
+            return field;
+        }
+        public static Toggle DrawToggleField(VisualElement mainContainer, string lableName, bool baseInputValue, System.Action<bool> onChange)
+        {
+            Toggle field = new Toggle(lableName);
+            field.value = baseInputValue;
+            field.style.minHeight = 20f;
+            field.Q<Label>().style.minWidth = fieldWidth;
+            //msg.style.whiteSpace = WhiteSpace.Normal;//换行
+            mainContainer.Add(field);
+            field.RegisterValueChangedCallback(data => onChange(data.newValue));
+            return field;
         }
         public static ObjectField DrawObjectField<T>(VisualElement mainContainer, string lableName, T t, System.Action<T> onChangeObj) where T : UnityEngine.Object
         {
@@ -125,11 +137,11 @@ namespace VisualGraphNodeSystem.Editor
         public static EnumField DrawEnumFidld(VisualElement mainContainer, string lableName, Enum baseEnum, System.Action<Enum> onChangeValue)
         {
             EnumField enumField = new EnumField(lableName, baseEnum);
+            enumField.Q<Label>().style.minWidth = fieldWidth;
             enumField.RegisterValueChangedCallback((data) =>
             {
                 onChangeValue(data.newValue);
             });
-            enumField.labelElement.style.minWidth = 100;
             mainContainer.Add(enumField);
             return enumField;
         }
