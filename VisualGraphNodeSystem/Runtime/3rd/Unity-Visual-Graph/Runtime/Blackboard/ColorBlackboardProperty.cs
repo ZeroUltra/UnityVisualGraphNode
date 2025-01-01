@@ -14,5 +14,5 @@ namespace VisualGraphRuntime
     [Serializable]
     public class ColorBlackboardProperty : AbstractBlackboardProperty<Color>
     {
-	}
+    }
 }

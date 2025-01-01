@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace VisualGraphRuntime
 {
-	/// <summary>
-	/// GameObject Blackboard property
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    /// GameObject Blackboard property
+    /// </summary>
+    [Serializable]
     public class GameObjectBlackboardProperty : AbstractBlackboardProperty<GameObject>
     {
-	}
+    }
 }

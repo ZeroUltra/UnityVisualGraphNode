@@ -1,21 +1,16 @@
+using System.Linq;
+using System.Text;
 ///-------------------------------------------------------------------------------------------------
 // author: William Barry
 // date: 2020
 // Copyright (c) Bus Stop Studios.
 ///-------------------------------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using VisualGraphRuntime;
 using VisualGraphNodeSystem;
-using System.Text;
-using Codice.Client.Common;
-using UnityEditor.Experimental.GraphView;
-using System.Linq;
+using VisualGraphRuntime;
 using static VisualGraphRuntime.VisualGraphPort;
 namespace VisualGraphInEditor
 {

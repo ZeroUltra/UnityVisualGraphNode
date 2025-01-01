@@ -14,5 +14,5 @@ namespace VisualGraphRuntime
     [Serializable]
     public class Vector3BlackboardProperty : AbstractBlackboardProperty<Vector3>
     {
-	}
+    }
 }

@@ -4,7 +4,6 @@
 // Copyright (c) Bus Stop Studios.
 ///-------------------------------------------------------------------------------------------------
 using System;
-using UnityEngine;
 
 namespace VisualGraphRuntime
 {
@@ -14,5 +13,5 @@ namespace VisualGraphRuntime
     [Serializable]
     public class ObjectBlackboardProperty : AbstractBlackboardProperty<UnityEngine.Object>
     {
-	}
+    }
 }

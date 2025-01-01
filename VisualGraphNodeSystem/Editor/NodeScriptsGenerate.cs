@@ -1,12 +1,12 @@
-using UnityEngine;
-using UnityEditor;
 using System.IO;
+using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
+using UnityEngine;
 namespace VisualGraphNodeSystem.Editor
 {
     public class NodeScriptsGenerate : MonoBehaviour
     {
-       public const string scriptTemplates = @"using VisualGraphRuntime;
+        public const string scriptTemplates = @"using VisualGraphRuntime;
 using UnityEngine;
 using VisualGraphNodeSystem;
 [NodeName(""#SCRIPTNAME#"")]
@@ -65,8 +65,8 @@ public class #SCRIPTNAME# : VisualNodeBase
     {
         public override void Action(int instanceId, string pathName, string resourceFile)
         {
-            if(resourceFile== NodeScriptsGenerate.scriptTemplates)
-            resourceFile = resourceFile.Replace("#SCRIPTNAME#", Path.GetFileNameWithoutExtension(pathName));
+            if (resourceFile == NodeScriptsGenerate.scriptTemplates)
+                resourceFile = resourceFile.Replace("#SCRIPTNAME#", Path.GetFileNameWithoutExtension(pathName));
             File.WriteAllText(pathName, resourceFile);
             AssetDatabase.ImportAsset(pathName);
         }

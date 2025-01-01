@@ -1,9 +1,3 @@
-///-------------------------------------------------------------------------------------------------
-// author: William Barry
-// date: 2020
-// Copyright (c) Bus Stop Studios.
-///-------------------------------------------------------------------------------------------------
-using VisualGraphRuntime;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -11,6 +5,12 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+///-------------------------------------------------------------------------------------------------
+// author: William Barry
+// date: 2020
+// Copyright (c) Bus Stop Studios.
+///-------------------------------------------------------------------------------------------------
+using VisualGraphRuntime;
 
 namespace VisualGraphInEditor
 {

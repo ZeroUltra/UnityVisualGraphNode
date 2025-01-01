@@ -7,11 +7,11 @@ using System;
 
 namespace VisualGraphRuntime
 {
-	/// <summary>
-	/// int Blackboard property
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    /// int Blackboard property
+    /// </summary>
+    [Serializable]
     public class IntBlackboardProperty : AbstractBlackboardProperty<int>
-	{
-	}
+    {
+    }
 }

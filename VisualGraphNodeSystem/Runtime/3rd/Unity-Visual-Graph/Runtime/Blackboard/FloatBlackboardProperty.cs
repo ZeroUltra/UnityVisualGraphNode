@@ -13,5 +13,5 @@ namespace VisualGraphRuntime
     [Serializable]
     public class FloatBlackboardProperty : AbstractBlackboardProperty<float>
     {
-	}
+    }
 }

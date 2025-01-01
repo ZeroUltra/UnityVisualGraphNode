@@ -34,7 +34,7 @@ namespace VisualGraphRuntime
             [NonSerialized] public bool initialized;
             [NonSerialized] public VisualGraphNode Node;   // Node that should contain a port based off the guid
             [NonSerialized] public VisualGraphPort port;   // This must be set in the OnEnable for the graph cannot be stored
- 
+
             public string node_guid;                       // Reference to the port that belongs to the Node
             public string port_guid;                       // Reference to the port that belongs to the Node
         }
@@ -93,7 +93,7 @@ namespace VisualGraphRuntime
         /// </summary>
         public void ClearConnections()
         {
-            foreach(VisualGraphPortConnection connection in Connections)
+            foreach (VisualGraphPortConnection connection in Connections)
             {
                 if (connection.port != null)
                 {

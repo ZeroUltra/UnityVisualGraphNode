@@ -96,7 +96,7 @@ namespace VisualGraphNodeSystem.Editor
             enumField.labelElement.style.minWidth = 100;
             mainContainer.Add(enumField);
             return enumField;
-        } 
+        }
         #endregion
     }
 }

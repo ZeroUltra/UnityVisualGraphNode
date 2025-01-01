@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
-using VisualGraphRuntime;
-using VisualGraphNodeSystem;
-using UnityEngine.UIElements;
-using VisualGraphNodeSystem.Editor;
 using System;
 using System.Reflection;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using UnityEngine.UIElements;
+using VisualGraphNodeSystem;
+using VisualGraphNodeSystem.Editor;
+using VisualGraphRuntime;
 namespace VisualGraphInEditor
 {
     public class VisualGraphNodeView : Node
     {
         [HideInInspector] public virtual Vector2 default_size => GraphSetting.NodeDefaultSize;
-        [HideInInspector] public virtual bool ShowNodeProperties => false;
+        [HideInInspector] public virtual bool ShowNodeProperties => GraphSetting.IsUseIMGUI;
 
         [HideInInspector] public VisualGraphNode Node { get; private set; }
 

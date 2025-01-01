@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using VisualGraphRuntime;
 
@@ -10,6 +8,6 @@ namespace VisualGraphNodeSystem
     [DefaultNodeType(typeof(VisualNodeBase))]
     public class NodeGraphBase : VisualGraph
     {
- 
+
     }
 }

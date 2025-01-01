@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using VisualGraphRuntime;
 
 namespace VisualGraphInEditor
@@ -13,7 +11,7 @@ namespace VisualGraphInEditor
             base.OnElementsAdded(elements);
 
             VisualGraphGroup group = userData as VisualGraphGroup;
-            foreach(var element in elements)
+            foreach (var element in elements)
             {
                 VisualGraphRuntime.VisualGraphNode node = element.userData as VisualGraphRuntime.VisualGraphNode;
                 group.node_guids.Add(node.guid);
