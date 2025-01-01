@@ -21,7 +21,7 @@
     [NodeName("node示例", order=1, iconName = "d_ContentSizeFitter Icon"),titleBgColorString="#ffffff"]
     //输入输出端口类型 (输入输出端口数量)
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-    public class NodeSample : NodeBase
+    public class NodeSample : VisualNodeBase
     {
         public float waitDuration;
     }
@@ -38,7 +38,7 @@ using UnityEngine;
 using VisualGraphNodeSystem;
 [NodeName("NodeWait")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-public class NodeWait : NodeBase
+public class NodeWait : VisualNodeBase
 {
     public float waitDuration = 1.0f;
 
@@ -61,6 +61,7 @@ public class NodeWait : NodeBase
 
 3. 根据节点内部逻辑,自行编辑代码
 4. **具体可导入Sample文件夹查看示例**
+5. `NodeGraphSetting`是一些常用配置
 
 
 
@@ -81,6 +82,12 @@ public class NodeWait : NodeBase
 如果有其他版本问题,请提交issue
 
 ## ChangeLog
+
+#### v1.0.3
+
+* 修复一些bug
+* 添加窗口`Reload`按钮,用于重新绘制界面
+* 添加`搜索框`,搜索节点描述,并定位
 
 #### v1.0.2
 

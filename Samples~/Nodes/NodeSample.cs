@@ -5,7 +5,7 @@ using VisualGraphNodeSystem;
 [NodeName("node示例", 1, iconName = "d_ContentSizeFitter Icon")]
 //输入输出端口类型 (输入输出端口数量)
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-public class NodeSample : NodeBase
+public class NodeSample : VisualNodeBase
 {
     public float waitDuration;
 }

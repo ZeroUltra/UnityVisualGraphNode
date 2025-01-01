@@ -401,8 +401,9 @@ namespace VisualGraphInEditor
                 node.titleContainer.style.backgroundColor = titleColor;
             else
                 node.titleContainer.style.backgroundColor = NodeGraphSetting.Instance.DefaultNodeTitleBgColor;
+
             //绘制id
-            if (!((graphNode is VisualGraphStartNode) || graphNode is NodeEnd))
+            if (NodeGraphSetting.Instance.IsShowID && (!((graphNode is VisualGraphStartNode) || graphNode is NodeEnd)))
             {
                 IntegerField textField = new IntegerField();
                 textField.isDelayed = true;
@@ -418,15 +419,19 @@ namespace VisualGraphInEditor
                 labelText.style.justifyContent = Justify.Center;         // 居中显示
                 //修改输入框样式
                 var inputText = textField.Q("unity-text-input"); // 获取内部 input 部分
-                inputText.style.unityFontStyleAndWeight = FontStyle.Bold;
-                inputText.Q<TextElement>().style.fontSize = 14;
-                inputText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
+                if (inputText != null)
+                {
+                    inputText.style.unityFontStyleAndWeight = FontStyle.Bold;
+                    inputText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
+                    var textElement = inputText.Q<TextElement>();
+                    if (textElement != null)
+                        textElement.style.fontSize = 14;
+                }
 
                 textField.style.minWidth = 70;
                 textField.style.height = 20;
                 textField.style.marginTop = 4;
-                var temp = node.style.flexDirection;
-                textField.style.flexDirection = FlexDirection.Row;
+
                 textField.RegisterCallback<ChangeEvent<int>>(e =>
                 {
                     //检测当前是否有重复的ID
@@ -442,20 +447,22 @@ namespace VisualGraphInEditor
                     }
                     graphNode.NodeID = e.newValue;
                 });
+                var temp = node.style.flexDirection;
+                textField.style.flexDirection = FlexDirection.Row;
                 node.titleContainer.Add(textField);
-
-                if (NodeGraphSetting.Instance.ShowIndex)
-                {
-                    var labelindex = new Label("idx=" + graphNode.NodeIndex.ToString());
-                    labelindex.style.color = new StyleColor(new Color32(161, 211, 203, 255));
-                    labelindex.style.fontSize = 11;
-                    labelindex.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
-                    labelindex.style.justifyContent = Justify.Center;         // 居中显示
-                    labelindex.style.unityFontStyleAndWeight = FontStyle.Italic; // 加粗
-                    //labelindex.style.width = 30;
-                    node.style.flexDirection = FlexDirection.Row;
-                    node.titleContainer.Add(labelindex);
-                }
+                node.style.flexDirection = temp;
+            }
+            if (NodeGraphSetting.Instance.IsShowIndex)
+            {
+                var labelindex = new Label("idx=" + graphNode.NodeIndex.ToString());
+                labelindex.style.color = new StyleColor(new Color32(161, 211, 203, 255));
+                labelindex.style.fontSize = 11;
+                labelindex.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
+                labelindex.style.justifyContent = Justify.Center;         // 居中显示
+                labelindex.style.unityFontStyleAndWeight = FontStyle.Italic; // 加粗
+                var temp = node.style.flexDirection;
+                node.style.flexDirection = FlexDirection.Row;
+                node.titleContainer.Add(labelindex);
                 node.style.flexDirection = temp;
             }
 

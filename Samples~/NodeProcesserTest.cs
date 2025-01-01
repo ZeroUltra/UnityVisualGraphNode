@@ -2,34 +2,33 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
-using System;
+
 using VisualGraphNodeSystem;
 /// <summary>
 /// 处理node 逻辑
 /// </summary>
-public class NodeProcesserTest : NodeProcesser
+public class NodeProcesserTest : MonoBehaviour
 {
     public Text text;
     public AudioSource audioSource;
-
+    public NodeGraphBase nodeGraph;
     public Button[] btnOps;
-
+    private NodeProcesser nodeProcesser;
     private void Start()
     {
         Debug.Log("开始");
-        var currentNode = InitProcesser();
-        StartCoroutine(ProcessNode(currentNode));
+        nodeProcesser = new NodeProcesser(nodeGraph);
+        StartCoroutine(ProcessNode(nodeProcesser.GetFirstNode()));
     }
-    private IEnumerator ProcessNode(NodeBase currentNode)
+    private IEnumerator ProcessNode(VisualNodeBase currentNode)
     {
         if (currentNode == null)
         {
             Debug.Log("none");
             yield break;
         }
-       
-        RefreshNodeChange(currentNode);
+
+        nodeProcesser.RefreshNodeChange(currentNode);
         Debug.Log(currentNode.name);
         if (currentNode is NodeWait nodeWait)
         {
@@ -57,7 +56,7 @@ public class NodeProcesserTest : NodeProcesser
             yield break;
         }
 
-        else if (currentNode is NodeMenu nodeMenu)
+        else if (currentNode is NodeOption nodeMenu)
         {
             btnOps[0].transform.parent.gameObject.SetActive(true);
             for (int i = 0; i < btnOps.Length; i++)
@@ -86,11 +85,11 @@ public class NodeProcesserTest : NodeProcesser
     /// <param name="currentNode">当前node</param>
     /// <param name="outputPortIndex">port index</param>
     /// <returns></returns>
-    private NodeBase LoadNextNode(NodeBase currentNode, int outputPortIndex)
+    private VisualNodeBase LoadNextNode(VisualNodeBase currentNode, int outputPortIndex)
     {
         var port = currentNode.GetOutpotPortWithIndex(outputPortIndex);
         if (port != null)
-            currentNode = port.GetConnectNode() as NodeBase;
+            currentNode = port.GetConnectNode() as VisualNodeBase;
         else currentNode = null;
         return currentNode;
     }

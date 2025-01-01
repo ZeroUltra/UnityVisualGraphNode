@@ -7,12 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
-using UnityEditor.UIElements; 
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VisualGraphRuntime;
 using VisualGraphNodeSystem;
 using System.Text;
+using Codice.Client.Common;
+using UnityEditor.Experimental.GraphView;
+using System.Linq;
+using static VisualGraphRuntime.VisualGraphPort;
 namespace VisualGraphInEditor
 {
     public sealed class VisualGraphEditor : EditorWindow
@@ -69,7 +73,7 @@ namespace VisualGraphInEditor
         }
 
         //运行时显示
-        private void OnChangeNodeEvent(NodeBase nodebase)
+        private void OnChangeNodeEvent(VisualNodeBase nodebase)
         {
             graphView.ClearSelection();
             if (nodebase != null)
@@ -129,7 +133,7 @@ namespace VisualGraphInEditor
             }
             else
             {
-                titleContent = new GUIContent(visualGraph.name,EditorGUIUtility.IconContent("ScriptableObject Icon").image);
+                titleContent = new GUIContent(visualGraph.name, EditorGUIUtility.IconContent("ScriptableObject Icon").image);
             }
             graphView.SetGraph(visualGraph);
         }
@@ -141,7 +145,7 @@ namespace VisualGraphInEditor
         {
             var toolbar = new Toolbar();
 
-            //显示minimap
+            #region 按钮->显示minimap
             ToolbarToggle minimap_toggle = new ToolbarToggle();
 
             //Toggle minimap_toggle = new Toggle();
@@ -154,10 +158,10 @@ namespace VisualGraphInEditor
                 }
             );
             toolbar.Add(minimap_toggle);
+            #endregion
 
-            //显示网格
+            #region 按钮->显示网格
             ToolbarToggle tog = new ToolbarToggle();
-           // Toggle tog = new Toggle();
             tog.text = "Show Grid";
             tog.SetValueWithoutNotify(false);
             tog.RegisterCallback<ChangeEvent<bool>>(
@@ -166,14 +170,14 @@ namespace VisualGraphInEditor
                     graphView.Grid.visible = evt.newValue;
                 });
             toolbar.Add(tog);
+            #endregion
 
-            //序列化保存
+            #region 按钮->序列化保存
             ToolbarButton btnSave = new ToolbarButton();
-           // Button btnSave = new Button();
             btnSave.text = "Serialize And Save";
             btnSave.style.width = 135;
             btnSave.style.unityTextAlign = TextAnchor.MiddleRight;
-            Image icon=new Image();
+            Image icon = new Image();
             icon.image = EditorGUIUtility.IconContent("d_SaveAs").image;
             icon.style.paddingRight = 105;
             icon.style.paddingTop = 1;
@@ -183,7 +187,7 @@ namespace VisualGraphInEditor
                 StringBuilder sb = new StringBuilder();
                 foreach (var node in visualGraph.Nodes)
                 {
-                    if (node is NodeBase nodeBase)
+                    if (node is VisualNodeBase nodeBase)
                     {
                         string code = nodeBase.ToSerialize();
                         if (!string.IsNullOrEmpty(code))
@@ -198,7 +202,78 @@ namespace VisualGraphInEditor
                     System.IO.File.WriteAllText(selePath, sb.ToString());
                 }
             });
+
             toolbar.Add(btnSave);
+            #endregion
+
+            #region 按钮->排序id
+            ToolbarButton btnSortID = new ToolbarButton();
+            btnSortID.text = "Sort ID";
+            btnSortID.style.width = 60;
+            btnSortID.style.unityTextAlign = TextAnchor.MiddleCenter;
+            btnSortID.RegisterCallback<ClickEvent>((evt) =>
+            {
+                var startNode = visualGraph.StartNode;
+                int id = 1;
+                if (startNode != null)
+                {
+                    SortRecursive(startNode);
+                }
+                void SortRecursive(VisualGraphNode node)
+                {
+                    if (node == null) return;
+                    var outputPort = node.Ports.FirstOrDefault(x => x.Direction == PortDirection.Output);
+                    var nextNode = outputPort.GetConnectNode();
+                    if (nextNode == null) return;
+                    nextNode.NodeID = id;
+                    ++id;
+                    SortRecursive(nextNode);
+                }
+                OnDisable();
+                OnEnable();
+                EditorUtility.SetDirty(visualGraph);
+            });
+            toolbar.Add(btnSortID);
+            #endregion
+            //添加空格
+            toolbar.Add(new ToolbarSpacer() { flex = true });
+
+            #region 添加搜索
+            ToolbarSearchField toolbarSearch = new ToolbarSearchField();
+            toolbarSearch.tooltip = "Search nodes by Desc";
+            var text = toolbarSearch.Q<TextField>();
+            text.isDelayed = true;
+            text.RegisterCallback<ChangeEvent<string>>(evt =>
+            {
+                foreach (var node in visualGraph.Nodes)
+                {
+                    if (string.IsNullOrEmpty(node.NodeDescription)) continue;
+                    if (node.NodeDescription.Contains(evt.newValue))
+                    {
+                        var targetNode = node.graphElement as VisualGraphNodeView;
+                        graphView.ClearSelection();
+                        graphView.AddToSelection(targetNode);
+                        graphView.FrameSelection();
+                        break;
+                    }
+                }
+                toolbarSearch.SetValueWithoutNotify(string.Empty);
+            });
+            toolbar.Add(toolbarSearch);
+            #endregion
+
+            #region 按钮->重新加载
+            ToolbarButton btnReload = new ToolbarButton();
+            btnReload.text = "Reload";
+            btnReload.style.width = 60;
+            btnReload.style.unityTextAlign = TextAnchor.MiddleCenter;
+            btnReload.RegisterCallback<ClickEvent>((evt) =>
+            {
+                OnDisable();
+                OnEnable();
+            });
+            toolbar.Add(btnReload);
+            #endregion
 
             #region MyRegion
             //黑板

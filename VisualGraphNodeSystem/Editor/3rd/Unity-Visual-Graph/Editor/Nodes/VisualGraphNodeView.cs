@@ -12,46 +12,41 @@ namespace VisualGraphInEditor
 {
     public class VisualGraphNodeView : Node
     {
-        [HideInInspector] public virtual Vector2 default_size => NodeGraphSetting.Instance.NodeDefaultSize;
-        [HideInInspector] public virtual bool ShowNodeProperties => true;
+        [HideInInspector] public virtual Vector2 default_size => GraphSetting.NodeDefaultSize;
+        [HideInInspector] public virtual bool ShowNodeProperties => false;
 
-        [HideInInspector] public VisualGraphRuntime.VisualGraphNode node;
+        [HideInInspector] public VisualGraphNode Node { get; private set; }
 
-        Label runingLabel;
+        protected NodeGraphSetting GraphSetting => NodeGraphSetting.Instance;
+
+        public virtual void InitNode(VisualGraphNode graphNode)
+        {
+            Node = graphNode;
+        }
         public virtual void DrawNode()
         {
-            //添加描述
-            if (this.node is NodeBase)
+            if (GraphSetting.IsShowDesc)
             {
-                if (this.node is NodeEnd) return;
-                TextField text = new TextField();
-                text.label = "Desc:";
-                text.value = node.NodeDescription;
-                text.style.minHeight = 18;
-                text.multiline = true;
-                text.Q<Label>().style.minWidth = 35;
-                text.style.whiteSpace = WhiteSpace.Normal;//自动换行
-                mainContainer.Add(text);
-                text.RegisterCallback<ChangeEvent<string>>(e =>
+                //添加描述
+                if (this.Node is VisualNodeBase visualNodeBase)
                 {
-                    node.NodeDescription = e.newValue;
-                });
-
-                //runingLabel = new Label("►");
-                //runingLabel.style.color = Color.green;
-                //runingLabel.style.width = 10;
-                //runingLabel.style.height = 10;
-                //runingLabel.style.marginTop = 8;
-                //runingLabel.style.textField.style.marginTop = 4; = TextAnchor.MiddleLeft;  // 文本左对齐
-                //runingLabel.style.justifyContent = Justify.FlexStart;         // 居中显示
+                    if (this.Node is NodeEnd) return;
+                    TextField text = new TextField();
+                    text.label = "Desc:";
+                    text.value = Node.NodeDescription;
+                    text.style.minHeight = 18;
+                    text.multiline = true;
+                    text.Q<Label>().style.minWidth = 35;
+                    text.style.whiteSpace = WhiteSpace.Normal;//自动换行
+                    mainContainer.Add(text);
+                    text.RegisterCallback<ChangeEvent<string>>(e =>
+                    {
+                        Node.NodeDescription = e.newValue;
+                    });
+                }
             }
-            // titleContainer.style.backgroundColor = Color.red;
         }
 
-        public virtual void InitNode(VisualGraphRuntime.VisualGraphNode graphNode)
-        {
-            node = graphNode;
-        }
 
         public virtual Capabilities SetCapabilities(Capabilities capabilities)
         {
@@ -65,7 +60,7 @@ namespace VisualGraphInEditor
             {
                 if (Application.isPlaying)
                 {
-                    title = "►" + GetGraphNodeName(node.GetType());
+                    title = "►" + GetGraphNodeName(Node.GetType());
                 }
             }
 
@@ -77,11 +72,10 @@ namespace VisualGraphInEditor
             {
                 if (Application.isPlaying)
                 {
-                    title =  GetGraphNodeName(node.GetType());
+                    title = GetGraphNodeName(Node.GetType());
                 }
             }
         }
-
         private string GetGraphNodeName(Type type)
         {
             string display_name = "";

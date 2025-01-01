@@ -11,7 +11,7 @@ using UnityEngine;
 using VisualGraphNodeSystem;
 [NodeName(""#SCRIPTNAME#"")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-public class #SCRIPTNAME# : NodeBase
+public class #SCRIPTNAME# : VisualNodeBase
 {
 
 }";

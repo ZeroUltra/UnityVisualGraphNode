@@ -8,7 +8,7 @@ namespace VisualGraphNodeSystem
     /// Node基类
     /// </summary>
     [CustomNodeStyle("NodeStyle")]
-    public abstract class NodeBase : VisualGraphRuntime.VisualGraphNode
+    public abstract class VisualNodeBase : VisualGraphRuntime.VisualGraphNode
     {
         public virtual string ToSerialize()
         {

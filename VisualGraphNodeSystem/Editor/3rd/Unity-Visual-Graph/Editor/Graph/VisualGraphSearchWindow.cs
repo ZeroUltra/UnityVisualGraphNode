@@ -19,10 +19,7 @@ namespace VisualGraphInEditor
         private EditorWindow window;
         private VisualGraphView graphView;
         private List<Type> nodeTypes = new List<Type>();
-        //private Texture2D indentationIcon;
         private Texture2D lineTexture2d;
-
-        // private Dictionary<Type, Texture2D> dictTexture2D;
 
         public void Configure(EditorWindow window, VisualGraphView graphView)
         {
@@ -64,26 +61,6 @@ namespace VisualGraphInEditor
                 }
             }
             lineTexture2d.Apply();
-
-            //dictTexture2D = new Dictionary<Type, Texture2D>()
-            //{
-            //    {typeof(Node_Wait),EditorGUIUtility.IconContent("UnityEditor.ProfilerWindow").image as Texture2D },
-            //    {typeof(Node_BG),EditorGUIUtility.IconContent("RawImage Icon").image as Texture2D },
-            //    {typeof(Node_SayAside),EditorGUIUtility.IconContent("EventSystem Icon").image as Texture2D },
-            //    {typeof(Node_SayHide),EditorGUIUtility.IconContent("EventSystem Icon").image as Texture2D },
-            //    {typeof(Node_SayMe),EditorGUIUtility.IconContent("EventSystem Icon").image as Texture2D },
-            //    {typeof(Node_SayOther),EditorGUIUtility.IconContent("EventSystem Icon").image as Texture2D },
-            //    {typeof(Node_SayRole),EditorGUIUtility.IconContent("EventSystem Icon").image as Texture2D },
-            //    {typeof(Node_PotHide),EditorGUIUtility.IconContent("Avatar Icon").image as Texture2D },
-            //    {typeof(Node_PotShow),EditorGUIUtility.IconContent("Avatar Icon").image as Texture2D },
-            //    {typeof(Node_Menu),EditorGUIUtility.IconContent("BlendTree Icon").image as Texture2D },
-            //    {typeof(Node_MenuResult),EditorGUIUtility.IconContent("BlendTree Icon").image as Texture2D },
-            //    {typeof(Node_AnimaHide),EditorGUIUtility.IconContent("VideoPlayer Icon").image as Texture2D },
-            //    {typeof(Node_AnimaShow),EditorGUIUtility.IconContent("VideoPlayer Icon").image as Texture2D },
-            //    {typeof(Node_SoundPlay),EditorGUIUtility.IconContent("AudioClip Icon").image as Texture2D },
-            //    {typeof(Node_SoudeStop),EditorGUIUtility.IconContent("AudioClip Icon").image as Texture2D },
-            //    {typeof(Node_Interact),EditorGUIUtility.IconContent("StandaloneInputModule Icon").image as Texture2D },
-            //};
         }
 
         //创建搜索tree
@@ -91,7 +68,6 @@ namespace VisualGraphInEditor
         {
             var tree = new List<SearchTreeEntry>();
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Create Node"), 0));
-            //tree.Add(new SearchTreeGroupEntry(new GUIContent("Nodes"), 1));
 
             List<(int orderID, string disName, string iconName, Type Node)> listMenu = new List<(int orderID, string disName, string iconName, Type node)>();
             //遍历node 菜单
@@ -129,7 +105,7 @@ namespace VisualGraphInEditor
                 var tex = EditorGUIUtility.IconContent(string.IsNullOrEmpty(item.iconName) ? "ArrowNavigationRight" : item.iconName).image;
                 if (tex != null)
                     treeEntry.content = new GUIContent(item.disName, tex);
-                else 
+                else
                     treeEntry.content = new GUIContent(item.disName);
                 tree.Add(treeEntry);
                 lastOrderIndex = item.orderID;
@@ -157,38 +133,36 @@ namespace VisualGraphInEditor
             //            //最后一个添加数据
             //            if (i == names.Length - 1)
             //            {
-            //                tree.Add(new SearchTreeEntry(new GUIContent(names[i], indentationIcon))
-            //                {
-            //                    level = i + 1,
-            //                    userData = type
-            //                });
+            //                var treeEntry = new SearchTreeEntry(new GUIContent(names[i]));
+            //                treeEntry.level = i+1;
+            //                treeEntry.userData = type;
+            //                Debug.Log(names[i] + " " + (i + 1));
+            //                tree.Add(treeEntry);
             //            }
             //            //添加group
             //            else
             //            {
-            //                bool isExists = tree.Exists(item => item.CompareTo(new SearchTreeGroupEntry(new GUIContent(names[i]), i + 1)) == 0 /*0是相等*/);
+            //                var tex = EditorGUIUtility.IconContent("ArrowNavigationRight").image;
+            //                var newSearchGroup = new SearchTreeGroupEntry(new GUIContent(names[i],tex), i + 1);
+
+
+            //                bool isExists = tree.Exists(item => item.CompareTo(newSearchGroup) == 0); /*0是相等*/
             //                //不存在就添加
             //                if (isExists == false)
-            //                    tree.Add(new SearchTreeGroupEntry(new GUIContent(names[i]), i + 1));
+            //                    tree.Add(newSearchGroup);
             //            }
             //        }
             //    }
             //    else
             //    {
-            //        tree.Add(new SearchTreeEntry(new GUIContent(display_name, indentationIcon))
+            //        tree.Add(new SearchTreeEntry(new GUIContent(display_name))
             //        {
             //            level = 1,
             //            userData = type
             //        });
             //    }
-            //}; 
+            //};
             #endregion
-
-            //tree.Add(new SearchTreeEntry(new GUIContent("Group", indentationIcon))
-            //{
-            //    level = 1,
-            //    userData = new Group()
-            //});
 
             return tree;
         }

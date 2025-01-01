@@ -10,5 +10,9 @@ namespace VisualGraphNodeSystem.Editor
         public override bool ShowNodeProperties => false;
         public override Vector2 default_size => new Vector2(120, 120);
 
+        public override void DrawNode()
+        {
+            //base.DrawNode();
+        }
     }
 }

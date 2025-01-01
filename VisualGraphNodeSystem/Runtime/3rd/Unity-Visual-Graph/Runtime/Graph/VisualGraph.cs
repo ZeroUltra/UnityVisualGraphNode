@@ -205,8 +205,10 @@ namespace VisualGraphRuntime
             return false;
         }
 
+   
+
 #if UNITY_EDITOR
-		//public void OnInitGraph(VisualGraphView)
+        //public void OnInitGraph(VisualGraphView)
 #endif
-	}
+    }
 }

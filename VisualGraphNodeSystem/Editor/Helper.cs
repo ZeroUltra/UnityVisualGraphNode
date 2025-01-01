@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 namespace VisualGraphNodeSystem.Editor
 {
-    public class NodeHelper
+    public class Helper
     {
         /// <summary>
         /// 加载ScriptableObject,返回第一个找到的
@@ -30,16 +30,7 @@ namespace VisualGraphNodeSystem.Editor
         }
 
 
-        public const string line = "——————————————————————————————————————————————";
-
-        /// <summary>
-        /// 绘画一个 文本输入
-        /// </summary>
-        /// <param name="mainContainer">容器</param>
-        /// <param name="lableName">输入框名字</param>
-        /// <param name="baseInputValue">初始值</param>
-        /// <param name="onChangeMsg">输入改变事件</param>
-        /// <returns></returns>
+        #region UIElement Draw
         public static TextField DrawTextField(VisualElement mainContainer, string lableName, string baseInputValue, System.Action<string> onChangeMsg)
         {
             Label label = new Label(lableName);
@@ -105,6 +96,7 @@ namespace VisualGraphNodeSystem.Editor
             enumField.labelElement.style.minWidth = 100;
             mainContainer.Add(enumField);
             return enumField;
-        }
+        } 
+        #endregion
     }
 }

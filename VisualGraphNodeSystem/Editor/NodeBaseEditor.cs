@@ -2,7 +2,7 @@
 using UnityEditor;
 namespace VisualGraphNodeSystem.Editor
 {
-    [CustomEditor(typeof(NodeBase), editorForChildClasses: true)]
+    [CustomEditor(typeof(VisualNodeBase), editorForChildClasses: true)]
     public class NodeBaseEditor : UnityEditor.Editor
     {
         NodeGraphSetting setting;

@@ -10,7 +10,7 @@ namespace VisualGraphNodeSystem.Editor
         {
             get
             {
-                return NodeHelper.FindScriptableObject<NodeGraphSetting>();
+                return Helper.FindScriptableObject<NodeGraphSetting>();
             }
         }
 
@@ -19,7 +19,11 @@ namespace VisualGraphNodeSystem.Editor
         [Header("默认node大小")]
         public Vector2 NodeDefaultSize = new Vector2(250, 120);
         [Header("是否显示node的Index")]
-        public bool ShowIndex=true;
+        public bool IsShowIndex = false;
+        [Header("是否显示描述")]
+        public bool IsShowDesc = true;
+        [Header("是否显示ID")]
+        public bool IsShowID = true;
         [Header("默认node的背景颜色")]
         public Color DefaultNodeTitleBgColor = Color.black;
     }

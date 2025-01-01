@@ -3,7 +3,7 @@ using UnityEngine;
 using VisualGraphNodeSystem;
 [NodeName("NodeWait")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-public class NodeWait : NodeBase
+public class NodeWait : VisualNodeBase
 {
     public float waitDuration = 1.0f;
 

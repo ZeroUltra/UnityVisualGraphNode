@@ -22,7 +22,7 @@ public class NodeSampleEditor : VisualGraphNodeView
     public override void InitNode(VisualGraphRuntime.VisualGraphNode graphNode)
     {
         base.InitNode(graphNode);
-        nodeSample = this.node as NodeSample;
+        nodeSample = this.Node as NodeSample;
     }
     public override void DrawNode()
     {

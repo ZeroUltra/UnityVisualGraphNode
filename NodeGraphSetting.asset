@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LabelWidth: 100
   NodeDefaultSize: {x: 250, y: 120}
-  ShowIndex: 0
+  IsShowIndex: 0
+  IsShowDesc: 1
+  IsShowID: 1
   DefaultNodeTitleBgColor: {r: 0, g: 0, b: 0, a: 1}

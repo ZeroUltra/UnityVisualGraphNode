@@ -6,7 +6,7 @@ namespace VisualGraphNodeSystem
 {
     [NodeName("选项面板", 1000,iconName= "listview on")]
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Multiple)]
-    public class NodeOption: NodeBase
+    public class NodeOption: VisualNodeBase
     {
         
         public string[] Options()
