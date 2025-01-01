@@ -6,6 +6,7 @@ using System.Text;
 // Copyright (c) Bus Stop Studios.
 ///-------------------------------------------------------------------------------------------------
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -16,7 +17,7 @@ namespace VisualGraphInEditor
 {
     public sealed class VisualGraphEditor : EditorWindow
     {
-        private Component visualGraphComponent;
+
         private VisualGraphView graphView;
         private VisualGraph visualGraph;
         public UnityEngine.Object objectSelection; // Used for enter/exit playmode
@@ -56,7 +57,7 @@ namespace VisualGraphInEditor
             rootVisualElement.Add(graphView);
 
             // Add Toolbar to Window
-            graphView.CreateMinimap(this.position.width);
+
             GenerateToolbar();
             //WaitUpdateView();
             //黑板
@@ -70,6 +71,7 @@ namespace VisualGraphInEditor
         //运行时显示
         private void OnChangeNodeEvent(VisualNodeBase nodebase)
         {
+            if (!Application.isPlaying) return;
             graphView.ClearSelection();
             if (nodebase != null)
             {
@@ -83,6 +85,8 @@ namespace VisualGraphInEditor
             pos = graphView.contentViewContainer.transform.position;
             EditorApplication.playModeStateChanged -= OnPlayModeState;
             NodeProcesser.OnChangeNodeEvent -= OnChangeNodeEvent;
+            rootVisualElement.Clear();
+            graphView.Clear();
             graphView.OnDisable();
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
@@ -149,7 +153,7 @@ namespace VisualGraphInEditor
             minimap_toggle.RegisterCallback<ChangeEvent<bool>>(
                 (evt) =>
                 {
-                    graphView.Minimap.visible = evt.newValue;
+                    graphView.ShowMinimap(evt.newValue);
                 }
             );
             toolbar.Add(minimap_toggle);
@@ -162,7 +166,7 @@ namespace VisualGraphInEditor
             tog.RegisterCallback<ChangeEvent<bool>>(
                 (evt) =>
                 {
-                    graphView.Grid.visible = evt.newValue;
+                    graphView.ShowGrid(evt.newValue);
                 });
             toolbar.Add(tog);
             #endregion
@@ -218,6 +222,10 @@ namespace VisualGraphInEditor
                 {
                     if (node == null) return;
                     var outputPort = node.Ports.FirstOrDefault(x => x.Direction == PortDirection.Output);
+                    if (outputPort == null)
+                    {
+                        return;
+                    }
                     var nextNode = outputPort.GetConnectNode();
                     if (nextNode == null) return;
                     nextNode.NodeID = id;

@@ -28,8 +28,7 @@ namespace VisualGraphInEditor
         //private readonly Color edgeDropColor = Color.yellow;
 
         public VisualGraph VisualGraph { get { return visualGraph; } private set { } }
-        public MiniMap Minimap { get; private set; }
-        public GridBackground Grid { get; private set; }
+       
         //public BlackboardView BlackboardView { get; private set; }
         //public Blackboard Blackboard { get { return BlackboardView.blackboard; } private set { } }
 
@@ -38,6 +37,8 @@ namespace VisualGraphInEditor
         private VisualGraphSearchWindow searchWindow;
         private VisualGraphEditor editorWindow;
         private Orientation orientation;
+        private MiniMap miniMap;
+        private GridBackground grid;
 
         // Runtime Type / Editor Type
         private Dictionary<Type, Type> visualGraphNodeLookup = new Dictionary<Type, Type>();
@@ -50,12 +51,7 @@ namespace VisualGraphInEditor
         public VisualGraphView(VisualGraphEditor editorWindow)
         {
             this.editorWindow = editorWindow;
-
-            Undo.undoRedoPerformed += OnUndoRedoCallback;
-
             graphViewChanged = OnGraphChange;
-
-
             styleSheets.Add(Resources.Load<StyleSheet>("VisualGraphStyle"));
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
@@ -67,9 +63,6 @@ namespace VisualGraphInEditor
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
             this.AddManipulator(new FreehandSelector());
-
-            //背景Grid
-            CreateGrid();
 
             var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
@@ -96,6 +89,7 @@ namespace VisualGraphInEditor
         }
         public void OnEnable()
         {
+            Undo.undoRedoPerformed += OnUndoRedoCallback;
             // this.RegisterCallback<MouseDownEvent>(OnMouseDown); //不起作用
             this.RegisterCallback<MouseMoveEvent>(OnMouseMove);  //注册移动事件
             this.RegisterCallback<MouseUpEvent>(OnMouseUp);
@@ -106,9 +100,15 @@ namespace VisualGraphInEditor
         /// </summary>
         public void OnDisable()
         {
+            Undo.undoRedoPerformed -= OnUndoRedoCallback;
             // this.UnregisterCallback<MouseDownEvent>(OnMouseDown);
             this.UnregisterCallback<MouseMoveEvent>(OnMouseMove);
             this.UnregisterCallback<MouseUpEvent>(OnMouseUp);
+            visualGraph = null;
+            searchWindow = null;
+            editorWindow = null;
+            miniMap = null;
+            grid = null;
         }
         private async void OnMouseUp(MouseUpEvent evt)
         {
@@ -148,14 +148,19 @@ namespace VisualGraphInEditor
             }
         }
 
-        public void CreateMinimap(float windowWidth)
+      
+        public void ShowMinimap(bool isShow)
         {
-            Minimap = new MiniMap { anchored = true };
-            Minimap.capabilities &= ~Capabilities.Movable;
-            Minimap.SetPosition(new Rect(windowWidth - 210, 30, 200, 140));
-            Minimap.visible = false;
-            Add(Minimap);
+            if (miniMap == null)
+            {
+                miniMap = new MiniMap { anchored = true };
+                miniMap.capabilities &= ~Capabilities.Movable;
+                miniMap.SetPosition(new Rect(contentRect.width - 210, 30, 200, 140));
+                Add(miniMap);
+            }
+            miniMap.visible = isShow;
         }
+        
 
         //public void CreateBlackboard()
         //{
@@ -165,54 +170,38 @@ namespace VisualGraphInEditor
         //    Add(BlackboardView.blackboard);
         //}
 
-        public void CreateGrid()
+        public void ShowGrid(bool isShow)
         {
-            if (Grid != null) return;
-            Grid = new GridBackground();
-            Insert(0, Grid);
-            Grid.visible = false;
-            Grid.StretchToParentSize();
+            if (grid == null)
+            {
+                grid = new GridBackground();
+                Insert(0, grid);
+                grid.StretchToParentSize();
+            }
+            grid.visible = isShow;
         }
 
         #region View OnGUI/Update
 
         public void OnGUI()
         {
-            if (Minimap != null) Minimap.SetPosition(new Rect(contentRect.width - 210, 30, 200, 140));
+            //if (Minimap != null) Minimap.SetPosition(new Rect(contentRect.width - 210, 30, 200, 140));
             //if (Blackboard != null) Blackboard.SetPosition(new Rect(10, 30, Blackboard.style.width.value.value, Blackboard.style.height.value.value));
             //Debug.Log(contentViewContainer.transform.position);
-            Update();
+            //  Update();
         }
 
         //public void Update()
         //{
-        //    nodes.ForEach(nodeView =>
+        //    nodes.ForEach(node =>
         //    {
-        //        VisualGraphNode node = nodeView.userData as VisualGraphNode;
-        //        if (node != null)
+        //        var visnode = node.userData as VisualGraphRuntime.VisualGraphNode;
+        //        if (visnode != null)
         //        {
-        //            if (node.editor_ActiveNode)
-        //            {
-        //                nodeView.AddToClassList("VisualGraphNodeSelected");
-        //            }
-        //            else
-        //            {
-        //                nodeView.RemoveFromClassList("VisualGraphNodeSelected");
-        //            }
+        //            visnode.Update();
         //        }
         //    });
         //}
-        public void Update()
-        {
-            nodes.ForEach(node =>
-            {
-                var visnode = node.userData as VisualGraphRuntime.VisualGraphNode;
-                if (visnode != null)
-                {
-                    visnode.Update();
-                }
-            });
-        }
         #endregion
 
         #region Init the Graph

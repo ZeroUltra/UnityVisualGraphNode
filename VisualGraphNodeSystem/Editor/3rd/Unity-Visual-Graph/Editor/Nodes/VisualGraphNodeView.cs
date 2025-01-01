@@ -34,7 +34,7 @@ namespace VisualGraphInEditor
                     text.value = Node.NodeDescription;
                     text.style.minHeight = 18;
                     text.multiline = true;
-                    text.Q<Label>().style.minWidth = 35;
+                    text.Q<Label>().style.minWidth = 50;
                     text.style.whiteSpace = WhiteSpace.Normal;//自动换行
                     mainContainer.Add(text);
                     text.RegisterCallback<ChangeEvent<string>>(e =>

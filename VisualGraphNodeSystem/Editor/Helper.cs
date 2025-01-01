@@ -31,7 +31,7 @@ namespace VisualGraphNodeSystem.Editor
 
 
         #region UIElement Draw
-        public static TextField DrawTextField(VisualElement mainContainer, string lableName, string baseInputValue, System.Action<string> onChangeMsg)
+        public static TextField DrawMutliTextField(VisualElement mainContainer, string lableName, string baseInputValue, System.Action<string> onChangeMsg)
         {
             Label label = new Label(lableName);
             mainContainer.Add(label);
@@ -40,6 +40,42 @@ namespace VisualGraphNodeSystem.Editor
             msg.value = baseInputValue;
             msg.style.minHeight = 40f;
             msg.style.whiteSpace = WhiteSpace.Normal;//换行
+            mainContainer.Add(msg);
+            msg.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
+            return msg;
+        }
+
+        public static TextField DrawTextField(VisualElement mainContainer, string lableName, string baseInputValue, System.Action<string> onChangeMsg)
+        {
+            TextField msg = new TextField(lableName);
+            msg.Q<Label>().style.minWidth = 65;
+            msg.multiline = true;
+            msg.value = baseInputValue;
+            msg.style.minHeight = 20f;
+            //msg.style.whiteSpace = WhiteSpace.Normal;//换行
+            mainContainer.Add(msg);
+            msg.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
+            return msg;
+        }
+
+        public static IntegerField DrawIntField(VisualElement mainContainer, string lableName, int baseInputValue, System.Action<int> onChangeMsg)
+        {
+            IntegerField msg = new IntegerField(lableName);
+            msg.Q<Label>().style.minWidth = 65;
+            msg.value = baseInputValue;
+            msg.style.minHeight = 20f;
+            //msg.style.whiteSpace = WhiteSpace.Normal;//换行
+            mainContainer.Add(msg);
+            msg.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
+            return msg;
+        }
+        public static FloatField DrawFloatField(VisualElement mainContainer, string lableName, float baseInputValue, System.Action<float> onChangeMsg)
+        {
+            FloatField msg = new FloatField(lableName);
+            msg.value = baseInputValue;
+            msg.style.minHeight = 20f;
+            msg.Q<Label>().style.minWidth = 65;
+            //msg.style.whiteSpace = WhiteSpace.Normal;//换行
             mainContainer.Add(msg);
             msg.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
             return msg;
