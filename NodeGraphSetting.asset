@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44d6f2bf2567df040a4c8ec999eb525a, type: 3}
   m_Name: NodeGraphSetting
   m_EditorClassIdentifier: 
-  LabelWidth: 100
-  NodeDefaultSize: {x: 250, y: 120}
+  LabelWidth: 88
+  NodeDefaultSize: {x: 260, y: 120}
+  IsUseIMGUI: 1
   IsShowIndex: 0
   IsShowDesc: 1
   IsShowID: 1
   DefaultNodeTitleBgColor: {r: 0, g: 0, b: 0, a: 1}
+  IsShowNodeIcon: 1

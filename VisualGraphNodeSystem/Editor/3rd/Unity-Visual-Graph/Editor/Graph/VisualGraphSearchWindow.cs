@@ -19,7 +19,7 @@ namespace VisualGraphInEditor
         private EditorWindow window;
         private VisualGraphView graphView;
         private List<Type> nodeTypes = new List<Type>();
-        private Texture2D lineTexture2d;
+        //private Texture2D lineTexture2d;
 
         public void Configure(EditorWindow window, VisualGraphView graphView)
         {
@@ -46,21 +46,21 @@ namespace VisualGraphInEditor
                 }
             }
 
-            lineTexture2d = new Texture2D(16, 16);
-            for (int i = 0; i < lineTexture2d.height; i++)
-            {
-                if (i == 6)
-                {
-                    for (int a = 0; a < lineTexture2d.width; a++)
-                        lineTexture2d.SetPixel(a, i, Color.white);
-                }
-                else
-                {
-                    for (int a = 0; a < lineTexture2d.width; a++)
-                        lineTexture2d.SetPixel(a, i, Color.clear);
-                }
-            }
-            lineTexture2d.Apply();
+            //lineTexture2d = new Texture2D(16, 16);
+            //for (int i = 0; i < lineTexture2d.height; i++)
+            //{
+            //    if (i == 6)
+            //    {
+            //        for (int a = 0; a < lineTexture2d.width; a++)
+            //            lineTexture2d.SetPixel(a, i, Color.white);
+            //    }
+            //    else
+            //    {
+            //        for (int a = 0; a < lineTexture2d.width; a++)
+            //            lineTexture2d.SetPixel(a, i, Color.clear);
+            //    }
+            //}
+            //lineTexture2d.Apply();
         }
 
         //创建搜索tree
@@ -94,7 +94,7 @@ namespace VisualGraphInEditor
             foreach (var item in listMenu)
             {
                 if (lastOrderIndex != int.MinValue && item.orderID - lastOrderIndex >= 10)//超过10 加一个横线
-                    tree.Add(new SearchTreeEntry(new GUIContent("——————————————————————————————————————————", lineTexture2d))
+                    tree.Add(new SearchTreeEntry(new GUIContent("——————————————————————————————————————————"))
                     {
                         level = 1
                     });
@@ -163,7 +163,6 @@ namespace VisualGraphInEditor
             //    }
             //};
             #endregion
-
             return tree;
         }
 

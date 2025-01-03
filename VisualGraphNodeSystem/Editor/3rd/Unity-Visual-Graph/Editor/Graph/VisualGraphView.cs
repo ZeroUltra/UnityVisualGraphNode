@@ -16,6 +16,7 @@ using VisualGraphNodeSystem.Editor;
 using VisualGraphRuntime;
 using Button = UnityEngine.UIElements.Button;
 using Label = UnityEngine.UIElements.Label;
+using UnityEditor.UIElements;
 namespace VisualGraphInEditor
 {
     /// <summary>
@@ -28,7 +29,7 @@ namespace VisualGraphInEditor
         //private readonly Color edgeDropColor = Color.yellow;
 
         public VisualGraph VisualGraph { get { return visualGraph; } private set { } }
-       
+
         //public BlackboardView BlackboardView { get; private set; }
         //public Blackboard Blackboard { get { return BlackboardView.blackboard; } private set { } }
 
@@ -148,7 +149,7 @@ namespace VisualGraphInEditor
             }
         }
 
-      
+
         public void ShowMinimap(bool isShow)
         {
             if (miniMap == null)
@@ -160,7 +161,7 @@ namespace VisualGraphInEditor
             }
             miniMap.visible = isShow;
         }
-        
+
 
         //public void CreateBlackboard()
         //{
@@ -382,43 +383,70 @@ namespace VisualGraphInEditor
             // Create the Node View based off the type, set the class for styling
             VisualGraphNodeView node = Activator.CreateInstance(visualNodeType) as VisualGraphNodeView;
             node.AddToClassList("VisualGraphNode");
-            node.title = GetGraphNodeName(graphNode.GetType());
+            var nodeAttribute = GetGraphNodeAttribute(graphNode.GetType());
+            node.title = nodeAttribute.name;
+            node.titleContainer.style.justifyContent = Justify.FlexStart;  // 紧凑布局，从左到右
+            //var labelTitle = node.Q<Label>();
+            //labelTitle.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
+            //labelTitle.style.marginLeft=3;
             //设置标题背景色
-            Color titleColor = GetGraphNodeTitleColor(graphNode.GetType());
+            Color titleColor = nodeAttribute.titleColor;
             if (titleColor != default)
                 node.titleContainer.style.backgroundColor = titleColor;
             else
                 node.titleContainer.style.backgroundColor = NodeGraphSetting.Instance.DefaultNodeTitleBgColor;
 
+            if (NodeGraphSetting.Instance.IsShowNodeIcon)
+            {
+                if (!string.IsNullOrEmpty(nodeAttribute.iconName))
+                {
+                    // 创建图标控件
+                    Image icon = new Image();
+                    icon.image = EditorGUIUtility.IconContent(nodeAttribute.iconName).image;
+                    icon.style.maxWidth = 20;
+                    icon.style.height = 20;
+                    icon.style.alignSelf = Align.Center;  // 图标居中显示
+
+                    // 添加图标到标题容器
+                    node.titleContainer.Add(icon);
+
+
+                }
+            }
             //绘制id
             if (NodeGraphSetting.Instance.IsShowID && (!((graphNode is VisualGraphStartNode) || graphNode is NodeEnd)))
             {
+                VisualElement space = new VisualElement();
+                space.style.flexGrow = 1;  // 这个元素会占据剩余的空间
+                node.titleContainer.Add(space);  // 将空白空间添加到标题容器中
+
                 IntegerField textField = new IntegerField();
                 textField.isDelayed = true;
                 textField.value = graphNode.NodeID;
                 textField.label = "ID=";
+                textField.style.minWidth = 60;
+                textField.style.height = 19;
+                textField.style.alignSelf = Align.Center;
+
                 //修改文本样式
                 var labelText = textField.Q<Label>();
-                labelText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
-                labelText.style.fontSize = 11;
+                //labelText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
+                labelText.style.fontSize = 12;
                 labelText.style.unityFontStyleAndWeight = FontStyle.Bold;
                 labelText.style.minWidth = 6;
                 labelText.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
                 labelText.style.justifyContent = Justify.Center;         // 居中显示
-                //修改输入框样式
+                ////修改输入框样式
                 var inputText = textField.Q("unity-text-input"); // 获取内部 input 部分
                 if (inputText != null)
                 {
                     inputText.style.unityFontStyleAndWeight = FontStyle.Bold;
-                    inputText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
+                    //inputText.style.color = new StyleColor(new Color32(255, 55, 55, 255));
                     var textElement = inputText.Q<TextElement>();
                     if (textElement != null)
-                        textElement.style.fontSize = 14;
+                        textElement.style.fontSize = 12;
                 }
 
-                textField.style.minWidth = 70;
-                textField.style.height = 20;
-                textField.style.marginTop = 4;
 
                 textField.RegisterCallback<ChangeEvent<int>>(e =>
                 {
@@ -435,10 +463,7 @@ namespace VisualGraphInEditor
                     }
                     graphNode.NodeID = e.newValue;
                 });
-                var temp = node.style.flexDirection;
-                textField.style.flexDirection = FlexDirection.Row;
                 node.titleContainer.Add(textField);
-                node.style.flexDirection = temp;
             }
             if (NodeGraphSetting.Instance.IsShowIndex)
             {
@@ -548,28 +573,44 @@ namespace VisualGraphInEditor
             return node;
         }
 
-        private string GetGraphNodeName(Type type)
+
+        private (string name, string iconName, Color titleColor) GetGraphNodeAttribute(Type type)
         {
-            string display_name = "";
-            if (type.GetCustomAttribute<NodeNameAttribute>() != null)
+            string displayName = type.Name;
+            string iconName = "";
+            Color titleColor = default;
+            var attribute = type.GetCustomAttribute<NodeNameAttribute>();
+            if (attribute != null)
             {
-                display_name = type.GetCustomAttribute<NodeNameAttribute>().name;
+                displayName = attribute.name;
+                iconName = attribute.iconName;
+                titleColor = attribute.titleBgColor;
             }
-            else
-            {
-                display_name = type.Name;
-            }
-            return display_name;
+            return (displayName, iconName, titleColor);
         }
-        private Color GetGraphNodeTitleColor(Type type)
-        {
-            Color color = default;
-            if (type.GetCustomAttribute<NodeNameAttribute>() != null)
-            {
-                color = type.GetCustomAttribute<NodeNameAttribute>().titleBgColor;
-            }
-            return color;
-        }
+
+        //private string GetGraphNodeName(Type type)
+        //{
+        //    string display_name = "";
+        //    if (type.GetCustomAttribute<NodeNameAttribute>() != null)
+        //    {
+        //        display_name = type.GetCustomAttribute<NodeNameAttribute>().name;
+        //    }
+        //    else
+        //    {
+        //        display_name = type.Name;
+        //    }
+        //    return display_name;
+        //}
+        //private Color GetGraphNodeTitleColor(Type type)
+        //{
+        //    Color color = default;
+        //    if (type.GetCustomAttribute<NodeNameAttribute>() != null)
+        //    {
+        //        color = type.GetCustomAttribute<NodeNameAttribute>().titleBgColor;
+        //    }
+        //    return color;
+        //}
         #endregion
 
         #region Port Connections

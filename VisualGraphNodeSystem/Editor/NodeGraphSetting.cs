@@ -6,11 +6,14 @@ namespace VisualGraphNodeSystem.Editor
     [CreateAssetMenu(fileName = "NodeGraphSetting", menuName = "Create  Node Graph/Node Graph Setting", order = -10)]
     public class NodeGraphSetting : ScriptableObject
     {
+        private static NodeGraphSetting _instance;
         public static NodeGraphSetting Instance
         {
             get
             {
-                return Helper.FindScriptableObject<NodeGraphSetting>();
+                if(_instance == null)
+                    _instance = Helper.FindScriptableObject<NodeGraphSetting>();
+                return _instance;
             }
         }
 
@@ -28,5 +31,7 @@ namespace VisualGraphNodeSystem.Editor
         public bool IsShowID = true;
         [Header("默认node的背景颜色")]
         public Color DefaultNodeTitleBgColor = Color.black;
+        [Header("是否显示node的Icon(如果有)")]
+        public bool IsShowNodeIcon = true;
     }
 }

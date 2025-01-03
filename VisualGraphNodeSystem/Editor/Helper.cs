@@ -8,7 +8,7 @@ namespace VisualGraphNodeSystem.Editor
 {
     public class Helper
     {
-        const float fieldWidth = 80;
+      
         /// <summary>
         /// 加载ScriptableObject,返回第一个找到的
         /// </summary>
@@ -30,7 +30,6 @@ namespace VisualGraphNodeSystem.Editor
             return null;
         }
 
-
         #region UIElement Draw
         public static TextField DrawMutliTextField(VisualElement mainContainer, string lableName, string baseInputValue, System.Action<string> onChangeMsg)
         {
@@ -49,7 +48,7 @@ namespace VisualGraphNodeSystem.Editor
         public static TextField DrawTextField(VisualElement mainContainer, string lableName, string baseInputValue, System.Action<string> onChangeMsg)
         {
             TextField field = new TextField(lableName);
-            field.Q<Label>().style.minWidth = fieldWidth;
+            field.Q<Label>().style.minWidth = NodeGraphSetting.Instance.LabelWidth;
             field.multiline = true;
             field.value = baseInputValue;
             field.style.minHeight = 20f;
@@ -62,7 +61,7 @@ namespace VisualGraphNodeSystem.Editor
         public static IntegerField DrawIntField(VisualElement mainContainer, string lableName, int baseInputValue, System.Action<int> onChangeMsg)
         {
             IntegerField field = new IntegerField(lableName);
-            field.Q<Label>().style.minWidth = fieldWidth;
+            field.Q<Label>().style.minWidth = NodeGraphSetting.Instance.LabelWidth;
             field.value = baseInputValue;
             field.style.minHeight = 20f;
             //msg.style.whiteSpace = WhiteSpace.Normal;//换行
@@ -75,7 +74,7 @@ namespace VisualGraphNodeSystem.Editor
             FloatField field = new FloatField(lableName);
             field.value = baseInputValue;
             field.style.minHeight = 20f;
-            field.Q<Label>().style.minWidth = fieldWidth;
+            field.Q<Label>().style.minWidth = NodeGraphSetting.Instance.LabelWidth; 
             //msg.style.whiteSpace = WhiteSpace.Normal;//换行
             mainContainer.Add(field);
             field.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));
@@ -86,7 +85,7 @@ namespace VisualGraphNodeSystem.Editor
             Toggle field = new Toggle(lableName);
             field.value = baseInputValue;
             field.style.minHeight = 20f;
-            field.Q<Label>().style.minWidth = fieldWidth;
+            field.Q<Label>().style.minWidth = NodeGraphSetting.Instance.LabelWidth;
             //msg.style.whiteSpace = WhiteSpace.Normal;//换行
             mainContainer.Add(field);
             field.RegisterValueChangedCallback(data => onChange(data.newValue));
@@ -137,7 +136,7 @@ namespace VisualGraphNodeSystem.Editor
         public static EnumField DrawEnumFidld(VisualElement mainContainer, string lableName, Enum baseEnum, System.Action<Enum> onChangeValue)
         {
             EnumField enumField = new EnumField(lableName, baseEnum);
-            enumField.Q<Label>().style.minWidth = fieldWidth;
+            enumField.Q<Label>().style.minWidth = NodeGraphSetting.Instance.LabelWidth;
             enumField.RegisterValueChangedCallback((data) =>
             {
                 onChangeValue(data.newValue);
