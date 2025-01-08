@@ -1,4 +1,5 @@
 
+using System.Diagnostics;
 using UnityEngine;
 
 namespace VisualGraphNodeSystem.Editor
@@ -11,8 +12,10 @@ namespace VisualGraphNodeSystem.Editor
         {
             get
             {
-                if(_instance == null)
-                    _instance = Helper.FindScriptableObject<NodeGraphSetting>();
+                if (_instance == null)
+                {
+                    _instance = Helper.FindScriptableObject<NodeGraphSetting>("NodeGraphSetting");
+                }
                 return _instance;
             }
         }

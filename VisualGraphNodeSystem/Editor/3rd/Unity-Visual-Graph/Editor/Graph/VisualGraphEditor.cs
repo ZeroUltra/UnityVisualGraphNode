@@ -238,6 +238,27 @@ namespace VisualGraphInEditor
             });
             toolbar.Add(btnSortID);
             #endregion
+
+            #region 按钮->删除联系
+            ToolbarButton btnDelPort = new ToolbarButton();
+            btnDelPort.tooltip = "当打开找不到联系时,可以尝试删除所有联系,重新连接";
+            btnDelPort.text = "ClearConnections";
+            btnDelPort.style.width = 120;
+            btnDelPort.style.unityTextAlign = TextAnchor.MiddleCenter;
+            btnDelPort.RegisterCallback<ClickEvent>((evt) =>
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("警告", "是否删除所有联系?", "确认", "取消"))
+                {
+                    foreach (var node in visualGraph.Nodes)
+                    {
+                        node.ClearConnections();
+                    }
+                    EditorUtility.SetDirty(visualGraph);
+                }
+            });
+            toolbar.Add(btnDelPort);
+            #endregion
+
             //添加空格
             toolbar.Add(new ToolbarSpacer() { flex = true });
 

@@ -4,22 +4,26 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 namespace VisualGraphNodeSystem.Editor
 {
     public class Helper
     {
-      
+
         /// <summary>
         /// 加载ScriptableObject,返回第一个找到的
         /// </summary>
-        public static T FindScriptableObject<T>() where T : ScriptableObject
+        public static T FindScriptableObject<T>(string extraArgs = null) where T : ScriptableObject
         {
             //FindAssets 返回结果是GUID
-            var assetGUID = AssetDatabase.FindAssets("t:ScriptableObject");
+            string filter = "t:ScriptableObject" + (extraArgs == null ? "" : (" " + extraArgs));
+            var assetGUID = AssetDatabase.FindAssets(filter);
+
             foreach (var item in assetGUID)
             {
                 var assetPath = AssetDatabase.GUIDToAssetPath(item);
                 var obj = AssetDatabase.LoadMainAssetAtPath(assetPath);
+
                 //找到目标
                 if (obj is T)
                 {
@@ -74,7 +78,7 @@ namespace VisualGraphNodeSystem.Editor
             FloatField field = new FloatField(lableName);
             field.value = baseInputValue;
             field.style.minHeight = 20f;
-            field.Q<Label>().style.minWidth = NodeGraphSetting.Instance.LabelWidth; 
+            field.Q<Label>().style.minWidth = NodeGraphSetting.Instance.LabelWidth;
             //msg.style.whiteSpace = WhiteSpace.Normal;//换行
             mainContainer.Add(field);
             field.RegisterValueChangedCallback(data => onChangeMsg(data.newValue));

@@ -181,7 +181,10 @@ namespace VisualGraphInEditor
             }
             grid.visible = isShow;
         }
-
+        public void DeleteAllPort()
+        {
+            throw new NotImplementedException();
+        }
         #region View OnGUI/Update
 
         public void OnGUI()
@@ -1006,6 +1009,8 @@ namespace VisualGraphInEditor
             //Vector2 screenPoint = this as .screenPosition.position + position;
             nodeCreationRequest(new NodeCreationContext() { screenMousePosition = a.eventInfo.mousePosition + editorWindow.position.position, target = null, index = -1 });
         }
+
+      
         #endregion
     }
 }
