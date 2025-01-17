@@ -29,20 +29,6 @@ namespace VisualGraphInEditor
             EditorGUI.EndDisabledGroup();
             DrawDefaultInspector();
             EditorGUI.EndDisabledGroup();
-
-            //if (GUILayout.Button("Reset"))
-            //{
-            //	VisualGraph graph = (VisualGraph)target;
-            //	graph.StartingNode = null;
-            //	foreach (var node in graph.Nodes)
-            //	{
-            //		DestroyImmediate(node, true);
-            //	}
-            //	graph.Nodes = new List<VisualGraphNode>();
-            //	//graph.Groups.Clear();
-            //	graph.BlackboardProperties.Clear();
-            //	AssetDatabase.SaveAssets();
-            //}
         }
     }
 }

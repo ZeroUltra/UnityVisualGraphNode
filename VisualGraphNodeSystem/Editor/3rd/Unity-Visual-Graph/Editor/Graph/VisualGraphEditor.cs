@@ -57,41 +57,58 @@ namespace VisualGraphInEditor
             rootVisualElement.Add(graphView);
 
             // Add Toolbar to Window
-
             GenerateToolbar();
             //WaitUpdateView();
             //黑板
             //graphView.CreateBlackboard();
 
             EditorApplication.playModeStateChanged += OnPlayModeState;
-            NodeProcesser.OnChangeNodeEvent += OnChangeNodeEvent;
+
             graphView.OnEnable();
         }
 
-        //运行时显示
-        private void OnChangeNodeEvent(VisualNodeBase nodebase)
-        {
-            if (!Application.isPlaying) return;
-            graphView.ClearSelection();
-            if (nodebase != null)
-            {
-                graphView.AddToSelection(nodebase.graphElement as VisualGraphNodeView);
-            }
-        }
+
 
         private void OnDisable()
         {
             scale = graphView.scale;
             pos = graphView.contentViewContainer.transform.position;
             EditorApplication.playModeStateChanged -= OnPlayModeState;
-            NodeProcesser.OnChangeNodeEvent -= OnChangeNodeEvent;
+
             rootVisualElement.Clear();
             graphView.Clear();
             graphView.OnDisable();
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
         }
-
+        VisualGraphNodeView prevNodeView = null;
+        //运行时显示
+        private void OnChangeNodeEvent(VisualNodeBase nodebase)
+        {
+            if (!Application.isPlaying) return;
+            if (prevNodeView != null)
+            {
+                prevNodeView.SetBorderColor(Color.clear);
+                prevNodeView.IsRunning = false;
+            }
+            if (nodebase != null && nodebase.nodeView is VisualGraphNodeView nodeview)
+            {
+                //graphView.AddToSelection(nodebase.nodeView);
+                //graphView.FrameSelection();
+                nodeview.SetBorderColor(Color.green);
+                nodeview.SetBorderWidth(4);
+                prevNodeView = nodeview;
+                prevNodeView.IsRunning = true;
+                //graphView.FrameNext(item =>
+                //{
+                //    if (item is VisualGraphNodeView nodeGraph)
+                //    {
+                //        return nodeview == nodeGraph;
+                //    }
+                //    return false;
+                //});
+            }
+        }
 
         private void OnPlayModeState(PlayModeStateChange state)
         {
@@ -103,9 +120,11 @@ namespace VisualGraphInEditor
                     break;
 
                 case PlayModeStateChange.EnteredPlayMode:
+                    //进入运行时保持原来的样子
                     Selection.activeObject = objectSelection;
                     graphView.SetGraph(visualGraph);
                     graphView.UpdateViewTransform(pos, Vector3.one * scale);
+                    NodeProcesser.OnChangeNodeEvent += OnChangeNodeEvent;
                     break;
 
                 case PlayModeStateChange.ExitingPlayMode:
@@ -115,6 +134,12 @@ namespace VisualGraphInEditor
 
                 case PlayModeStateChange.EnteredEditMode:
                     Selection.activeObject = objectSelection;
+                    NodeProcesser.OnChangeNodeEvent -= OnChangeNodeEvent;
+                    if (prevNodeView != null)
+                    {
+                        prevNodeView.SetBorderColor(Color.clear);
+                        prevNodeView.IsRunning = false;
+                    }
                     break;
             }
         }
@@ -274,9 +299,8 @@ namespace VisualGraphInEditor
                     if (string.IsNullOrEmpty(node.NodeDescription)) continue;
                     if (node.NodeDescription.Contains(evt.newValue))
                     {
-                        var targetNode = node.graphElement as VisualGraphNodeView;
                         graphView.ClearSelection();
-                        graphView.AddToSelection(targetNode);
+                        graphView.AddToSelection(node.nodeView);
                         graphView.FrameSelection();
                         break;
                     }

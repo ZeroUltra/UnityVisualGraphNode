@@ -486,7 +486,8 @@ namespace VisualGraphInEditor
             node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
             // The Editor stores a reference to the graph created;
-            graphNode.graphElement = node;
+            //graphNode.graphElement = node;
+            graphNode.nodeView = node;
 
             // If there are extra Styles apply them
             IEnumerable<CustomNodeStyleAttribute> customStyleAttribs = graphNode.GetType().GetCustomAttributes<CustomNodeStyleAttribute>();

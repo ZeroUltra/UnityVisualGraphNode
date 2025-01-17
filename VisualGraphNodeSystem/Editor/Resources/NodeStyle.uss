@@ -6,9 +6,9 @@
 .VisualGraphNodeSelected {
     border-radius: 10;
     background-color: rgba(255, 0, 0, 1);
-}
-
-:selected > #selection-border
+} 
+/* 选中时的样式 */
+/* :selected > #selection-border
 {
        border-bottom-color: rgba(243, 161, 22, 1);
        border-left-color: rgba(243, 161, 22, 1);
@@ -19,9 +19,9 @@
         border-left-width: 3;
         border-right-width: 3;
         border-top-width: 3;
-}
-
-:selected:hover > #selection-border
+} */
+/* 和上面保持一致 */ 
+/* :selected:hover > #selection-border
 {
        border-bottom-color: rgba(243, 161, 22, 1);
        border-left-color: rgba(243, 161, 22, 1);
@@ -32,20 +32,21 @@
         border-left-width: 3;
         border-right-width: 3;
         border-top-width: 3;
-}
-
-:hover > #selection-border
+} */
+/* 悬停在上面的时候的样式 */
+/*  :hover > #selection-border
 {
        border-bottom-color: rgba(243, 161, 22, 1);
        border-left-color: rgba(243, 161, 22, 1);
        border-right-color: rgba(243, 161, 22, 1);
        border-top-color: rgba(243, 161, 22, 1);
 
-        border-bottom-width: 2;
-        border-left-width: 2;
-        border-right-width: 2;
-        border-top-width: 2;
-}
+        border-bottom-width: 1;
+        border-left-width: 1;
+        border-right-width: 1;
+        border-top-width: 1;
+}   */
+
 
 #title {
     height:28; 

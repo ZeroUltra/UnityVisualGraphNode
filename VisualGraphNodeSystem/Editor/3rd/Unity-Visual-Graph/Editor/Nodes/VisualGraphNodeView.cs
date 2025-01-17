@@ -10,16 +10,35 @@ namespace VisualGraphInEditor
 {
     public class VisualGraphNodeView : Node
     {
-        [HideInInspector] public virtual Vector2 default_size => GraphSetting.NodeDefaultSize;
-        [HideInInspector] public virtual bool ShowNodeProperties => GraphSetting.IsUseIMGUI;
-
-        [HideInInspector] public VisualGraphNode Node { get; private set; }
-
+        public virtual Vector2 default_size => GraphSetting.NodeDefaultSize;
+        public virtual bool ShowNodeProperties => GraphSetting.IsUseIMGUI;
+        public VisualGraphNode Node { get; private set; }
+        public bool IsRunning { get; set; }
         protected NodeGraphSetting GraphSetting => NodeGraphSetting.Instance;
+
+        private VisualElement selecedElement;
+
 
         public virtual void InitNode(VisualGraphNode graphNode)
         {
             Node = graphNode;
+            if (selecedElement == null && this[1] != null)
+                selecedElement = this[1];
+
+            //注册鼠标进入和离开事件
+            this.RegisterCallback<MouseEnterEvent>(evt =>
+            {
+                if (IsRunning) return;
+                SetBorderColor(GraphSetting.NodeSelectedBorderColor);
+                SetBorderWidth(1);
+            });
+
+            this.RegisterCallback<MouseLeaveEvent>(evt =>
+            {
+                if (IsRunning) return;
+                SetBorderColor(Color.clear);
+            });
+
         }
         public virtual void DrawNode()
         {
@@ -41,51 +60,63 @@ namespace VisualGraphInEditor
                     {
                         Node.NodeDescription = e.newValue;
                     });
+
                 }
             }
         }
-
 
         public virtual Capabilities SetCapabilities(Capabilities capabilities)
         {
             return capabilities;
         }
+
+
         public override void OnSelected()
         {
             base.OnSelected();
 
             if (!(this is VisualGraphStartNodeView))
             {
-                if (Application.isPlaying)
+                if (!Application.isPlaying)
                 {
-                    title = "►" + GetGraphNodeName(Node.GetType());
+                    SetBorderColor(GraphSetting.NodeSelectedBorderColor);
+                    SetBorderWidth(GraphSetting.NodeSelectedBorderWidth);
                 }
             }
-
         }
         public override void OnUnselected()
         {
             base.OnUnselected();
             if (!(this is VisualGraphStartNodeView))
             {
-                if (Application.isPlaying)
+                if (!Application.isPlaying)
                 {
-                    title = GetGraphNodeName(Node.GetType());
+                    SetBorderColor(Color.clear);
                 }
             }
         }
-        private string GetGraphNodeName(Type type)
+
+        /// <summary>
+        /// 设置边框颜色
+        /// </summary>
+        /// <param name="color"></param>
+        internal void SetBorderColor(Color color)
         {
-            string display_name = "";
-            if (type.GetCustomAttribute<NodeNameAttribute>() != null)
-            {
-                display_name = type.GetCustomAttribute<NodeNameAttribute>().name;
-            }
-            else
-            {
-                display_name = type.Name;
-            }
-            return display_name;
+            if (selecedElement == null) return;
+            selecedElement.style.borderBottomColor = selecedElement.style.borderTopColor = selecedElement.style.borderLeftColor = selecedElement.style.borderRightColor = color;
         }
+        /// <summary>
+        /// 设置边框宽度
+        /// </summary>
+        /// <param name="width"></param>
+        public void SetBorderWidth(int width)
+        {
+            if (selecedElement == null) return;
+            selecedElement.style.borderBottomWidth = selecedElement.style.borderTopWidth = selecedElement.style.borderLeftWidth = selecedElement.style.borderRightWidth = width;
+        }
+        //public void Reset()
+        //{
+        //    this.Reset();
+        //}
     }
 }

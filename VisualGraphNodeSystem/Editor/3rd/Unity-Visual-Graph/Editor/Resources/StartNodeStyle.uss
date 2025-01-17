@@ -4,8 +4,7 @@
    background-color: #FF0000;
 }
 
-
-:selected > #selection-border
+/* :selected > #selection-border
 {
        border-bottom-color: rgba(243, 161, 22, 1);
        border-left-color: rgba(243, 161, 22, 1);
@@ -42,7 +41,7 @@
         border-left-width: 3;
         border-right-width: 3;
         border-top-width: 3;
-}
+} */
 
 #title {
     background-color: #000000;

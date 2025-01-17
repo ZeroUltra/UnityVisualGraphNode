@@ -21,7 +21,7 @@ namespace VisualGraphNodeSystem.Editor
         }
 
         [Header("标签宽度")]
-        public int LabelWidth = 120;
+        public int LabelWidth = 88;
         [Header("默认node大小")]
         public Vector2 NodeDefaultSize = new Vector2(250, 120);
         [Header("是否使用IMGUI")]
@@ -36,5 +36,9 @@ namespace VisualGraphNodeSystem.Editor
         public Color DefaultNodeTitleBgColor = Color.black;
         [Header("是否显示node的Icon(如果有)")]
         public bool IsShowNodeIcon = true;
+        [Header("node选中时的边框颜色")]
+        public Color NodeSelectedBorderColor = Color.yellow;
+        [Header("node选中时的边框宽度")]
+        public int NodeSelectedBorderWidth = 3;
     }
 }

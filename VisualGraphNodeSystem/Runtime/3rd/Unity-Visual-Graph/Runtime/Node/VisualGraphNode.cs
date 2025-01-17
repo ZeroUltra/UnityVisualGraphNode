@@ -152,7 +152,11 @@ namespace VisualGraphRuntime
 #if UNITY_EDITOR
         #region Graph View Editor Values
         [HideInInspector] public Vector2 position;
-        [HideInInspector][NonSerialized] public object graphElement;
+        // [HideInInspector][NonSerialized] public object graphElement;
+        /// <summary>
+        /// 编辑器中的节点视图
+        /// </summary>
+        [HideInInspector][NonSerialized] public UnityEditor.Experimental.GraphView.Node nodeView;
         #endregion
 
         public virtual System.Type InputType => typeof(bool);
