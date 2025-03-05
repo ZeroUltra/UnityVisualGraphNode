@@ -2,25 +2,53 @@ namespace VisualGraphNodeSystem
 {
     public class NodeProcesser
     {
-        public static event System.Action<VisualNodeBase> OnChangeNodeEvent;
-        public NodeGraphBase TargetNodeGraph { get; private set; }
-        public NodeProcesser(NodeGraphBase targetNodeGraph)
+        public VisualGraphBase TargetNodeGraph { get; private set; }
+
+        public NodeProcesser(VisualGraphBase nodeGraph)
         {
-            this.TargetNodeGraph = targetNodeGraph;
-            targetNodeGraph.InitializeGraph();
+            this.TargetNodeGraph = nodeGraph;
+            nodeGraph.InitializeGraph();
         }
         public VisualNodeBase GetFirstNode()
         {
             return TargetNodeGraph.StartNode.GetOutpotPortWithIndex(0).GetConnectNode() as VisualNodeBase;
         }
 
-        /// <summary>
-        /// 刷新节点 用于通知编辑器中节点变化
-        /// </summary>
-        /// <param name="nodeBase"></param>
-        public void RefreshNodeChange(VisualNodeBase nodeBase)
+        public virtual void Process(VisualNodeBase currNode)
         {
-            OnChangeNodeEvent?.Invoke(nodeBase);
+#if UNITY_EDITOR
+            currNode.IsRunning = true;
+            var prevNode = GetPrevNodeWithInputPort(currNode, 0);
+            if (prevNode != null)
+            {
+                prevNode.IsRunning = false;
+            }
+#endif
+        }
+
+        /// <summary>
+        /// 获取下一个node
+        /// </summary>
+        /// <param name="currentNode">当前node</param>
+        /// <param name="outputPortIndex">port index</param>
+        public VisualNodeBase GetNextNodeWithOutputPort(VisualNodeBase currentNode, int outputPortIndex)
+        {
+            var port = currentNode.GetOutpotPortWithIndex(outputPortIndex);
+            if (port != null)
+                currentNode = port.GetConnectNode() as VisualNodeBase;
+            else
+                currentNode = null;
+            return currentNode;
+        }
+
+        public VisualNodeBase GetPrevNodeWithInputPort(VisualNodeBase currentNode, int inputPortIndex)
+        {
+            var port = currentNode.GetInputPortWithIndex(inputPortIndex);
+            if (port != null)
+                currentNode = port.GetConnectNode() as VisualNodeBase;
+            else
+                currentNode = null;
+            return currentNode;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace VisualGraphRuntime
     /// 
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class NodeNameAttribute : Attribute
+    public class NodeDisplayAttribute : Attribute
     {
         public string name;
         public int orderID;
@@ -24,7 +24,7 @@ namespace VisualGraphRuntime
         /// <param name="order">节点排序</param>
         /// <param name="iconName">节点图标名 必须是untiy内置图标</param>
         /// <param name="titleBgColorString">标题背景颜色 格式为 #FFFFFFFF</param>
-        public NodeNameAttribute(string name, int order = 0, string iconName = null, string titleBgColorString = null)
+        public NodeDisplayAttribute(string name, int order = 0, string iconName = null, string titleBgColorString = null)
         {
             this.name = name;
             this.orderID = order;
@@ -168,7 +168,7 @@ namespace VisualGraphRuntime
         public string style;
 
         /// <summary>
-        /// 
+        /// 自定义节点样式
         /// </summary>
         /// <param name="_name"></param>
         public CustomNodeStyleAttribute(string style)

@@ -14,7 +14,7 @@ namespace VisualGraphInEditor
             foreach (var element in elements)
             {
                 VisualGraphRuntime.VisualGraphNode node = element.userData as VisualGraphRuntime.VisualGraphNode;
-                group.node_guids.Add(node.guid);
+                group.node_guids.Add(node.Guid);
             }
         }
 

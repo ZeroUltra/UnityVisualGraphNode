@@ -33,50 +33,38 @@ namespace VisualGraphRuntime
         /// </summary>
         public IEnumerable<VisualGraphPort> Outputs { get { foreach (VisualGraphPort port in Ports) { if (port.Direction == VisualGraphPort.PortDirection.Output) yield return port; } } }
 
-
-        [HideInInspector][NonSerialized] public VisualGraph graph;
-
         public int NodeIndex => graph.Nodes.IndexOf(this);
-        /// <summary>
-        /// Get the guid for the Node
-        /// </summary>
-        public string guid
+
+        public string Guid
         {
             get
             {
                 if (string.IsNullOrEmpty(internal_guid))
-                    internal_guid = Guid.NewGuid().ToString();
+                    internal_guid = System.Guid.NewGuid().ToString();
                 return internal_guid;
             }
         }
+
+        /// <summary>
+        /// 节点是否正在运行
+        /// </summary>
+        public bool IsRunning { get; set; } = false;
+
         [HideInNormalInspector]
         public int NodeID;
         [HideInNormalInspector]
         public string NodeDescription;
+
+        [HideInInspector][NonSerialized] public VisualGraph graph;
         /// <summary>
         /// List of all ports that belong to this node (ports can be either in or out
         /// </summary>
         [HideInInspector][SerializeReference] public List<VisualGraphPort> Ports = new List<VisualGraphPort>();
-
         /// <summary>
         /// All Nodes have a guid for references
         /// </summary>
         [HideInInspector][SerializeField] private string internal_guid;
 
-        ///// <summary>
-        ///// Node Setup
-        ///// </summary>
-        //private void OnEnable()
-        //{
-        //    if (string.IsNullOrEmpty(internal_guid))
-        //    {
-        //        internal_guid = Guid.NewGuid().ToString();
-        //    }
-        //}
-
-        /// <summary>
-        /// Called when created. Use this to add required ports and additional setup
-        /// </summary>
         public virtual void Init()
         {
         }
@@ -92,7 +80,7 @@ namespace VisualGraphRuntime
 
             VisualGraphPort graphPort = Activator.CreateInstance(portType) as VisualGraphPort;
             graphPort.Name = name;
-            graphPort.guid = Guid.NewGuid().ToString();
+            graphPort.guid = System.Guid.NewGuid().ToString();
             graphPort.Direction = direction;
             Ports.Add(graphPort);
 
@@ -142,28 +130,17 @@ namespace VisualGraphRuntime
         }
 
         #region UNITY_EDITOR
-
-        /// <summary>
-        /// If set the node will highlight in the editor for visual feedback at runtime. It is up to the user to disable
-        /// other nodes that are active otherwise you will get undesired results in the view.
-        /// </summary>
-        [HideInInspector] public bool editor_ActiveNode;
-
 #if UNITY_EDITOR
-        #region Graph View Editor Values
         [HideInInspector] public Vector2 position;
-        // [HideInInspector][NonSerialized] public object graphElement;
         /// <summary>
         /// 编辑器中的节点视图
         /// </summary>
         [HideInInspector][NonSerialized] public UnityEditor.Experimental.GraphView.Node nodeView;
-        #endregion
 
         public virtual System.Type InputType => typeof(bool);
         public virtual System.Type OutputType => typeof(bool);
 #endif
         #endregion
-
 
         #region 自己添加
 
@@ -176,9 +153,10 @@ namespace VisualGraphRuntime
         {
             return Outputs.ElementAtOrDefault(index);
         }
-
-
-
+        public VisualGraphPort GetInputPortWithIndex(int index)
+        {
+            return Inputs.ElementAtOrDefault(index);
+        }
         #endregion
     }
 }

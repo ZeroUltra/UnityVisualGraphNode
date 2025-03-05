@@ -35,7 +35,7 @@ namespace VisualGraphInEditor
 
 
         private VisualGraph visualGraph;
-        private VisualGraphSearchWindow searchWindow;
+        private VisualGraphNodeTreeWindow nodetreeWindow;
         private VisualGraphEditor editorWindow;
         private Orientation orientation;
         private MiniMap miniMap;
@@ -87,11 +87,11 @@ namespace VisualGraphInEditor
 
             unserializeAndPaste = OnDuplicate; //Ctrl+D
 
+
         }
         public void OnEnable()
         {
             Undo.undoRedoPerformed += OnUndoRedoCallback;
-            // this.RegisterCallback<MouseDownEvent>(OnMouseDown); //不起作用
             this.RegisterCallback<MouseMoveEvent>(OnMouseMove);  //注册移动事件
             this.RegisterCallback<MouseUpEvent>(OnMouseUp);
         }
@@ -102,11 +102,10 @@ namespace VisualGraphInEditor
         public void OnDisable()
         {
             Undo.undoRedoPerformed -= OnUndoRedoCallback;
-            // this.UnregisterCallback<MouseDownEvent>(OnMouseDown);
             this.UnregisterCallback<MouseMoveEvent>(OnMouseMove);
             this.UnregisterCallback<MouseUpEvent>(OnMouseUp);
             visualGraph = null;
-            searchWindow = null;
+            nodetreeWindow = null;
             editorWindow = null;
             miniMap = null;
             grid = null;
@@ -243,21 +242,21 @@ namespace VisualGraphInEditor
 
                 //BlackboardView?.SetVisualGraph(visualGraph);
 
-                searchWindow = ScriptableObject.CreateInstance<VisualGraphSearchWindow>();
-                searchWindow.Configure(editorWindow, this);
+                nodetreeWindow = ScriptableObject.CreateInstance<VisualGraphNodeTreeWindow>();
+                nodetreeWindow.Configure(editorWindow, this);
+                //创建node事件
                 nodeCreationRequest = context =>
                 {
                     var windowContext = new SearchWindowContext(context.screenMousePosition, searchWindowSize.x, searchWindowSize.y);
-
                     // 打开搜索窗口并设置自定义尺寸
-                    SearchWindow.Open(windowContext, searchWindow);
+                    SearchWindow.Open(windowContext, nodetreeWindow);
                 };
 
                 // If the graph doesn't have a start node it's probably the first time we opened it. This means
                 // we will create one to get going.
                 if (visualGraph.StartNode == null)
                 {
-                    VisualGraphRuntime.VisualGraphNode startingNode = Activator.CreateInstance(typeof(VisualGraphStartNode)) as VisualGraphRuntime.VisualGraphNode;
+                    VisualGraphRuntime.VisualGraphNode startingNode = Activator.CreateInstance(typeof(NodeStart)) as VisualGraphRuntime.VisualGraphNode;
                     visualGraph.StartNode = startingNode;
                     startingNode.name = "Start";
                     startingNode.position = new Vector2(30, 150);
@@ -291,7 +290,8 @@ namespace VisualGraphInEditor
                             {
                                 VisualGraphPort other_port = graph_connection.Node.FindPortByGuid(graph_connection.port_guid);
                                 Port other_editor_port = other_port.editor_port as Port;
-                                AddElement(port.ConnectTo(other_editor_port));
+                                var newedge = port.ConnectTo(other_editor_port);
+                                AddElement(newedge);
                             }
                         }
                     }
@@ -417,7 +417,7 @@ namespace VisualGraphInEditor
                 }
             }
             //绘制id
-            if (NodeGraphSetting.Instance.IsShowID && (!((graphNode is VisualGraphStartNode) || graphNode is NodeEnd)))
+            if (NodeGraphSetting.Instance.IsShowID && (!((graphNode is NodeStart) || graphNode is NodeEnd)))
             {
                 VisualElement space = new VisualElement();
                 space.style.flexGrow = 1;  // 这个元素会占据剩余的空间
@@ -468,19 +468,19 @@ namespace VisualGraphInEditor
                 });
                 node.titleContainer.Add(textField);
             }
-            if (NodeGraphSetting.Instance.IsShowIndex)
-            {
-                var labelindex = new Label("idx=" + graphNode.NodeIndex.ToString());
-                labelindex.style.color = new StyleColor(new Color32(161, 211, 203, 255));
-                labelindex.style.fontSize = 11;
-                labelindex.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
-                labelindex.style.justifyContent = Justify.Center;         // 居中显示
-                labelindex.style.unityFontStyleAndWeight = FontStyle.Italic; // 加粗
-                var temp = node.style.flexDirection;
-                node.style.flexDirection = FlexDirection.Row;
-                node.titleContainer.Add(labelindex);
-                node.style.flexDirection = temp;
-            }
+            //if (NodeGraphSetting.Instance.IsShowIndex)
+            //{
+            //    var labelindex = new Label("idx=" + graphNode.NodeIndex.ToString());
+            //    labelindex.style.color = new StyleColor(new Color32(161, 211, 203, 255));
+            //    labelindex.style.fontSize = 11;
+            //    labelindex.style.unityTextAlign = TextAnchor.MiddleLeft;  // 文本左对齐
+            //    labelindex.style.justifyContent = Justify.Center;         // 居中显示
+            //    labelindex.style.unityFontStyleAndWeight = FontStyle.Italic; // 加粗
+            //    var temp = node.style.flexDirection;
+            //    node.style.flexDirection = FlexDirection.Row;
+            //    node.titleContainer.Add(labelindex);
+            //    node.style.flexDirection = temp;
+            //}
 
             node.userData = graphNode;
             node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -583,7 +583,7 @@ namespace VisualGraphInEditor
             string displayName = type.Name;
             string iconName = "";
             Color titleColor = default;
-            var attribute = type.GetCustomAttribute<NodeNameAttribute>();
+            var attribute = type.GetCustomAttribute<NodeDisplayAttribute>();
             if (attribute != null)
             {
                 displayName = attribute.name;
@@ -728,7 +728,11 @@ namespace VisualGraphInEditor
                 port.Add(deleteButton);
 
             }
+
             port.AddManipulator(new EdgeConnector<Edge>(this));
+
+
+
 
             // Put the port in the proper container for the view
             if (direction == Direction.Input)
@@ -769,7 +773,7 @@ namespace VisualGraphInEditor
                 Node = edge.output.node.userData as VisualGraphRuntime.VisualGraphNode,
                 port = graph_output_port,
                 port_guid = graph_output_port.guid,
-                node_guid = graph_output_node.guid
+                node_guid = graph_output_node.Guid
             });
             graph_output_port.Connections.Add(new VisualGraphPort.VisualGraphPortConnection()
             {
@@ -777,7 +781,7 @@ namespace VisualGraphInEditor
                 Node = edge.input.node.userData as VisualGraphRuntime.VisualGraphNode,
                 port = graph_input_port,
                 port_guid = graph_input_port.guid,
-                node_guid = graph_input_node.guid
+                node_guid = graph_input_node.Guid
             });
 
             EditorUtility.SetDirty(visualGraph);
@@ -804,34 +808,34 @@ namespace VisualGraphInEditor
                 await System.Threading.Tasks.Task.Delay(50);
             }
 
-            var edge = lastNodeOutputPort.ConnectTo(newNodeInputPort);
-            edge.input.portColor = edgeColor;
-            edge.output.portColor = edgeColor;
+            var newedge = lastNodeOutputPort.ConnectTo(newNodeInputPort);
+            newedge.input.portColor = edgeColor;
+            newedge.output.portColor = edgeColor;
 
-            VisualGraphRuntime.VisualGraphNode graph_input_node = edge.input.node.userData as VisualGraphRuntime.VisualGraphNode;
-            VisualGraphRuntime.VisualGraphNode graph_output_node = edge.output.node.userData as VisualGraphRuntime.VisualGraphNode;
+            VisualGraphRuntime.VisualGraphNode graph_input_node = newedge.input.node.userData as VisualGraphRuntime.VisualGraphNode;
+            VisualGraphRuntime.VisualGraphNode graph_output_node = newedge.output.node.userData as VisualGraphRuntime.VisualGraphNode;
 
-            VisualGraphPort graph_input_port = edge.input.userData as VisualGraphPort;
-            VisualGraphPort graph_output_port = edge.output.userData as VisualGraphPort;
+            VisualGraphPort graph_input_port = newedge.input.userData as VisualGraphPort;
+            VisualGraphPort graph_output_port = newedge.output.userData as VisualGraphPort;
 
             graph_input_port.Connections.Add(new VisualGraphPort.VisualGraphPortConnection()
             {
                 initialized = true,
-                Node = edge.output.node.userData as VisualGraphRuntime.VisualGraphNode,
+                Node = newedge.output.node.userData as VisualGraphRuntime.VisualGraphNode,
                 port = graph_output_port,
                 port_guid = graph_output_port.guid,
-                node_guid = graph_output_node.guid
+                node_guid = graph_output_node.Guid
             });
             graph_output_port.Connections.Add(new VisualGraphPort.VisualGraphPortConnection()
             {
                 initialized = true,
-                Node = edge.input.node.userData as VisualGraphRuntime.VisualGraphNode,
+                Node = newedge.input.node.userData as VisualGraphRuntime.VisualGraphNode,
                 port = graph_input_port,
                 port_guid = graph_input_port.guid,
-                node_guid = graph_input_node.guid
+                node_guid = graph_input_node.Guid
             });
 
-            AddElement(edge);
+            AddElement(newedge);
 
             EditorUtility.SetDirty(visualGraph);
         }
@@ -982,13 +986,9 @@ namespace VisualGraphInEditor
             {
                 //evt.menu.AppendAction("Create Node", OnContextMenuNodeCreate, DropdownMenuAction.AlwaysEnabled);
                 // evt.menu.AppendSeparator();
-                //OnContextMenuNodeCreate(evt.menu.);
-                SearchWindow.Open(new SearchWindowContext(mouseUpPos + editorWindow.position.position, searchWindowSize.x, searchWindowSize.y), searchWindow);
+                SearchWindow.Open(new SearchWindowContext(mouseUpPos + editorWindow.position.position, searchWindowSize.x, searchWindowSize.y), nodetreeWindow);
             }
-            // base.BuildContextualMenu(evt);
-            //Debug.Log(evt.menu.MenuItems()[0].ToString());
-            //BuildGroupContextualMenu(evt);
-
+            //base.BuildContextualMenu(evt);
         }
         //protected virtual void BuildGroupContextualMenu(ContextualMenuPopulateEvent evt, int menuPosition = -1)
         //{
@@ -998,20 +998,6 @@ namespace VisualGraphInEditor
         //    evt.menu.InsertAction(menuPosition, "Create Group", (e) => SearchWindow.Open(new SearchWindowContext(position), searchWindow));
         //}
 
-        void OnContextMenuNodeCreate(DropdownMenuAction a)
-        {
-            // RequestNodeCreation(null, -1, a.eventInfo.mousePosition);
-            if (nodeCreationRequest == null)
-                return;
-
-            //GUIView guiView = elementPanel.ownerObject as GUIView;
-            //if (guiView == null)
-            //    return;
-            //Vector2 screenPoint = this as .screenPosition.position + position;
-            nodeCreationRequest(new NodeCreationContext() { screenMousePosition = a.eventInfo.mousePosition + editorWindow.position.position, target = null, index = -1 });
-        }
-
-      
         #endregion
     }
 }

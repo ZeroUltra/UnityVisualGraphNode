@@ -1,9 +1,9 @@
 using VisualGraphRuntime;
 namespace VisualGraphNodeSystem
 {
-    [NodeName("结束", orderID = 10000/*,iconName="save"*/)]
+    [NodeDisplay("结束", orderID = 10000)]
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.None)]
-    [CustomNodeStyle("StartNodeStyle")]
+    [CustomNodeStyle("StartEndNodeStyle")]
     public class NodeEnd : VisualNodeBase
     {
 

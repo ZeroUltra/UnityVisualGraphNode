@@ -13,11 +13,10 @@ namespace VisualGraphInEditor
         public virtual Vector2 default_size => GraphSetting.NodeDefaultSize;
         public virtual bool ShowNodeProperties => GraphSetting.IsUseIMGUI;
         public VisualGraphNode Node { get; private set; }
-        public bool IsRunning { get; set; }
+
         protected NodeGraphSetting GraphSetting => NodeGraphSetting.Instance;
 
         private VisualElement selecedElement;
-
 
         public virtual void InitNode(VisualGraphNode graphNode)
         {
@@ -28,17 +27,16 @@ namespace VisualGraphInEditor
             //注册鼠标进入和离开事件
             this.RegisterCallback<MouseEnterEvent>(evt =>
             {
-                if (IsRunning) return;
+                if (Application.isPlaying) return;
                 SetBorderColor(GraphSetting.NodeSelectedBorderColor);
                 SetBorderWidth(1);
             });
 
             this.RegisterCallback<MouseLeaveEvent>(evt =>
             {
-                if (IsRunning) return;
+                if (Application.isPlaying) return;
                 SetBorderColor(Color.clear);
             });
-
         }
         public virtual void DrawNode()
         {
@@ -60,7 +58,6 @@ namespace VisualGraphInEditor
                     {
                         Node.NodeDescription = e.newValue;
                     });
-
                 }
             }
         }
@@ -75,7 +72,7 @@ namespace VisualGraphInEditor
         {
             base.OnSelected();
 
-            if (!(this is VisualGraphStartNodeView))
+            if (!(this is NodeStartEditor))
             {
                 if (!Application.isPlaying)
                 {
@@ -87,7 +84,7 @@ namespace VisualGraphInEditor
         public override void OnUnselected()
         {
             base.OnUnselected();
-            if (!(this is VisualGraphStartNodeView))
+            if (!(this is NodeStartEditor))
             {
                 if (!Application.isPlaying)
                 {
@@ -100,7 +97,7 @@ namespace VisualGraphInEditor
         /// 设置边框颜色
         /// </summary>
         /// <param name="color"></param>
-        internal void SetBorderColor(Color color)
+        public void SetBorderColor(Color color)
         {
             if (selecedElement == null) return;
             selecedElement.style.borderBottomColor = selecedElement.style.borderTopColor = selecedElement.style.borderLeftColor = selecedElement.style.borderRightColor = color;
@@ -114,9 +111,6 @@ namespace VisualGraphInEditor
             if (selecedElement == null) return;
             selecedElement.style.borderBottomWidth = selecedElement.style.borderTopWidth = selecedElement.style.borderLeftWidth = selecedElement.style.borderRightWidth = width;
         }
-        //public void Reset()
-        //{
-        //    this.Reset();
-        //}
+ 
     }
 }

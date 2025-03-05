@@ -14,7 +14,7 @@ using VisualGraphRuntime;
 
 namespace VisualGraphInEditor
 {
-    public class VisualGraphSearchWindow : ScriptableObject, ISearchWindowProvider
+    public class VisualGraphNodeTreeWindow : ScriptableObject, ISearchWindowProvider
     {
         private EditorWindow window;
         private VisualGraphView graphView;
@@ -45,22 +45,6 @@ namespace VisualGraphInEditor
                     }
                 }
             }
-
-            //lineTexture2d = new Texture2D(16, 16);
-            //for (int i = 0; i < lineTexture2d.height; i++)
-            //{
-            //    if (i == 6)
-            //    {
-            //        for (int a = 0; a < lineTexture2d.width; a++)
-            //            lineTexture2d.SetPixel(a, i, Color.white);
-            //    }
-            //    else
-            //    {
-            //        for (int a = 0; a < lineTexture2d.width; a++)
-            //            lineTexture2d.SetPixel(a, i, Color.clear);
-            //    }
-            //}
-            //lineTexture2d.Apply();
         }
 
         //创建搜索tree
@@ -73,7 +57,7 @@ namespace VisualGraphInEditor
             //遍历node 菜单
             foreach (var type in nodeTypes)
             {
-                var nameAttribute = type.GetCustomAttribute<NodeNameAttribute>();
+                var nameAttribute = type.GetCustomAttribute<NodeDisplayAttribute>();
                 if (nameAttribute != null)
                 {
                     string display_name = nameAttribute.name;

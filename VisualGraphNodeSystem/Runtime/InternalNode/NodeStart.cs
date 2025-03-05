@@ -3,6 +3,7 @@
 // date: 2020
 // Copyright (c) Bus Stop Studios.
 ///-------------------------------------------------------------------------------------------------
+using VisualGraphNodeSystem;
 namespace VisualGraphRuntime
 {
     /// <summary>
@@ -10,9 +11,10 @@ namespace VisualGraphRuntime
     /// Possible future development will remove this and give the option to create one.
     /// </summary>
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.None, NodePortAggregateAttribute.PortAggregate.Single)]
-    [NodeName(name: "Start")]
-    [CustomNodeStyle("StartNodeStyle")]
-    public sealed class VisualGraphStartNode : VisualGraphNode
+    [NodeDisplay(name: "Start")]
+    [CustomNodeStyle("StartEndNodeStyle")]
+    public sealed class NodeStart : VisualGraphNode
     {
+
     }
 }

@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Progress;
 namespace VisualGraphNodeSystem.Editor
 {
     public class Helper

@@ -26,8 +26,8 @@ namespace VisualGraphNodeSystem.Editor
         public Vector2 NodeDefaultSize = new Vector2(250, 120);
         [Header("是否使用IMGUI")]
         public bool IsUseIMGUI = true;
-        [Header("是否显示node的Index")]
-        public bool IsShowIndex = false;
+        //[Header("是否显示node的Index")]
+        //public bool IsShowIndex = false;
         [Header("是否显示描述")]
         public bool IsShowDesc = true;
         [Header("是否显示ID")]

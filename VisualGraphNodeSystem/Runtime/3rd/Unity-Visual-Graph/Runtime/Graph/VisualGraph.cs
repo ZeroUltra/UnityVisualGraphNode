@@ -52,7 +52,7 @@ namespace VisualGraphRuntime
                 clone.Nodes[i] = newNode;
             }
 
-            clone.StartNode = clone.FindNodeByGuid(StartNode.guid);
+            clone.StartNode = clone.FindNodeByGuid(StartNode.Guid);
             clone.InitializeGraph();
 
             return clone;
@@ -85,7 +85,7 @@ namespace VisualGraphRuntime
                                 VisualGraphPort otherPort = otherNode.FindPortByGuid(connection.port_guid);
                                 if (otherPort != null)
                                 {
-                                    VisualGraphPort.VisualGraphPortConnection otherConnection = otherPort.FindConnectionByNodeGuid(node.guid);
+                                    VisualGraphPort.VisualGraphPortConnection otherConnection = otherPort.FindConnectionByNodeGuid(node.Guid);
                                     if (otherConnection != null)
                                     {
                                         otherConnection.initialized = true;
@@ -169,7 +169,7 @@ namespace VisualGraphRuntime
         public VisualGraphNode FindNodeByGuid(string guid)
         {
             //return Nodes.Where(n => n.guid.Equals(guid)).FirstOrDefault();
-            return Nodes.FirstOrDefault(n => n.guid == guid);
+            return Nodes.FirstOrDefault(n => n.Guid == guid);
         }
 
         public VisualGraphNode FindNodeByID(int nodeID)

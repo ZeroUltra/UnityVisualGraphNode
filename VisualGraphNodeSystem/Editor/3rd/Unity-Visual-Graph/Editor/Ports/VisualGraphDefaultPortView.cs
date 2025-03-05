@@ -21,7 +21,6 @@ namespace VisualGraphInEditor
                 }
             );
             Add(leftField);
-
         }
         public void CreateViewLable(VisualGraphPort port)
         {

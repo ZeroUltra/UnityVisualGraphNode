@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 ///-------------------------------------------------------------------------------------------------
 // author: William Barry
@@ -20,7 +22,7 @@ namespace VisualGraphInEditor
 
         private VisualGraphView graphView;
         private VisualGraph visualGraph;
-        public UnityEngine.Object objectSelection; // Used for enter/exit playmode
+        // public UnityEngine.Object objectSelection; // Used for enter/exit playmode
 
         private float scale = 1;
         private Vector3 pos = Vector3.zero;
@@ -67,8 +69,6 @@ namespace VisualGraphInEditor
             graphView.OnEnable();
         }
 
-
-
         private void OnDisable()
         {
             scale = graphView.scale;
@@ -81,65 +81,98 @@ namespace VisualGraphInEditor
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
         }
-        VisualGraphNodeView prevNodeView = null;
-        //运行时显示
-        private void OnChangeNodeEvent(VisualNodeBase nodebase)
-        {
-            if (!Application.isPlaying) return;
-            if (prevNodeView != null)
-            {
-                prevNodeView.SetBorderColor(Color.clear);
-                prevNodeView.IsRunning = false;
-            }
-            if (nodebase != null && nodebase.nodeView is VisualGraphNodeView nodeview)
-            {
-                //graphView.AddToSelection(nodebase.nodeView);
-                //graphView.FrameSelection();
-                nodeview.SetBorderColor(Color.green);
-                nodeview.SetBorderWidth(4);
-                prevNodeView = nodeview;
-                prevNodeView.IsRunning = true;
-                //graphView.FrameNext(item =>
-                //{
-                //    if (item is VisualGraphNodeView nodeGraph)
-                //    {
-                //        return nodeview == nodeGraph;
-                //    }
-                //    return false;
-                //});
-            }
-        }
+        //private void UpdatePos(GraphView.FrameType frameType, VisualElement contentViewContainer, VisualElement graphElement)
+        //{
+        //    Rect rectToFit = contentViewContainer.layout;
+        //    Vector3 frameTranslation = Vector3.zero;
+        //    Vector3 frameScaling = Vector3.one;
+
+        //    //if (frameType == GraphView.FrameType.Selection &&
+        //    //    (graphView.selection.Count == 0 || !graphView.selection.Any(e => e.IsSelectable() && !(e is Edge))))
+        //    //    frameType = GraphView.FrameType.All;
+
+        //    // if (frameType == GraphView.FrameType.Selection)
+        //    // {
+        //    //  VisualElement graphElement = graphView.selection[0] as GraphElement;
+        //    if (graphElement != null)
+        //    {
+        //        var rect = new Rect(0.0f, 0.0f, graphElement.layout.width, graphElement.layout.height);
+        //        // Edges don't have a size. Only their internal EdgeControl have a size.
+        //        if (graphElement is Edge)
+        //            graphElement = (graphElement as Edge).edgeControl;
+        //        rectToFit = graphElement.ChangeCoordinatesTo(contentViewContainer, rect);
+        //    }
+        //    var array = new VisualElement[] { graphElement };
+        //    rectToFit = array.Cast<GraphElement>()
+        //        .Aggregate(rectToFit, (current, currentGraphElement) =>
+        //        {
+        //            var rect = new Rect(0.0f, 0.0f, currentGraphElement.layout.width, currentGraphElement.layout.height);
+
+        //            VisualElement currentElement = currentGraphElement;
+        //            if (currentGraphElement is Edge)
+        //                currentElement = (currentGraphElement as Edge).edgeControl;
+        //            return RectUtils.Encompass(current, currentElement.ChangeCoordinatesTo(contentViewContainer, rect));
+        //        });
+        //    GraphView.CalculateFrameTransform(rectToFit, graphView.layout, 30, out frameTranslation, out frameScaling);
+
+        //    // }
+        //    //else if (frameType == GraphView.FrameType.All)
+        //    //{
+        //    // rectToFit = graphView.CalculateRectToFitAll(contentViewContainer);
+        //    // GraphView.CalculateFrameTransform(rectToFit, graphView.layout, 30, out frameTranslation, out frameScaling);
+        //    //} // else keep going if (frameType == FrameType.Origin)
+        //    bool m_FrameAnimate = false;
+
+        //    if (m_FrameAnimate)
+        //    {
+
+        //    }
+        //    else
+        //    {
+        //        Matrix4x4.TRS(frameTranslation, Quaternion.identity, frameScaling);
+        //        //  graphView.UpdateViewTransform(frameTranslation, frameScaling);
+
+        //        graphView.UpdateViewTransform(frameTranslation * 1.6f, frameScaling * 0.5f);
+        //    }
+
+        //    contentViewContainer.MarkDirtyRepaint();
+
+        //    //  GraphView.UpdatePersistedViewTransform();
+
+        //}
 
         private void OnPlayModeState(PlayModeStateChange state)
         {
             switch (state)
             {
                 case PlayModeStateChange.ExitingEditMode:
-                    objectSelection = Selection.activeObject;
+                    // objectSelection = Selection.activeObject;
                     Selection.activeObject = null;
                     break;
 
                 case PlayModeStateChange.EnteredPlayMode:
                     //进入运行时保持原来的样子
-                    Selection.activeObject = objectSelection;
+                    // Selection.activeObject = objectSelection;
                     graphView.SetGraph(visualGraph);
                     graphView.UpdateViewTransform(pos, Vector3.one * scale);
-                    NodeProcesser.OnChangeNodeEvent += OnChangeNodeEvent;
                     break;
 
                 case PlayModeStateChange.ExitingPlayMode:
-                    objectSelection = Selection.activeObject;
-                    Selection.activeObject = null;
+                    //objectSelection = Selection.activeObject;
+                    //Selection.activeObject = null;
+                    foreach (var item in visualGraph.Nodes)
+                    {
+                        item.IsRunning = false;
+                        if (item.IsRunning)
+                        {
+                            item.IsRunning = false;
+                            (item.nodeView as VisualGraphNodeView).SetBorderColor(Color.clear);
+                        }
+                    }
                     break;
 
                 case PlayModeStateChange.EnteredEditMode:
-                    Selection.activeObject = objectSelection;
-                    NodeProcesser.OnChangeNodeEvent -= OnChangeNodeEvent;
-                    if (prevNodeView != null)
-                    {
-                        prevNodeView.SetBorderColor(Color.clear);
-                        prevNodeView.IsRunning = false;
-                    }
+                    // Selection.activeObject = objectSelection;
                     break;
             }
         }
@@ -289,23 +322,93 @@ namespace VisualGraphInEditor
 
             #region 添加搜索
             ToolbarSearchField toolbarSearch = new ToolbarSearchField();
-            toolbarSearch.tooltip = "Search nodes by Desc";
+            toolbarSearch.tooltip = "Search nodes (t:类型 n:名字 d:描述)";
             var text = toolbarSearch.Q<TextField>();
             text.isDelayed = true;
             text.RegisterCallback<ChangeEvent<string>>(evt =>
             {
-                foreach (var node in visualGraph.Nodes)
+                string searchText = evt.newValue.ToLower();
+
+                List<VisualGraphNode> findNodes = new List<VisualGraphNode>();
+                if (searchText.StartsWith("t:"))
                 {
-                    if (string.IsNullOrEmpty(node.NodeDescription)) continue;
-                    if (node.NodeDescription.Contains(evt.newValue))
+                    findNodes = visualGraph.Nodes.FindAll(x => x.GetType().Name.ToLower().Contains(searchText.Substring(2)));
+                }
+                else if (searchText.StartsWith("n:"))
+                {
+                    findNodes = visualGraph.Nodes.FindAll(x => x.GetType().GetCustomAttribute<NodeDisplayAttribute>().name.ToLower().Contains(searchText.Substring(2)));
+                }
+                else if (searchText.StartsWith("d:"))
+                {
+                    findNodes = visualGraph.Nodes.FindAll(x => x.NodeDescription.ToLower().Contains(searchText.Substring(2)));
+                }
+                Debug.Log("搜索结果:" + findNodes.Count);
+                if (findNodes.Count > 0)
+                {
+                    graphView.ClearSelection();
+                    graphView.AddToSelection(findNodes[0].nodeView);
+                    graphView.FrameSelection();
+                    if (findNodes.Count > 1)
                     {
-                        graphView.ClearSelection();
-                        graphView.AddToSelection(node.nodeView);
-                        graphView.FrameSelection();
-                        break;
+                        //想在这添加两个按钮表示上一个下一个，中间是索引文本
+                        var btnNext = new Label();
+                        btnNext.text = "↓";
+                        btnNext.style.width = 20;
+                        btnNext.style.unityTextAlign = TextAnchor.MiddleCenter;
+
+                        var btnPrev = new Label();
+                        btnPrev.text = "↑";
+                        btnPrev.style.width = 20;
+                        btnPrev.style.unityTextAlign = TextAnchor.MiddleCenter;
+
+                        var indexText = new Label();
+                        indexText.text = "1/" + findNodes.Count;
+                        indexText.style.width = 40;
+                        indexText.style.unityTextAlign = TextAnchor.MiddleCenter;
+
+                        toolbarSearch.Add(btnPrev);
+                        toolbarSearch.Add(indexText);
+                        toolbarSearch.Add(btnNext);
+
+                        int currentIndex = 1;
+                        btnNext.RegisterCallback<ClickEvent>((evt) =>
+                        {
+                            currentIndex++;
+                            if (currentIndex > findNodes.Count)
+                            {
+                                currentIndex = 1;
+                            }
+                            indexText.text = currentIndex + "/" + findNodes.Count;
+                            graphView.ClearSelection();
+                            graphView.AddToSelection(findNodes[currentIndex - 1].nodeView);
+                            graphView.FrameSelection();
+                        });
+                        btnPrev.RegisterCallback<ClickEvent>((evt) =>
+                        {
+                            currentIndex--;
+                            if (currentIndex < 1)
+                            {
+                                currentIndex = findNodes.Count;
+                            }
+                            indexText.text = currentIndex + "/" + findNodes.Count;
+                            graphView.ClearSelection();
+                            graphView.AddToSelection(findNodes[currentIndex - 1].nodeView);
+                            graphView.FrameSelection();
+                        });
                     }
                 }
-                toolbarSearch.SetValueWithoutNotify(string.Empty);
+                if (findNodes.Count == 0)
+                {
+                    //移除最后三个 本身有6个
+                    if (toolbarSearch.childCount == 6)
+                    {
+                        toolbarSearch.RemoveAt(5);
+                        toolbarSearch.RemoveAt(4);
+                        toolbarSearch.RemoveAt(3);
+                    }
+                    graphView.ClearSelection();
+                    //toolbarSearch.SetValueWithoutNotify(string.Empty);
+                }
             });
             toolbar.Add(toolbarSearch);
             #endregion
@@ -389,85 +492,33 @@ namespace VisualGraphInEditor
             }
         }
 
-        /// <summary>
-        /// TODO: When this works we can highlight the node that is active great for
-        ///		  runtime cases and viewing things like FSM
-        /// </summary>
-        //private void Update()
-        //{
-        //    if (Application.isPlaying)
-        //    {
-        //        if (graphView != null)
-        //        {
-        //            graphView.Update();
-        //        }
-        //    }
-        //}
 
-        /// <summary>
-        /// Handle selection change. This will check the active object to see if it is a
-        /// VisualGraph Scriptable object. If it is not then it will see if the selected
-        /// object is a GameObject. If the selection is a GameObject then we iterate over
-        /// all MonoBehaviour (scripts) to see if one is a has a VisualGraphMonoBehaviour<>.
-        /// If we find a Component that is a VisualGraphMonoBehaviour<> then we first check
-        /// if there is an InternalGraph (which is used during runtime) otherwise we will
-        /// use the Graph itself (needs to change when runtime is invoked in the editor)
-        /// </summary>
-        //void OnSelectionChange()
-        //{
-        //    return;
-        //    visualGraphComponent = null;
-
-        //    VisualGraph graph = Selection.activeObject as VisualGraph;
-        //    if (graph == null && graphView.activeVisualGraph)
-        //    {
-        //        //SetVisualGraph(null);
-        //    }
-        //    else if (graph != null && graph != visualGraph)
-        //    {
-        //        if (!string.IsNullOrEmpty(AssetDatabase.GetAssetPath(graph)))
-        //        {
-        //            SetVisualGraph(graph);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        GameObject go = Selection.activeObject as GameObject;
-        //        if (go != null)
-        //        {
-        //            Component[] components = go.GetComponents(typeof(MonoBehaviour));
-        //            foreach (var comp in components)
-        //            {
-        //                // Because everything in Components is a MonoBehaviour we can get the base type
-        //                // If they base type is a generic of type VisualGraphMonoBehaviour<> then we can try and
-        //                // get the internal graph (this is for editor runtime). If that doesn't exist use the set graph.
-        //                if (comp == null) continue;
-
-        //                Type t = comp.GetType().BaseType;
-        //                if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(VisualGraphMonoBehaviour<>))
-        //                {
-        //                    graph = (VisualGraph)t.GetField("internalGraph", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(comp);
-        //                    if (graph != null)
-        //                    {
-        //                        visualGraphComponent = comp;
-        //                        SetVisualGraph(graph);
-        //                        return;
-        //                    }
-
-        //                    //graph = (VisualGraph)t.GetField("graph", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(comp);
-        //                    graph = (VisualGraph)t.GetField("graph").GetValue(comp);
-        //                    if (graph != null)
-        //                    {
-        //                        visualGraphComponent = comp;
-        //                        SetVisualGraph(graph);
-        //                        return;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-
+        private void Update()
+        {
+            //运行时高亮显示正在运行时的节点
+            if (Application.isPlaying)
+            {
+                if (visualGraph != null)
+                {
+                    foreach (var node in visualGraph.Nodes)
+                    {
+                        if (node.nodeView is VisualGraphNodeView nodeview)
+                        {
+                            if (node.IsRunning)
+                            {
+                                //graphView.AddToSelection(nodebase.nodeView);
+                                //graphView.FrameSelection();
+                                nodeview.SetBorderColor(Color.green);
+                                nodeview.SetBorderWidth(4);
+                            }
+                            else
+                            {
+                                nodeview.SetBorderColor(Color.clear);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
