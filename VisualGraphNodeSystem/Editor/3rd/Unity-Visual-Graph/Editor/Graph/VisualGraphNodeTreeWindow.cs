@@ -60,10 +60,15 @@ namespace VisualGraphInEditor
                 var nameAttribute = type.GetCustomAttribute<NodeDisplayAttribute>();
                 if (nameAttribute != null)
                 {
-                    string display_name = nameAttribute.name;
-                    int orderID = nameAttribute.orderID;
-                    string iconName = nameAttribute.iconName;
+                    string display_name = nameAttribute.Name;
+                    int orderID = nameAttribute.Order;
+                    string iconName = nameAttribute.Icon;
                     listMenu.Add((orderID, display_name, iconName, type));
+                }
+                else
+                {
+                    string display_name = type.Name;
+                    listMenu.Add((0, display_name, null, type));
                 }
             }
             //排序

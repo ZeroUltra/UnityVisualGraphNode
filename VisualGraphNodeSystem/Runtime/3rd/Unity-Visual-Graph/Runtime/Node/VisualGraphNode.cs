@@ -157,6 +157,11 @@ namespace VisualGraphRuntime
         {
             return Inputs.ElementAtOrDefault(index);
         }
+
+        public NodeDisplayAttribute GetNodeDisplayAttribute()
+        { 
+            return GetType().GetCustomAttribute<NodeDisplayAttribute>();
+        }
         #endregion
     }
 }

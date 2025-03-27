@@ -336,7 +336,7 @@ namespace VisualGraphInEditor
                 }
                 else if (searchText.StartsWith("n:"))
                 {
-                    findNodes = visualGraph.Nodes.FindAll(x => x.GetType().GetCustomAttribute<NodeDisplayAttribute>().name.ToLower().Contains(searchText.Substring(2)));
+                    findNodes = visualGraph.Nodes.FindAll(x => x.GetType().GetCustomAttribute<NodeDisplayAttribute>().Name.ToLower().Contains(searchText.Substring(2)));
                 }
                 else if (searchText.StartsWith("d:"))
                 {
@@ -345,6 +345,8 @@ namespace VisualGraphInEditor
                 Debug.Log("搜索结果:" + findNodes.Count);
                 if (findNodes.Count > 0)
                 {
+                    //排序
+                    findNodes.Sort((x, y) => x.NodeID.CompareTo(y.NodeID));
                     graphView.ClearSelection();
                     graphView.AddToSelection(findNodes[0].nodeView);
                     graphView.FrameSelection();

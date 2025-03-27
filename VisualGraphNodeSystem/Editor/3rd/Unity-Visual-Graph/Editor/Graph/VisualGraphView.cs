@@ -586,9 +586,9 @@ namespace VisualGraphInEditor
             var attribute = type.GetCustomAttribute<NodeDisplayAttribute>();
             if (attribute != null)
             {
-                displayName = attribute.name;
-                iconName = attribute.iconName;
-                titleColor = attribute.titleBgColor;
+                displayName = attribute.Name;
+                iconName = attribute.Icon;
+                titleColor = attribute.TitleColor;
             }
             return (displayName, iconName, titleColor);
         }
@@ -646,6 +646,7 @@ namespace VisualGraphInEditor
         /// <param name="node"></param>
         private void AddPort(VisualGraphPort graphPort, Node node)
         {
+
             VisualGraphRuntime.VisualGraphNode graphNode = node.userData as VisualGraphRuntime.VisualGraphNode;
 
             // Determine the direction of the port (In/Out)
@@ -705,7 +706,6 @@ namespace VisualGraphInEditor
             }
 
             graphPortView.CreateView(graphPort);
-
             port.Add(graphPortView);
 
             // If the user can remove a port add a button
@@ -715,23 +715,16 @@ namespace VisualGraphInEditor
                 {
                     text = "X"
                 };
-                //deleteButton.style.marginRight = 50;
-                //deleteButton.style.marginRight = 30;
 
                 var textField = port.Q<TextField>();
-                //textField.style.width = 150;
-                textField.style.minWidth = 150;
-                textField.multiline = true;
-                textField.style.whiteSpace = WhiteSpace.Normal;
-                textField.style.alignContent = Align.Stretch;
-
-                port.Add(deleteButton);
+                textField.parent.style.flexGrow = 1;
+                textField.style.width = new Length(100, LengthUnit.Percent);
+                textField.style.height = new Length(100, LengthUnit.Percent);
+                port.Insert(1,deleteButton);
 
             }
 
             port.AddManipulator(new EdgeConnector<Edge>(this));
-
-
 
 
             // Put the port in the proper container for the view
@@ -744,7 +737,7 @@ namespace VisualGraphInEditor
                 node.outputContainer.Add(port);
             }
             port.portColor = graphPort.Connections.Count() > 0 ? edgeColor : edgeDropColor;
-
+          
             node.RefreshExpandedState();
             node.RefreshPorts();
         }

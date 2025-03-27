@@ -17,9 +17,10 @@ namespace VisualGraphInEditor
         protected NodeGraphSetting GraphSetting => NodeGraphSetting.Instance;
 
         private VisualElement selecedElement;
-
+        private NodeDisplayAttribute nodeDisplayAttribute;
         public virtual void InitNode(VisualGraphNode graphNode)
         {
+            nodeDisplayAttribute = graphNode.GetNodeDisplayAttribute();
             Node = graphNode;
             if (selecedElement == null && this[1] != null)
                 selecedElement = this[1];
@@ -40,7 +41,7 @@ namespace VisualGraphInEditor
         }
         public virtual void DrawNode()
         {
-            if (GraphSetting.IsShowDesc)
+            if (GraphSetting.IsShowDesc && (nodeDisplayAttribute!=null && nodeDisplayAttribute.VisableDesc))
             {
                 //添加描述
                 if (this.Node is VisualNodeBase visualNodeBase)
@@ -111,6 +112,6 @@ namespace VisualGraphInEditor
             if (selecedElement == null) return;
             selecedElement.style.borderBottomWidth = selecedElement.style.borderTopWidth = selecedElement.style.borderLeftWidth = selecedElement.style.borderRightWidth = width;
         }
- 
+
     }
 }

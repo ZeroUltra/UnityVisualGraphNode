@@ -13,31 +13,34 @@ namespace VisualGraphRuntime
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class NodeDisplayAttribute : Attribute
     {
-        public string name;
-        public int orderID;
-        public string iconName;
-        public Color titleBgColor = default;
+        public string Name;
+        public int Order;
+        public string Icon;
+        public bool VisableDesc;
+        public Color TitleColor = default;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="name">节点名</param>
         /// <param name="order">节点排序</param>
-        /// <param name="iconName">节点图标名 必须是untiy内置图标</param>
-        /// <param name="titleBgColorString">标题背景颜色 格式为 #FFFFFFFF</param>
-        public NodeDisplayAttribute(string name, int order = 0, string iconName = null, string titleBgColorString = null)
+        /// <param name="icon">节点图标名 必须是untiy内置图标</param>
+        /// <param name="visableDesc">是否可见描述,如果想部分不要描述设置它为false</param>
+        /// <param name="titleColorString">标题背景颜色 格式为 #FFFFFFFF</param>
+        public NodeDisplayAttribute(string name, int order = 0, string icon = null, bool visableDesc = true, string titleColorString = null)
         {
-            this.name = name;
-            this.orderID = order;
-            this.iconName = iconName;
-            if (!string.IsNullOrEmpty(titleBgColorString))
+            this.Name = name;
+            this.Order = order;
+            this.Icon = icon;
+            this.VisableDesc = visableDesc;
+            if (!string.IsNullOrEmpty(titleColorString))
             {
-                if (!ColorUtility.TryParseHtmlString(titleBgColorString, out Color color))
+                if (!ColorUtility.TryParseHtmlString(titleColorString, out Color color))
                 {
-                    Debug.LogError($"Converted color error: [{titleBgColorString}]");
+                    Debug.LogError($"Converted color error: [{titleColorString}]");
                 }
                 else
                 {
-                    titleBgColor = color;
+                    TitleColor = color;
                 }
             }
         }
