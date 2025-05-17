@@ -3,7 +3,7 @@ using VisualGraphRuntime;
 
 namespace VisualGraphNodeSystem
 {
-    [NodeDisplay("选项面板", 1000, Icon = "listview on")]
+    [NodeDisplay("选项面板", 1000, icon: "listview on")]
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Multiple)]
     public class NodeOption : VisualNodeBase
     {

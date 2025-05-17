@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NodeGraphSetting
   m_EditorClassIdentifier: 
   LabelWidth: 120
-  NodeDefaultSize: {x: 200, y: 120}
+  NodeDefaultSize: {x: 250, y: 120}
   IsUseIMGUI: 1
   IsShowDesc: 1
   IsShowID: 1

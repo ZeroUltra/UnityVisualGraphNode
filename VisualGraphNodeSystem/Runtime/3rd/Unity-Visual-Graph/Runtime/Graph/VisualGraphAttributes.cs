@@ -13,11 +13,11 @@ namespace VisualGraphRuntime
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class NodeDisplayAttribute : Attribute
     {
-        public string Name;
-        public int Order;
-        public string Icon;
-        public bool VisableDesc;
-        public Color TitleColor = default;
+        public string Name { get; private set; }
+        public int Order { get; private set; }
+        public string Icon { get; private set; }
+        public bool VisableDesc { get; private set; }
+        public Color TitleColor { get; private set; } = default;
         /// <summary>
         /// 
         /// </summary>

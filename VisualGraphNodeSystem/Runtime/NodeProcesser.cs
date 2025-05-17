@@ -2,21 +2,22 @@ namespace VisualGraphNodeSystem
 {
     public class NodeProcesser
     {
-        public VisualGraphBase TargetNodeGraph { get; private set; }
-
+        public VisualGraphBase NodeGraph { get; private set; }
         public NodeProcesser(VisualGraphBase nodeGraph)
         {
-            this.TargetNodeGraph = nodeGraph;
+            this.NodeGraph = nodeGraph;
             nodeGraph.InitializeGraph();
         }
         public VisualNodeBase GetFirstNode()
         {
-            return TargetNodeGraph.StartNode.GetOutpotPortWithIndex(0).GetConnectNode() as VisualNodeBase;
+            return NodeGraph.StartNode.GetOutpotPortWithIndex(0).GetConnectNode() as VisualNodeBase;
         }
 
         public virtual void Process(VisualNodeBase currNode)
         {
 #if UNITY_EDITOR
+            if(currNode == null)
+                UnityEngine.Debug.LogError("currNode is null !!!");
             currNode.IsRunning = true;
             var prevNode = GetPrevNodeWithInputPort(currNode, 0);
             if (prevNode != null)
@@ -40,7 +41,12 @@ namespace VisualGraphNodeSystem
                 currentNode = null;
             return currentNode;
         }
-
+        /// <summary>
+        /// 获取上一个node
+        /// </summary>
+        /// <param name="currentNode"></param>
+        /// <param name="inputPortIndex"></param>
+        /// <returns></returns>
         public VisualNodeBase GetPrevNodeWithInputPort(VisualNodeBase currentNode, int inputPortIndex)
         {
             var port = currentNode.GetInputPortWithIndex(inputPortIndex);

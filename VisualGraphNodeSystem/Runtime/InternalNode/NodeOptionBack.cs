@@ -1,6 +1,6 @@
 using VisualGraphNodeSystem;
 using VisualGraphRuntime;
-[NodeDisplay("选项返回", 1001, Icon = "rotatetool on")]
+[NodeDisplay("选项返回", 1001, icon: "rotatetool on")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.None)]
 public class NodeOptionBack : VisualNodeBase
 {
