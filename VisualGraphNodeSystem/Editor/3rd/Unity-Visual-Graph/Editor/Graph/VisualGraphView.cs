@@ -28,13 +28,13 @@ namespace VisualGraphInEditor
         private readonly Color edgeDropColor = new Color(0, 0.6f, 0.6f, 0.6f);
         //private readonly Color edgeDropColor = Color.yellow;
 
-        public VisualGraph VisualGraph { get { return visualGraph; } private set { } }
+        public VisualGraphBase VisualGraph { get { return visualGraph; } private set { } }
 
         //public BlackboardView BlackboardView { get; private set; }
         //public Blackboard Blackboard { get { return BlackboardView.blackboard; } private set { } }
 
 
-        private VisualGraph visualGraph;
+        private VisualGraphBase visualGraph;
         private VisualGraphNodeTreeWindow nodetreeWindow;
         private VisualGraphEditor editorWindow;
         private Orientation orientation;
@@ -218,7 +218,7 @@ namespace VisualGraphInEditor
         /// Load the Visual Graph into the Editor Graph View
         /// </summary>
         /// <param name="_graph"></param>
-        public void SetGraph(VisualGraph _visualGraph)
+        public void SetGraph(VisualGraphBase _visualGraph)
         {
             // Set the graph to null and clear the edges and nodes before we get going.
             visualGraph = null;

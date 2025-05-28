@@ -16,7 +16,7 @@ namespace VisualGraphRuntime
     /// </summary>
     [Serializable]
     [GraphOrientation()]
-    public abstract class VisualGraph : ScriptableObject
+    public abstract class VisualGraphBase : ScriptableObject
     {
         /// <summary>
         /// Starting node can be found in the Nodes list as well
@@ -49,15 +49,15 @@ namespace VisualGraphRuntime
         /// <summary>
         /// Blackboard properties. Get/Set these through your behaviour
         /// </summary>
-        [SerializeReference][HideInInspector] public List<AbstractBlackboardProperty> BlackboardProperties = new List<AbstractBlackboardProperty>();
+        //[SerializeReference][HideInInspector] public List<AbstractBlackboardProperty> BlackboardProperties = new List<AbstractBlackboardProperty>();
 
         /// <summary>
         /// Creates a clone of this graph (used for internal graph settings for the MonoBehaviour)
         /// </summary>
         /// <returns></returns>
-        public virtual VisualGraph Clone()
+        public virtual VisualGraphBase Clone()
         {
-            VisualGraph clone = Instantiate(this);
+            VisualGraphBase clone = Instantiate(this);
             for (int i = 0; i < Nodes.Count; i++)
             {
                 VisualGraphNode newNode = Instantiate(Nodes[i]) as VisualGraphNode;
@@ -201,27 +201,23 @@ namespace VisualGraphRuntime
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        public bool GetPropertyValue<T>(string propertyName, ref T value)
-        {
-            for (int i = 0; i < BlackboardProperties.Count; i++)
-            {
-                if (BlackboardProperties[i].Name == propertyName)
-                {
-                    AbstractBlackboardProperty<T> prop = (AbstractBlackboardProperty<T>)BlackboardProperties[i];
-                    if (prop != null)
-                    {
-                        value = prop.Value;
-                        return true;
-                    }
-                }
-            }
-            Debug.LogWarning($"Unable to find property {propertyName}");
-            return false;
-        }
-
-
-
-
+        //public bool GetPropertyValue<T>(string propertyName, ref T value)
+        //{
+        //    for (int i = 0; i < BlackboardProperties.Count; i++)
+        //    {
+        //        if (BlackboardProperties[i].Name == propertyName)
+        //        {
+        //            AbstractBlackboardProperty<T> prop = (AbstractBlackboardProperty<T>)BlackboardProperties[i];
+        //            if (prop != null)
+        //            {
+        //                value = prop.Value;
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //    Debug.LogWarning($"Unable to find property {propertyName}");
+        //    return false;
+        //}
 
 #if UNITY_EDITOR
         //public void OnInitGraph(VisualGraphView)

@@ -14,7 +14,7 @@ namespace VisualGraphNodeSystem.Test
     {
         public Text text;
         public AudioSource audioSource;
-        public VisualGraphBase nodeGraph;
+        public VisualGraph nodeGraph;
         public Button[] btnOps;
        
         private void Start()
@@ -33,10 +33,10 @@ namespace VisualGraphNodeSystem.Test
     {
         public Text text;
         public AudioSource audioSource;
-        public VisualGraphBase nodeGraph;
+        public VisualGraph nodeGraph;
         public Button[] btnOps;
 
-        public MyNodeProcesser(VisualGraphBase nodeGraph) : base(nodeGraph)
+        public MyNodeProcesser(VisualGraph nodeGraph) : base(nodeGraph)
         {
 
         }

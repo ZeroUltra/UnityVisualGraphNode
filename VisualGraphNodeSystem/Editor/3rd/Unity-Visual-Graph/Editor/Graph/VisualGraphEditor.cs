@@ -21,7 +21,7 @@ namespace VisualGraphInEditor
     {
 
         private VisualGraphView graphView;
-        private VisualGraph visualGraph;
+        private VisualGraphBase visualGraph;
         // public UnityEngine.Object objectSelection; // Used for enter/exit playmode
 
         private float scale = 1;
@@ -34,7 +34,7 @@ namespace VisualGraphInEditor
         /// </summary>
         /// <param name="_visualGraph"></param>
         /// <returns></returns>
-        public static VisualGraphEditor CreateGraphViewWindow(VisualGraph _visualGraph, bool forceSet = false)
+        public static VisualGraphEditor CreateGraphViewWindow(VisualGraphBase _visualGraph, bool forceSet = false)
         {
             var window = GetWindow<VisualGraphEditor>();
             window.SetVisualGraph(_visualGraph, forceSet);
@@ -181,7 +181,7 @@ namespace VisualGraphInEditor
         /// Change the Visual Graph
         /// </summary>
         /// <param name="_visualGraph"></param>
-        private void SetVisualGraph(VisualGraph _visualGraph, bool forceSet = false)
+        private void SetVisualGraph(VisualGraphBase _visualGraph, bool forceSet = false)
         {
             visualGraph = _visualGraph;
             if (visualGraph == null)
@@ -232,6 +232,7 @@ namespace VisualGraphInEditor
             #region 按钮->序列化保存
             ToolbarButton btnSave = new ToolbarButton();
             btnSave.text = "Serialize And Save";
+            btnSave.tooltip = "序列化保存所有节点";
             btnSave.style.width = 135;
             btnSave.style.unityTextAlign = TextAnchor.MiddleRight;
             Image icon = new Image();
@@ -266,11 +267,12 @@ namespace VisualGraphInEditor
             #region 按钮->排序id
             ToolbarButton btnSortID = new ToolbarButton();
             btnSortID.text = "Sort ID";
+            btnSortID.tooltip = "将所有节点的ID排序";
             btnSortID.style.width = 60;
             btnSortID.style.unityTextAlign = TextAnchor.MiddleCenter;
             btnSortID.RegisterCallback<ClickEvent>((evt) =>
             {
-                VisualNodeBase startNode = null;
+                var startNode = visualGraph.StartNode;
                 int id = 1;
                 if (startNode != null)
                 {

@@ -55,7 +55,7 @@ namespace VisualGraphRuntime
         [HideInNormalInspector]
         public string NodeDescription;
 
-        [HideInInspector][NonSerialized] public VisualGraph graph;
+        [HideInInspector][NonSerialized] public VisualGraphBase graph;
         /// <summary>
         /// List of all ports that belong to this node (ports can be either in or out
         /// </summary>

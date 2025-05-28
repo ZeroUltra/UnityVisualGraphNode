@@ -2,8 +2,8 @@ namespace VisualGraphNodeSystem
 {
     public class NodeProcesser
     {
-        public VisualGraphBase NodeGraph { get; private set; }
-        public NodeProcesser(VisualGraphBase nodeGraph)
+        public VisualGraph NodeGraph { get; private set; }
+        public NodeProcesser(VisualGraph nodeGraph)
         {
             this.NodeGraph = nodeGraph;
             nodeGraph.InitializeGraph();

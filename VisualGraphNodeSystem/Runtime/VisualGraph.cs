@@ -5,7 +5,7 @@ namespace VisualGraphNodeSystem
     [CreateAssetMenu(fileName = "NewNodeGraph", menuName = "Create Node Graph/New Node Graph", order = -11)]
 
     [DefaultNodeType(typeof(VisualNodeBase))]
-    public class VisualGraphBase : VisualGraph
+    public class VisualGraph : VisualGraphBase
     {
 #if UNITY_EDITOR
         [Multiline(3)]

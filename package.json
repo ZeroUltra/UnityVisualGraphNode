@@ -1,19 +1,22 @@
 {
-    "name": "com.zeroultra.visualgraphnode",
-    "version": "1.0.3",
-    "displayName": "Visual Graph Node System",
-    "description": "Unity可视化节点编辑器",
-    "documentationUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
-    "changelogUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
-    "licensesUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
-    "keywords": ["visual","node"],
-    "samples": [
-      {
-        "displayName": "Test",
-        "path": "Samples~/"
-      }
-    ],
-    "author": {
-      "name": "ZeroUltra"
+  "name": "com.zeroultra.visualgraphnode",
+  "version": "2.0.0",
+  "displayName": "Visual Graph Node System",
+  "description": "Unity\u53ef\u89c6\u5316\u8282\u70b9\u7f16\u8f91\u5668",
+  "documentationUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
+  "changelogUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
+  "licensesUrl": "https://github.com/ZeroUltra/UnityVisualGraphNode",
+  "keywords": [
+    "visual",
+    "node"
+  ],
+  "samples": [
+    {
+      "displayName": "Test",
+      "path": "Samples~/"
     }
+  ],
+  "author": {
+    "name": "ZeroUltra"
   }
+}

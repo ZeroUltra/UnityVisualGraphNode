@@ -9,13 +9,13 @@ using VisualGraphRuntime;
 
 namespace VisualGraphInEditor
 {
-    [CustomEditor(typeof(VisualGraph), true)]
+    [CustomEditor(typeof(VisualGraphBase), true)]
     public class VisualGraphInspector : Editor
     {
         [OnOpenAssetAttribute(1)]
         public static bool OpenVisualGraph(int instanceID, int line)
         {
-            VisualGraph graph = EditorUtility.InstanceIDToObject(instanceID) as VisualGraph;
+            VisualGraphBase graph = EditorUtility.InstanceIDToObject(instanceID) as VisualGraphBase;
             if (graph != null)
             {
                 VisualGraphEditor.CreateGraphViewWindow(graph, true);
