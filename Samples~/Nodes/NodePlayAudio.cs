@@ -1,9 +1,12 @@
 using VisualGraphRuntime;
 using UnityEngine;
 using VisualGraphNodeSystem;
-[NodeName("播放音频",iconName = "AudioSource Icon")]
-[NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-public class NodePlayAudio : VisualNodeBase
+namespace VisualGraphNodeSystem.Test
 {
-    public AudioClip AudioClip;
+    [NodeDisplay("(Test)播放音频", icon: "AudioSource Icon")]
+    [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
+    public class NodePlayAudio : VisualNodeBase
+    {
+        public AudioClip AudioClip;
+    }
 }

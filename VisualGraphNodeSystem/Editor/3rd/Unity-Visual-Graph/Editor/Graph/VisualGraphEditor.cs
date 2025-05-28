@@ -270,7 +270,7 @@ namespace VisualGraphInEditor
             btnSortID.style.unityTextAlign = TextAnchor.MiddleCenter;
             btnSortID.RegisterCallback<ClickEvent>((evt) =>
             {
-                var startNode = visualGraph.StartNode;
+                VisualNodeBase startNode = null;
                 int id = 1;
                 if (startNode != null)
                 {

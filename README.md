@@ -1,5 +1,5 @@
-# UnityVisualGraphNode
-## Unity 可视化节点编辑器
+# UnityVisualGraphNode可视化节点编辑器
+## 介绍
 
 ![1](https://raw.githubusercontent.com/ZeroUltra/MediaLibrary/main/Imgs/202211131344795.gif)
 
@@ -8,17 +8,21 @@
 * 高度自由定制
 * 运行时定位节点
 
-## 如何使用
+## 使用步骤
 
-1. 新建脚本继承`NodeBase`即可(可直接使用 Project试图中鼠标右键点击->Create->Visual Node C# Script)
+1. 首先新建一个`NodeGraphSetting`,添加常用配置
+
+     ![image-20250528151059585](https://raw.githubusercontent.com/ZeroUltra/MediaLibrary/main/Imgs/202505281511446.png)
+
+2. 新建脚本继承`NodeBase`即可(可直接使用 Project试图中鼠标右键点击->Create->Visual Node C# Script) 
 
     ```c#
     using VisualGraphNodeSystem;
     using VisualGraphRuntime;
     
     //不添加NodeName特性则为脚本默认名
-    //节点名字 order:排序(超过10中间会有横线) iconName:图标名字(unity中内置图标名字)  titleBgColorString:标题背景颜色
-    [NodeName("node示例", order=1, iconName = "d_ContentSizeFitter Icon"),titleBgColorString="#ffffff"]
+    //节点名字 order:排序(超过10中间会有横线) icon:图标名字(unity中内置图标名字)  visableDesc:是否显示节点描述 titleColorString:标题背景颜色
+    [NodeDisplay("node示例", order=1, icon="d_ContentSizeFitter Icon",visableDesc=true, titleColorString="#ffffff"]
     //输入输出端口类型 (输入输出端口数量)
     [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
     public class NodeSample : VisualNodeBase
@@ -26,44 +30,46 @@
         public float waitDuration;
     }
     
+                 
+                 
+    ```
+    
+    支持自定义序列化保存
+    
+    ```c#
+    using VisualGraphRuntime;
+    using UnityEngine;
+    using VisualGraphNodeSystem;
+    [NodeName("NodeWait")]
+    [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
+    public class NodeWait : VisualNodeBase
+    {
+        public float waitDuration = 1.0f;
+    
+        public override string ToSerialize()
+        {
+            return $"@NodeWait|{waitDuration}";
+        }
+        public override void FromSerialize(string str)
+        {
+            waitDuration = float.Parse(str.Split("|")[1]);
+        }
+    }
     ```
 
 ​	其中图标名字均是unity内部icon可参考:[jasursadikov/unity-editor-icons) (github.com)](https://github.com/jasursadikov/unity-editor-icons)
 
-​	支持自定义序列化保存
-
-```c#
-using VisualGraphRuntime;
-using UnityEngine;
-using VisualGraphNodeSystem;
-[NodeName("NodeWait")]
-[NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-public class NodeWait : VisualNodeBase
-{
-    public float waitDuration = 1.0f;
-
-    public override string ToSerialize()
-    {
-        return $"@NodeWait|{waitDuration}";
-    }
-    public override void FromSerialize(string str)
-    {
-        waitDuration = float.Parse(str.Split("|")[1]);
-    }
-}
-```
 
 
-
-2. 新建一个NodeGrpah,进行节点编辑
+3. 新建一个NodeGrpah,进行节点编辑
 
  ![image-20241016134552468](https://raw.githubusercontent.com/ZeroUltra/MediaLibrary/main/Imgs/202410161435752.png)
 
-3. 根据节点内部逻辑,自行编辑代码
-4. **具体可导入Sample文件夹查看示例**
-5. `NodeGraphSetting`是一些常用配置
+4. **必须先添加一个Start节点**, 其他根据节点内部逻辑,自行编辑代码
 
+5. **具体可导入Sample文件夹查看示例**
 
+   
 
 ## 注意点
 
@@ -82,6 +88,18 @@ public class NodeWait : VisualNodeBase
 如果有其他版本问题,请提交issue
 
 ## ChangeLog
+
+#### v2.0.0
+
+* 修复节点丢失打不开的情况
+* 现在打开graph是空的,自行添加Start节点作为起始点
+* 更改使用步骤
+
+**升级警告:如果之前版本用着没问题,先不要升级2.0.0. 负责可能需要重新连接节点,建议新项目使用**
+
+**升级警告:如果之前版本用着没问题,先不要升级2.0.0. 负责可能需要重新连接节点,建议新项目使用**
+
+**升级警告:如果之前版本用着没问题,先不要升级2.0.0. 负责可能需要重新连接节点,建议新项目使用**
 
 #### v1.0.3
 

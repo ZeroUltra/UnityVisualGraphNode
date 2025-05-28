@@ -21,12 +21,25 @@ namespace VisualGraphRuntime
         /// <summary>
         /// Starting node can be found in the Nodes list as well
         /// </summary>
-        [HideInInspector] public VisualGraphNode StartNode;
+        //[HideInInspector] 
+        public VisualGraphNode StartNode
+        {
+            get
+            {
+                var startnode = Nodes.Find(n => n is NodeStart);
+                if (startnode == null)
+                {
+                    Debug.LogError("Start node is Empty !!! Please add a NodeStart to the graph");
+                }
+                return startnode;
+            }
+        }
 
         /// <summary>
         /// Internal list of all Nodes
         /// </summary>
-        [HideInInspector] public List<VisualGraphNode> Nodes = new List<VisualGraphNode>();
+        //[HideInInspector]
+        public List<VisualGraphNode> Nodes = new List<VisualGraphNode>();
 
         /// <summary>
         /// Comment Blocks. Not supported at this time
@@ -51,8 +64,7 @@ namespace VisualGraphRuntime
                 newNode.graph = clone;
                 clone.Nodes[i] = newNode;
             }
-
-            clone.StartNode = clone.FindNodeByGuid(StartNode.Guid);
+            //clone.StartNode = clone.FindNodeByGuid(StartNode.Guid);
             clone.InitializeGraph();
 
             return clone;
@@ -72,6 +84,7 @@ namespace VisualGraphRuntime
         {
             foreach (var node in Nodes)
             {
+                if (node == null) continue;
                 node.graph = this;
                 foreach (var port in node.Ports)
                 {
@@ -168,6 +181,7 @@ namespace VisualGraphRuntime
         /// <returns></returns>
         public VisualGraphNode FindNodeByGuid(string guid)
         {
+
             //return Nodes.Where(n => n.guid.Equals(guid)).FirstOrDefault();
             return Nodes.FirstOrDefault(n => n.Guid == guid);
         }
@@ -205,7 +219,7 @@ namespace VisualGraphRuntime
             return false;
         }
 
-      
+
 
 
 

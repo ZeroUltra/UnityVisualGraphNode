@@ -10,9 +10,13 @@ namespace VisualGraphNodeSystem
         }
         public VisualNodeBase GetFirstNode()
         {
-            return NodeGraph.StartNode.GetOutpotPortWithIndex(0).GetConnectNode() as VisualNodeBase;
+           return NodeGraph.StartNode.GetOutpotPortWithIndex(0).GetConnectNode() as VisualNodeBase;
         }
 
+        /// <summary>
+        /// 调用此方法可以刷新编辑器node状态
+        /// </summary>
+        /// <param name="currNode"></param>
         public virtual void Process(VisualNodeBase currNode)
         {
 #if UNITY_EDITOR

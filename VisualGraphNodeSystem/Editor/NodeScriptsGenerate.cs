@@ -9,7 +9,7 @@ namespace VisualGraphNodeSystem.Editor
         public const string scriptTemplates = @"using VisualGraphRuntime;
 using UnityEngine;
 using VisualGraphNodeSystem;
-[NodeName(""#SCRIPTNAME#"")]
+[NodeDisplay(""#SCRIPTNAME#"")]
 [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
 public class #SCRIPTNAME# : VisualNodeBase
 {

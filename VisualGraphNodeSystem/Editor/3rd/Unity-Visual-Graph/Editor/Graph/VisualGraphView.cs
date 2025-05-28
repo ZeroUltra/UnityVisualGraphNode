@@ -252,24 +252,27 @@ namespace VisualGraphInEditor
                     SearchWindow.Open(windowContext, nodetreeWindow);
                 };
 
-                // If the graph doesn't have a start node it's probably the first time we opened it. This means
+                //If the graph doesn't have a start node it's probably the first time we opened it. This means
                 // we will create one to get going.
-                if (visualGraph.StartNode == null)
-                {
-                    VisualGraphRuntime.VisualGraphNode startingNode = Activator.CreateInstance(typeof(NodeStart)) as VisualGraphRuntime.VisualGraphNode;
-                    visualGraph.StartNode = startingNode;
-                    startingNode.name = "Start";
-                    startingNode.position = new Vector2(30, 150);
+                //if (visualGraph.StartNode == null)
+                //{
+                //    Debug.Log(" Start Node null");
+                //    VisualGraphRuntime.VisualGraphNode startingNode = Activator.CreateInstance(typeof(NodeStart)) as VisualGraphRuntime.VisualGraphNode;
+                //    visualGraph.StartNode = startingNode;
+                //    startingNode.name = "Start";
+                //    startingNode.position = new Vector2(30, 150);
 
-                    VisualGraphPort graphPort = startingNode.AddPort("Next", VisualGraphPort.PortDirection.Output);
-                    graphPort.CanBeRemoved = false;
-                    visualGraph.Nodes.Add(startingNode);
+                //    VisualGraphPort graphPort = startingNode.AddPort("Next", VisualGraphPort.PortDirection.Output);
+                //    graphPort.CanBeRemoved = false;
+                //    visualGraph.Nodes.Add(startingNode);
 
-                    if (startingNode.name == null || startingNode.name.Trim() == "") startingNode.name = UnityEditor.ObjectNames.NicifyVariableName(startingNode.name);
-                    if (!string.IsNullOrEmpty(AssetDatabase.GetAssetPath(visualGraph))) AssetDatabase.AddObjectToAsset(startingNode, visualGraph);
+                //    if (startingNode.name == null || startingNode.name.Trim() == "")
+                //        startingNode.name = UnityEditor.ObjectNames.NicifyVariableName(startingNode.name);
+                //    if (!string.IsNullOrEmpty(AssetDatabase.GetAssetPath(visualGraph)))
+                //        AssetDatabase.AddObjectToAsset(startingNode, visualGraph);
 
-                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(startingNode));
-                }
+                //    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(startingNode));
+                //}
 
                 // Create all other Nodes for the graph
                 foreach (var graphNode in visualGraph.Nodes)
@@ -720,7 +723,7 @@ namespace VisualGraphInEditor
                 textField.parent.style.flexGrow = 1;
                 textField.style.width = new Length(100, LengthUnit.Percent);
                 textField.style.height = new Length(100, LengthUnit.Percent);
-                port.Insert(1,deleteButton);
+                port.Insert(1, deleteButton);
 
             }
 
@@ -737,7 +740,7 @@ namespace VisualGraphInEditor
                 node.outputContainer.Add(port);
             }
             port.portColor = graphPort.Connections.Count() > 0 ? edgeColor : edgeDropColor;
-          
+
             node.RefreshExpandedState();
             node.RefreshPorts();
         }

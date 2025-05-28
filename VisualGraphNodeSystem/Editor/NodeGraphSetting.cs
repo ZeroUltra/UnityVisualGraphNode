@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VisualGraphNodeSystem.Editor
 {
-    [CreateAssetMenu(fileName = "NodeGraphSetting", menuName = "Create  Node Graph/Node Graph Setting", order = -10)]
+    [CreateAssetMenu(fileName = "NodeGraphSetting", menuName = "Create Node Graph/Node Graph Setting", order = -10)]
     public class NodeGraphSetting : ScriptableObject
     {
         private static NodeGraphSetting _instance;
@@ -21,7 +21,7 @@ namespace VisualGraphNodeSystem.Editor
         }
 
         [Header("标签宽度")]
-        public int LabelWidth = 88;
+        public int LabelWidth = 100;
         [Header("默认node大小")]
         public Vector2 NodeDefaultSize = new Vector2(250, 120);
         [Header("是否使用IMGUI")]

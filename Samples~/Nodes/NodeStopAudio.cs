@@ -1,9 +1,12 @@
 using VisualGraphRuntime;
 using UnityEngine;
 using VisualGraphNodeSystem;
-[NodeName("停止音频")]
-[NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
-public class NodeStopAudio : VisualNodeBase
+namespace VisualGraphNodeSystem.Test
 {
+    [NodeDisplay("(Test)停止音频")]
+    [NodePortAggregate(NodePortAggregateAttribute.PortAggregate.Single, NodePortAggregateAttribute.PortAggregate.Single)]
+    public class NodeStopAudio : VisualNodeBase
+    {
 
+    }
 }
