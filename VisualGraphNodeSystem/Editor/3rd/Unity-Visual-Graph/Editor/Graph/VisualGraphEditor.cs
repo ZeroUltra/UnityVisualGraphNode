@@ -287,11 +287,16 @@ namespace VisualGraphInEditor
                         return;
                     }
                     var nextNode = outputPort.GetConnectNode();
-                    if (nextNode == null) return;
+                    if (nextNode == null && outputPort != null)
+                    {
+                        Debug.LogError($"此节点没有输出端口:{node.name} {node.NodeID}");
+                        return;
+                    }
                     nextNode.NodeID = id;
                     ++id;
                     SortRecursive(nextNode);
                 }
+                Debug.Log("排序完成");
                 OnDisable();
                 OnEnable();
                 EditorUtility.SetDirty(visualGraph);

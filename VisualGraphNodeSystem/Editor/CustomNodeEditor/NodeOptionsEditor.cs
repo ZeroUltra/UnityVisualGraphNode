@@ -5,6 +5,6 @@ using VisualGraphNodeSystem;
 [CustomNodeView((typeof(NodeOption)))]
 public class NodeOptionsEditor : VisualGraphNodeView
 {
-    public override Vector2 default_size => new Vector2(300, 200);
+    public override Vector2 default_size => new Vector2(400, 200);
 
 }
