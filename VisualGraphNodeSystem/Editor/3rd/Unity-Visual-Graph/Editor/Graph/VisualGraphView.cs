@@ -291,6 +291,11 @@ namespace VisualGraphInEditor
                             Port port = graphPort.editor_port as Port;
                             foreach (VisualGraphPort.VisualGraphPortConnection graph_connection in graphPort.Connections)
                             {
+                                if (graph_connection.Node == null)
+                                {
+                                    Debug.LogError($"name: {graphNode.name} guid: {graphNode.Guid} 节点的output端口连接的节点为空 请删除重新创建 (进入Inspector Debug模式查看guid)");
+                                    continue;
+                                }
                                 VisualGraphPort other_port = graph_connection.Node.FindPortByGuid(graph_connection.port_guid);
                                 Port other_editor_port = other_port.editor_port as Port;
                                 var newedge = port.ConnectTo(other_editor_port);

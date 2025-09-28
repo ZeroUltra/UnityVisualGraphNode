@@ -50,6 +50,7 @@ namespace VisualGraphRuntime
         /// </summary>
         public bool IsRunning { get; set; } = false;
 
+        [HideInNormalInspector][SerializeField] private string internal_guid;
         [HideInNormalInspector]
         public int NodeID;
         [HideInNormalInspector]
@@ -60,10 +61,8 @@ namespace VisualGraphRuntime
         /// List of all ports that belong to this node (ports can be either in or out
         /// </summary>
         [HideInInspector][SerializeReference] public List<VisualGraphPort> Ports = new List<VisualGraphPort>();
-        /// <summary>
-        /// All Nodes have a guid for references
-        /// </summary>
-        [HideInInspector][SerializeField] private string internal_guid;
+
+
 
         public virtual void Init()
         {

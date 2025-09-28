@@ -1,4 +1,3 @@
-
 using UnityEditor;
 namespace VisualGraphNodeSystem.Editor
 {
@@ -13,8 +12,11 @@ namespace VisualGraphNodeSystem.Editor
         public override void OnInspectorGUI()
         {
             //设置标签宽度
+
             EditorGUIUtility.labelWidth = setting.LabelWidth;
+
             base.OnInspectorGUI();
+
         }
     }
 }
