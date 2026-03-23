@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -272,30 +273,100 @@ namespace VisualGraphInEditor
             btnSortID.style.unityTextAlign = TextAnchor.MiddleCenter;
             btnSortID.RegisterCallback<ClickEvent>((evt) =>
             {
+                #region MyRegion
+                //var startNode = visualGraph.StartNode;
+                //int id = 1;
+
+                //// 使用 HashSet 记录处理过的节点，防止重复计算
+                //HashSet<VisualGraphNode> visited = new HashSet<VisualGraphNode>();
+
+                //if (startNode != null)
+                //{
+                //    // 建议：给起点也分配一个 ID，或者根据你的需求调整起点 ID
+                //    startNode.NodeID = id++;
+                //    visited.Add(startNode);
+
+                //    SortRecursive(startNode);
+                //}
+
+                //void SortRecursive(VisualGraphNode node)
+                //{
+                //    if (node == null) return;
+
+                //    var outPorts = node.Ports.Where(x => x.Direction == PortDirection.Output).ToList();
+
+                //    // 第一阶段：先给所有直接相连的子节点分配 ID（如果还没分配）
+                //    foreach (var outport in outPorts)
+                //    {
+                //        if (outport == null) continue;
+                //        var nextNode = outport.GetConnectNode();
+
+                //        // 如果节点为空，或者已经分配过 ID，直接跳过
+                //        if (nextNode == null || visited.Contains(nextNode))
+                //            continue;
+
+                //        nextNode.NodeID = id++;
+                //        visited.Add(nextNode); // 标记为已访问
+                //    }
+
+                //    // 第二阶段：递归进入子节点
+                //    foreach (var outport in outPorts)
+                //    {
+                //        if (outport == null) continue;
+                //        var nextNode = outport.GetConnectNode();
+
+                //        if (nextNode == null) continue;
+
+                //        // 这里不需要判断 visited，因为 SortRecursive 内部会处理
+                //        // 或者为了性能，这里也可以加判断
+                //        SortRecursive(nextNode);
+                //    }
+                //} 
+                #endregion
+
                 var startNode = visualGraph.StartNode;
-                int id = 1;
-                if (startNode != null)
+                if (startNode == null) return;
+
+                int id = 0;
+                // 使用 Queue 来存储待处理的节点
+                Queue<VisualGraphNode> queue = new Queue<VisualGraphNode>();
+                // 使用 HashSet 确保每个节点只被处理和分配 ID 一次
+                HashSet<VisualGraphNode> visited = new HashSet<VisualGraphNode>();
+
+                // 1. 初始化：处理起点
+                startNode.NodeID = id++;
+                visited.Add(startNode);
+                queue.Enqueue(startNode);
+
+                // 2. 开始层级遍历
+                while (queue.Count > 0)
                 {
-                    SortRecursive(startNode);
-                }
-                void SortRecursive(VisualGraphNode node)
-                {
-                    if (node == null) return;
-                    var outputPort = node.Ports.FirstOrDefault(x => x.Direction == PortDirection.Output);
-                    if (outputPort == null)
+                    VisualGraphNode currentNode = queue.Dequeue();
+
+                    // 获取当前节点的所有输出端口
+                    var outPorts = currentNode.Ports
+                        .Where(x => x.Direction == PortDirection.Output)
+                        .ToList();
+
+                    foreach (var outPort in outPorts)
                     {
-                        return;
+                        if (outPort == null) continue;
+
+                        VisualGraphNode nextNode = outPort.GetConnectNode();
+
+                        // 核心逻辑：如果下游节点不为空，且从未被分配过 ID
+                        if (nextNode != null && !visited.Contains(nextNode))
+                        {
+                            // 分配 ID
+                            nextNode.NodeID = id++;
+                            // 标记为已访问，防止其他出口再次触发分配
+                            visited.Add(nextNode);
+                            // 将该节点加入队列，以便后续遍历它的下游
+                            queue.Enqueue(nextNode);
+                        }
                     }
-                    var nextNode = outputPort.GetConnectNode();
-                    if (nextNode == null && outputPort != null)
-                    {
-                        Debug.LogError($"此节点没有输出端口:{node.name} {node.NodeID}");
-                        return;
-                    }
-                    nextNode.NodeID = id;
-                    ++id;
-                    SortRecursive(nextNode);
                 }
+
                 Debug.Log("排序完成");
                 OnDisable();
                 OnEnable();
